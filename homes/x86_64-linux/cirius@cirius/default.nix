@@ -4,12 +4,13 @@ let
 in
 {
   cirius.packages = {
+    delta.enable = true;
+    lazygit.enable = true;
     git = {
       enable = true;
       userName = user.name;
       userEmail = user.email;
     };
-
     home-manager = {
       enable = true;
       inherit (user) username;
