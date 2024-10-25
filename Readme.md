@@ -2,7 +2,7 @@
 # Cirius Nix
 
 Cirius Nix is my personal dotfiles. Managed by Nix + Snowfall lib ❄️.
-Packages is always in stable status. No cheating, no workaround to provide the best user experiment.
+Packages are always in stable status. No cheating, no workaround to provide the best user experiment.
 
 </div>
 
