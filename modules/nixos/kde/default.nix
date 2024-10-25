@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   inherit (lib) mkEnableOption mkIf;
@@ -11,6 +16,12 @@ in
   };
 
   config = mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      kdePackages.qtstyleplugin-kvantum
+      kdePackages.libksysguard
+      kdePackages.ksystemlog
+      wayland-utils
+    ];
     services = {
       displayManager.sddm.enable = true;
       desktopManager.plasma6.enable = true;

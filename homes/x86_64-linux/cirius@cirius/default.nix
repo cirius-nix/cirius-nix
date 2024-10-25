@@ -14,10 +14,15 @@ in
     db.enable = true;
     cli-utils.enable = true;
     go.enable = true;
+    starship.enable = true;
     fish = {
       enable = true;
       customPaths = [ "~/Applications" ];
     };
+    aws = {
+      enable = true;
+    };
+    nvim.enable = true;
   };
 
   cirius.packages = {
@@ -27,5 +32,8 @@ in
       inherit (user) name;
       inherit (user) email;
     };
+    browsers.enable = true;
+    secrets.enable = true;
+    fonts.enable = true;
   };
 }

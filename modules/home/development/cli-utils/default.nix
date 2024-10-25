@@ -7,7 +7,9 @@
 
 let
   inherit (lib) mkEnableOption mkIf;
-  cfg = config.cirius.development.cli-utils;
+
+  devCfg = config.cirius.development;
+  cfg = devCfg.cli-utils;
 in
 {
   options.cirius.development.cli-utils = {
@@ -25,11 +27,8 @@ in
         unzip
         gcc
         gnumake
+        go-task
       ];
-
-      sessionVariables = {
-        "EDITOR" = "nvim";
-      };
     };
 
     programs = {
