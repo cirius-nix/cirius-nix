@@ -3,11 +3,11 @@
 let
   inherit (lib) mkEnableOption mkIf;
 
-  cfg = config.cirius.packages.lazygit;
-  deltaCfg = config.cirius.packages.delta;
+  cfg = config.cirius.development.lazygit;
+  deltaCfg = config.cirius.development.delta;
 in
 {
-  options.cirius.packages.lazygit = {
+  options.cirius.development.lazygit = {
     enable = mkEnableOption "Lazygit";
   };
 

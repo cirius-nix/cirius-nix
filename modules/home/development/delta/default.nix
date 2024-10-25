@@ -8,10 +8,10 @@
 let
   inherit (lib) mkEnableOption mkIf;
 
-  cfg = config.cirius.packages.delta;
+  cfg = config.cirius.development.delta;
 in
 {
-  options.cirius.packages.delta = {
+  options.cirius.development.delta = {
     enable = mkEnableOption "Delta";
   };
 

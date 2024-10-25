@@ -4,10 +4,10 @@ let
   inherit (lib) mkEnableOption mkIf;
   inherit (lib.cirius) mkStrOption;
 
-  cfg = config.cirius.packages.git;
+  cfg = config.cirius.development.git;
 in
 {
-  options.cirius.packages.git = {
+  options.cirius.development.git = {
     enable = mkEnableOption "Git";
     userName = mkStrOption null "The full name of the user.";
     userEmail = mkStrOption null "The e-mail address of the user.";

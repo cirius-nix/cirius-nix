@@ -3,14 +3,28 @@ let
   user = lib.cirius.findOrNull osConfig.cirius.users.users "username" "cirius";
 in
 {
-  cirius.packages = {
-    delta.enable = true;
-    lazygit.enable = true;
+  cirius.development = {
     git = {
       enable = true;
       userName = user.name;
       userEmail = user.email;
     };
+    delta.enable = true;
+    lazygit.enable = true;
+    db.enable = true;
+    cli-utils.enable = true;
+    go.enable = true;
+    fish = {
+      enable = true;
+      customPaths = [
+        "~/Applications"
+        "~/.local/bin"
+        "~/go/bin"
+      ];
+    };
+  };
+
+  cirius.packages = {
     home-manager = {
       enable = true;
       inherit (user) username;
