@@ -28,6 +28,10 @@ in
         gcc
         gnumake
         go-task
+        wget
+        curl
+        libglvnd
+        glxinfo
       ];
     };
 

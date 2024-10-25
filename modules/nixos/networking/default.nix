@@ -16,13 +16,10 @@ in
         inherit (cfg) enable;
       };
 
+      hostName = "cirius";
+
       networkmanager = {
         inherit (cfg) enable;
-
-        wifi = {
-          backend = "iwd";
-          powersave = false;
-        };
       };
 
       firewall = {

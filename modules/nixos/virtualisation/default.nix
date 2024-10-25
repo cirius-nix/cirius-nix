@@ -19,11 +19,26 @@ in
     virtualisation = {
       podman = {
         enable = true;
+        dockerSocket.enable = true;
+        dockerCompat = true;
+        defaultNetwork.settings.dns_enabled = true;
+      };
+      vmware = {
+        host = {
+          enable = true;
+        };
       };
       waydroid = {
         enable = true;
       };
     };
+
+    environment.systemPackages = with pkgs; [
+      arion
+      dive
+      podman-tui
+      podman-compose
+    ];
 
     systemd.user.services = {
       waydroid = {

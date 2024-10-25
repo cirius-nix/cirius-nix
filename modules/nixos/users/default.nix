@@ -12,6 +12,7 @@ let
   inherit (lib.types) listOf submodule;
 
   cfg = config.cirius.users;
+  virCfg = config.cirius.virtualisation;
 
   user = {
     options = {
@@ -61,7 +62,7 @@ in
           extraGroups = [
             "networkmanager"
             "wheel"
-          ];
+          ] ++ lib.optional virCfg.enable "podman";
           shell = pkgs.${user.shell};
         };
       }) cfg.users

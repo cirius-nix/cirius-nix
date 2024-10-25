@@ -22,7 +22,7 @@ in
     aws = {
       enable = true;
     };
-    nvim.enable = true;
+    nixvim.enable = true;
     vscode.enable = true;
   };
 

@@ -1,8 +1,7 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
+{ config
+, pkgs
+, lib
+, ...
 }:
 
 let
@@ -16,7 +15,7 @@ in
 
   config = mkIf cfg.enable {
     home = {
-      packages = with pkgs; [ keepassxc ];
+      packages = with pkgs; [ enpass ];
     };
   };
 }

@@ -12,12 +12,17 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     snowfall-lib = {
       url = "github:snowfallorg/lib";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nixvim = {
+      url = "github:nix-community/nixvim/nixos-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -45,6 +50,10 @@
       };
 
       overlays = [ inputs.nur.overlay ];
+
+      homes.modules = with inputs; [
+        nixvim.homeManagerModules.nixvim
+      ];
 
       systems.modules.nixos = [ inputs.home-manager.nixosModules.home-manager ];
     };

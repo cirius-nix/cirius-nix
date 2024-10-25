@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   inherit (lib) mkEnableOption mkIf;
@@ -11,6 +11,13 @@ in
   };
 
   config = mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      statix
+      deadnix
+      nixfmt-rfc-style
+      nixpkgs-fmt
+      nixd
+    ];
     nix = {
       # package = pkgs.nixVersions.latest;
       settings.experimental-features = [
