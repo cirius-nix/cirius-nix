@@ -23,6 +23,7 @@ in
       enable = true;
     };
     nvim.enable = true;
+    vscode.enable = true;
   };
 
   cirius.packages = {
