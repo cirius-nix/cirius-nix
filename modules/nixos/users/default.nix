@@ -24,7 +24,9 @@ let
       ] "fish" "User shell.";
     };
   };
+  enabledFish = any (user: user.shell == "fish") cfg.users;
 in
+
 {
   options = {
     cirius.users = {
@@ -37,7 +39,18 @@ in
   };
 
   config = mkIf cfg.enable {
-    programs.fish.enable = mkIf (any (user: user.shell == "fish") cfg.users) true;
+    programs = {
+      fish.enable = enabledFish;
+      bash = mkIf enabledFish {
+        interactiveShellInit = ''
+          if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
+          then
+            shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""
+            exec ${pkgs.fish}/bin/fish $LOGIN_OPTION
+          fi
+        '';
+      };
+    };
 
     users.users = listToAttrs (
       map (user: {
