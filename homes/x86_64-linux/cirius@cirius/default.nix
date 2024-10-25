@@ -16,11 +16,7 @@ in
     go.enable = true;
     fish = {
       enable = true;
-      customPaths = [
-        "~/Applications"
-        "~/.local/bin"
-        "~/go/bin"
-      ];
+      customPaths = [ "~/Applications" ];
     };
   };
 

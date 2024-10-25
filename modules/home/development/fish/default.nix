@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, ... }:
 
 let
   inherit (lib)
@@ -12,8 +7,14 @@ let
     mkOption
     types
     concatMapStringsSep
+    optional
     ;
-  cfg = config.cirius.development.fish;
+
+  devCfg = config.cirius.development;
+
+  cfg = devCfg.fish;
+  goCfg = devCfg.go;
+  initialPaths = [ "~/.local/bin" ] ++ optional goCfg.enable "~/go/bin";
 in
 {
   options.cirius.development.fish = {
@@ -41,14 +42,13 @@ in
           aws-vault exec $profile fish -d 12h $argv
         end
 
-        # Process custom paths
         ${concatMapStringsSep "\n" (path: ''
           if test -d ${path}
             if not contains ${path} $PATH
               set -p PATH ${path}
             end
           end
-        '') cfg.customPaths}
+        '') (initialPaths ++ cfg.customPaths)}
       '';
     };
   };

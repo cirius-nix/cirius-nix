@@ -21,9 +21,5 @@ in
       gotools
       goimports-reviser
     ];
-    # config.cirius.development.fish.customPaths = [
-    #   "${pkgs.go}/bin"
-    #   "~/go/bin"
-    # ];
   };
 }
