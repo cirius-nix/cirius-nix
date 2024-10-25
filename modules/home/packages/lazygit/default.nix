@@ -15,8 +15,8 @@ in
     programs.lazygit = {
       inherit (cfg) enable;
 
-      settings.git.paging = mkIf deltaCfg.enable {
-        pager = "delta --dark --syntax-theme 'Dracula' --paging=never";
+      settings.git.paging = {
+        pager = if deltaCfg.enable then "delta --dark --syntax-theme 'Dracula' --paging=never" else "less";
       };
     };
   };

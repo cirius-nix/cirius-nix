@@ -25,6 +25,8 @@
     pirewire.enable = true;
     kde.enable = true;
     virtualisation.enable = true;
+    clipboard.enable = true;
+    input-method.enable = true;
   };
 
   boot.loader = {
