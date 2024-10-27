@@ -62,6 +62,22 @@ let
       };
     }
     {
+      action = "<cmd>lua _G.FUNCS.search_selected_text_in_visual_mode()<cr>";
+      key = "<leader>fs";
+      mode = "v";
+      options = {
+        silent = true;
+      };
+    }
+    {
+      action = "<cmd>'<,'>Wtf<cr>";
+      key = "<leader>fw";
+      mode = "v";
+      options = {
+        silent = true;
+      };
+    }
+    {
       action = "<cmd>Telescope buffers<cr>";
       key = "<leader>fb";
       mode = "n";
