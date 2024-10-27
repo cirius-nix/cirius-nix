@@ -1,4 +1,4 @@
-{ pkgs }:
+{ pkgs, ... }:
 let
   ui = {
     dressing.enable = true;
@@ -140,7 +140,6 @@ let
       };
       settings = {
         preselect = "cmp.PreselectMode.Item";
-        snippet = { expand = "luasnip"; };
         formatting = { fields = [ "kind" "abbr" "menu" ]; };
         performance = {
           debounce = 60;
@@ -158,7 +157,6 @@ let
           { name = "nvim_lsp"; }
           { name = "copilot"; }
           { name = "nvim_lsp_signature_help"; }
-          { name = "luasnip"; keywordLength = 3; }
           { name = "path"; }
           { name = "buffer"; }
         ];
@@ -180,8 +178,20 @@ let
     none-ls = {
       enable = true;
       enableLspFormat = true;
+      sources = {
+        code_actions = {
+          statix.enable = true;
+          gomodifytags.enable = true;
+          impl.enable = true;
+        };
+        completion = { };
+        diagnostics = {
+          golangci_lint.enable = true;
+        };
+      };
     };
   };
+  plugins = ui // workspace // editor // lsp;
 in
-ui // workspace // editor // lsp
+plugins
 

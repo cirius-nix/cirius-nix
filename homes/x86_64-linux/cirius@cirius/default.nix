@@ -1,4 +1,4 @@
-{ lib, osConfig, ... }:
+{ lib, osConfig, pkgs, ... }:
 let
   user = lib.cirius.findOrNull osConfig.cirius.users.users "username" "cirius";
 in
@@ -15,9 +15,19 @@ in
     cli-utils.enable = true;
     go.enable = true;
     starship.enable = true;
+    jetbrains = {
+      enable = true;
+      noncommercial = true;
+    };
     fish = {
       enable = true;
       customPaths = [ "~/Applications" ];
+      aliases = {
+        "rbnix" = "sudo nixos-rebuild switch --show-trace";
+        "nixos-generations" = "nixos-rebuild list-generations";
+        "clean-nixos" = "sudo nix-env --delete-generations +5; sudo nix-collect-garbage -d";
+        "tf" = "${pkgs.terraform}/bin/terraform";
+      };
     };
     aws = {
       enable = true;

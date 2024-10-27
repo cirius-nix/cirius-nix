@@ -1,8 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 
 let
@@ -20,6 +19,8 @@ in
       go
       gotools
       goimports-reviser
+      gomodifytags
+      impl
     ];
   };
 }

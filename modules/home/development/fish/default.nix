@@ -1,8 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 
 let
@@ -20,6 +19,9 @@ let
   cfg = devCfg.fish;
   goCfg = devCfg.go;
   initialPaths = [ "~/.local/bin" ] ++ optional goCfg.enable "~/go/bin";
+  aliases = {
+    "ns" = "nix-shell";
+  };
 in
 {
   options.cirius.development.fish = {
@@ -29,6 +31,11 @@ in
       default = [ ];
       description = "List of custom paths to add to the PATH";
     };
+    aliases = mkOption {
+      type = types.attrs;
+      default = { };
+      description = "List of aliases to add";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -36,7 +43,7 @@ in
 
     programs.fish = {
       inherit (cfg) enable;
-
+      shellAliases = aliases // cfg.aliases;
       interactiveShellInit = ''
         set fish_greeting # Disable greeting
 
@@ -44,7 +51,7 @@ in
           set profile $argv[1]
           set -e argv[1]
 
-          aws-vault exec $profile fish -d 12h $argv
+          ${pkgs.aws-vault}/bin/aws-vault exec $profile fish -d 12h $argv
         end
 
         ${concatMapStringsSep "\n" (path: ''
