@@ -110,6 +110,20 @@ let
         enable = true;
         frequency = 7;
       };
+      outline = {
+        enable = true;
+        close_after_jump = true;
+        toggle_or_jump = "<CR>";
+        win_width = 50;
+      };
+      finder = {
+        keys = {
+          toggle_or_open = "<CR>";
+          vsplit = "<C-v>";
+          split = "<C-x>";
+          quit = "q";
+        };
+      };
     };
     schemastore = {
       enable = true;
