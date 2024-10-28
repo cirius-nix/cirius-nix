@@ -34,6 +34,7 @@ in
     };
     nixvim.enable = true;
     vscode.enable = true;
+    postman.enable = true;
   };
 
   cirius.packages = {
