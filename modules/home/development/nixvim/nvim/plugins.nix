@@ -82,10 +82,10 @@ let
         nil-ls.enable = true;
         nixd.enable = true;
         gopls.enable = true;
-        golangci-lint-ls.enable = true;
         lua-ls.enable = true;
         jsonls.enable = true;
         terraformls.enable = true;
+        tsserver.enable = true;
         yamlls = {
           enable = true;
           extraOptions = {
@@ -130,6 +130,8 @@ let
       copilotNodeCommand = "${pkgs.nodejs_22}/bin/node";
     };
     copilot-cmp.enable = true;
+    luasnip.enable = true;
+    cmp_luasnip.enable = true;
     cmp = {
       enable = true;
       autoEnableSources = true;
@@ -149,10 +151,20 @@ let
       settings = {
         preselect = "cmp.PreselectMode.Item";
         formatting = { fields = [ "kind" "abbr" "menu" ]; };
+        experimental = {
+          ghostText = true;
+        };
         performance = {
           debounce = 60;
           fetchingTimeout = 200;
           maxViewEntries = 30;
+        };
+        snippet = {
+          expand = ''
+            function(args)
+              require'luasnip'.lsp_expand(args.body)
+            end
+          '';
         };
         mapping = {
           "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
@@ -163,6 +175,7 @@ let
         };
         sources = [
           { name = "nvim_lsp"; }
+          { name = "luasnip"; keywordLength = 3; }
           { name = "copilot"; }
           { name = "nvim_lsp_signature_help"; }
           { name = "path"; }
