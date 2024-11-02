@@ -29,6 +29,14 @@ let
       search_selected_text_in_visual_mode = function()
         local text = _G.FUNCS.get_selected_text_in_visual_mode()
         require("telescope.builtin").live_grep({ default_text = text })
+      end,
+      ts_organize_imports = function()
+        local params = {
+          command = "_typescript.organizeImports",
+          arguments = {vim.api.nvim_buf_get_name(0)},
+          title = ""
+        }
+        vim.lsp.buf.execute_command(params)
       end
     };
   '';

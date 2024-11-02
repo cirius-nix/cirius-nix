@@ -1,8 +1,7 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
+{ config
+, pkgs
+, lib
+, ...
 }:
 
 let
@@ -19,6 +18,7 @@ in
       packages = with pkgs; [
         floorp
         microsoft-edge
+        kdePackages.kget
       ];
     };
   };

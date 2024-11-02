@@ -114,4 +114,22 @@ in
       desc = "Undotree";
     };
   }
+  {
+    mode = "i";
+    key = "jk";
+    action = "<esc>";
+    options = {
+      silent = true;
+      nowait = true;
+    };
+  }
+  {
+    mode = "i";
+    key = "jj";
+    action = "<esc>";
+    options = {
+      silent = true;
+      nowait = true;
+    };
+  }
 ] ++ nvimtree-keymaps ++ wincmd-keymaps ++ telescope-keymaps

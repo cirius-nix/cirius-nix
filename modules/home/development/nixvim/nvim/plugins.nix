@@ -86,6 +86,8 @@ let
         jsonls.enable = true;
         terraformls.enable = true;
         tsserver.enable = true;
+        tailwindcss.enable = true;
+        eslint.enable = true;
         yamlls = {
           enable = true;
           extraOptions = {
@@ -208,6 +210,13 @@ let
         completion = { };
         diagnostics = {
           golangci_lint.enable = true;
+        };
+        formatting = {
+          goimports.enable = true;
+          prettier = {
+            enable = true;
+            disableTsServerFormatter = true;
+          };
         };
       };
     };

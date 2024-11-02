@@ -1,8 +1,7 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
+{ config
+, pkgs
+, lib
+, ...
 }:
 
 let
@@ -32,6 +31,7 @@ in
         curl
         libglvnd
         glxinfo
+        go-swagger
       ];
     };
 
