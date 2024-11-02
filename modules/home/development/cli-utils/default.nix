@@ -30,7 +30,7 @@ in
         wget
         curl
         libglvnd
-        glxinfo
+        # glxinfo
         go-swagger
       ];
     };

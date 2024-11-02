@@ -18,7 +18,6 @@ in
     home = {
       packages = with pkgs; [
         meslo-lgs-nf
-        fira-code-nerdfont
         cascadia-code
       ];
     };
