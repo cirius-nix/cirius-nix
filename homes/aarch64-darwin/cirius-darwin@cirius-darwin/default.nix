@@ -15,6 +15,7 @@ in
     cli-utils.enable = true;
     go.enable = true;
     starship.enable = true;
+    api-client.enable = true;
     fish = {
       enable = true;
       customPaths = [ "~/Applications" ];

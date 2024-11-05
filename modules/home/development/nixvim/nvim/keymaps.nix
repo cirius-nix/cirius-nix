@@ -150,7 +150,7 @@ let
       };
     }
     {
-      action = "<cmd>TodoTelescope<cr>";
+      action = "<cmd>TodoTrouble<cr>";
       key = "<leader>ft";
       mode = "n";
       options = {
