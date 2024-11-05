@@ -1,4 +1,4 @@
-{lib,...}: {
+{
   cirius = {
     # define the user
     users = {
@@ -15,6 +15,7 @@
 
     # enable modules defined in: pkg_root/modules/darwin
     home-manager.enable = true;
+    nix.enable = true;
   };
 
   nix.settings.experimental-features = "nix-command flakes";
