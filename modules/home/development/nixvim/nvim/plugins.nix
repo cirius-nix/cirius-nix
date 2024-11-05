@@ -1,6 +1,7 @@
 { pkgs, ... }:
 let
   ui = {
+    noice.enable = true;
     dressing.enable = true;
     lualine.enable = true;
     bufferline.enable = true;

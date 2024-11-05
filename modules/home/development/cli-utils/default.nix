@@ -32,6 +32,7 @@ in
         libglvnd
         # glxinfo
         go-swagger
+        air
       ];
     };
 
