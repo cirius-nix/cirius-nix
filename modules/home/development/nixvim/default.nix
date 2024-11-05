@@ -1,7 +1,8 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 
 let
@@ -17,7 +18,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs;[ nodejs_22 ];
+    home.packages = with pkgs; [ nodejs_22 ];
     programs.nixvim = {
       inherit (cfg) enable;
       colorschemes.vscode.enable = true;

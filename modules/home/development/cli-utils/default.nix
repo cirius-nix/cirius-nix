@@ -1,7 +1,8 @@
-{ config
-, pkgs
-, lib
-, ...
+{
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 
 let
@@ -32,6 +33,7 @@ in
         libglvnd
         # glxinfo
         go-swagger
+        air # live reload for Go apps
       ];
     };
 

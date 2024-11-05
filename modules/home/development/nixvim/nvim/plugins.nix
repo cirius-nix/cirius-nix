@@ -1,5 +1,43 @@
 { pkgs, ... }:
 let
+  debugging = {
+    cmp-dap.enable = true;
+    dap = {
+      enable = true;
+      extensions = {
+        dap-ui = {
+          enable = true;
+          floating.mappings = {
+            close = [
+              "<ESC>"
+              "q"
+            ];
+          };
+        };
+        dap-virtual-text = {
+          enable = true;
+        };
+      };
+      signs = {
+        dapBreakpoint = {
+          text = "";
+          texthl = "DapBreakpoint";
+        };
+        dapBreakpointCondition = {
+          text = "";
+          texthl = "DapBreakpointCondition";
+        };
+        dapLogPoint = {
+          text = "";
+          texthl = "DapLogPoint";
+        };
+      };
+      extensions.dap-go = {
+        enable = true;
+        delve.path = "${pkgs.delve}/bin/dlv";
+      };
+    };
+  };
   ui = {
     dressing.enable = true;
     lualine.enable = true;
@@ -33,7 +71,9 @@ let
         focusOnToggle = true;
       };
     };
-    treesitter = { enable = true; };
+    treesitter = {
+      enable = true;
+    };
     mini = {
       enable = true;
       modules = {
@@ -56,6 +96,7 @@ let
     nix-develop.enable = true;
     lsp = {
       enable = true;
+      inlayHints = true;
       keymaps = {
         diagnostic = {
           "]e" = "goto_next";
@@ -68,15 +109,42 @@ let
           gt = "type_definition";
         };
         extra = [
-          { action = "<cmd>Lspsaga hover_doc<cr>"; key = "K"; }
-          { action = "<cmd>Lspsaga goto_type_definition<cr>"; key = "<leader>lD"; }
-          { action = "<cmd>Lspsaga code_action<cr>"; key = "<leader>la"; }
-          { action = "<cmd>Lspsaga goto_definition<cr>"; key = "<leader>ld"; }
-          { action = "<cmd>Lspsaga finder<cr>"; key = "<leader>lf"; }
-          { action = "<cmd>Lspsaga outline<cr>"; key = "<leader>lo"; }
-          { action = "<cmd>Lspsaga rename mode=n<cr>"; key = "<leader>lr"; }
-          { action = "<cmd>TroubleToggle document_diagnostics<cr>"; key = "<leader>lx"; }
-          { action = "<cmd>TroubleToggle workspace_diagnostics<cr>"; key = "<leader>lx"; }
+          {
+            action = "<cmd>Lspsaga hover_doc<cr>";
+            key = "K";
+          }
+          {
+            action = "<cmd>Lspsaga goto_type_definition<cr>";
+            key = "<leader>lD";
+          }
+          {
+            action = "<cmd>Lspsaga code_action<cr>";
+            key = "<leader>la";
+          }
+          {
+            action = "<cmd>Lspsaga goto_definition<cr>";
+            key = "<leader>ld";
+          }
+          {
+            action = "<cmd>Lspsaga finder<cr>";
+            key = "<leader>lf";
+          }
+          {
+            action = "<cmd>Lspsaga outline<cr>";
+            key = "<leader>lo";
+          }
+          {
+            action = "<cmd>Lspsaga rename mode=n<cr>";
+            key = "<leader>lr";
+          }
+          {
+            action = "<cmd>TroubleToggle document_diagnostics<cr>";
+            key = "<leader>lx";
+          }
+          {
+            action = "<cmd>TroubleToggle workspace_diagnostics<cr>";
+            key = "<leader>lx";
+          }
         ];
       };
       servers = {
@@ -124,12 +192,20 @@ let
     };
     schemastore = {
       enable = true;
-      json = { enable = true; };
-      yaml = { enable = true; };
+      json = {
+        enable = true;
+      };
+      yaml = {
+        enable = true;
+      };
     };
     copilot-lua = {
-      suggestion = { enabled = false; };
-      panel = { enabled = false; };
+      suggestion = {
+        enabled = false;
+      };
+      panel = {
+        enabled = false;
+      };
       copilotNodeCommand = "${pkgs.nodejs_22}/bin/node";
     };
     copilot-cmp.enable = true;
@@ -140,20 +216,38 @@ let
       autoEnableSources = true;
       cmdline = {
         "/" = {
-          mapping = { __raw = "cmp.mapping.preset.cmdline()"; };
-          sources = [{ name = "buffer"; }];
+          mapping = {
+            __raw = "cmp.mapping.preset.cmdline()";
+          };
+          sources = [ { name = "buffer"; } ];
         };
         ":" = {
-          mapping = { __raw = "cmp.mapping.preset.cmdline()"; };
+          mapping = {
+            __raw = "cmp.mapping.preset.cmdline()";
+          };
           sources = [
             { name = "path"; }
-            { name = "cmdline"; option = { ignore_cmds = [ "Man" "!" ]; }; }
+            {
+              name = "cmdline";
+              option = {
+                ignore_cmds = [
+                  "Man"
+                  "!"
+                ];
+              };
+            }
           ];
         };
       };
       settings = {
         preselect = "cmp.PreselectMode.Item";
-        formatting = { fields = [ "kind" "abbr" "menu" ]; };
+        formatting = {
+          fields = [
+            "kind"
+            "abbr"
+            "menu"
+          ];
+        };
         experimental = {
           ghostText = true;
         };
@@ -178,7 +272,10 @@ let
         };
         sources = [
           { name = "nvim_lsp"; }
-          { name = "luasnip"; keywordLength = 3; }
+          {
+            name = "luasnip";
+            keywordLength = 3;
+          }
           { name = "copilot"; }
           { name = "nvim_lsp_signature_help"; }
           { name = "path"; }
@@ -222,7 +319,6 @@ let
       };
     };
   };
-  plugins = ui // workspace // editor // lsp;
+  plugins = ui // workspace // editor // lsp // debugging;
 in
 plugins
-
