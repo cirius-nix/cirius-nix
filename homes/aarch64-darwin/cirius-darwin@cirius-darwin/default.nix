@@ -1,4 +1,4 @@
-{ lib, osConfig, pkgs, ... }:
+{ lib, osConfig, ... }:
 let
   user = lib.cirius.findOrNull osConfig.cirius.users.users "username" "cirius-darwin";
 in
@@ -22,7 +22,7 @@ in
     aws = {
       enable = true;
     };
-    # nixvim.enable = false;
+    nixvim.enable = true;
     vscode.enable = true;
     postman.enable = true;
   };
