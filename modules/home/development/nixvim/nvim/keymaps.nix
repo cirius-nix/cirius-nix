@@ -1,4 +1,60 @@
 let
+  git_keymaps = [
+    {
+      action = "<cmd>Gitsigns diffthis<cr>";
+      key = "<leader>gd";
+      mode = "n";
+      options = {
+        silent = true;
+        nowait = true;
+      };
+    }
+    {
+      action = "<cmd>Gitsigns prev_hunk<cr>";
+      key = "[g";
+      mode = "n";
+      options = {
+        silent = true;
+        nowait = true;
+      };
+    }
+    {
+      action = "<cmd>Gitsigns next_hunk<cr>";
+      key = "]g";
+      mode = "n";
+      options = {
+        silent = true;
+        nowait = true;
+      };
+    }
+    {
+      action = "<cmd>Gitsigns stage_hunk<cr>";
+      key = "<leader>ga";
+      mode = "n";
+      options = {
+        silent = true;
+        nowait = true;
+      };
+    }
+    {
+      action = "<cmd>Gitsigns undo_stage_hunk<cr>";
+      key = "<leader>gA";
+      mode = "n";
+      options = {
+        silent = true;
+        nowait = true;
+      };
+    }
+    {
+      action = "<cmd>Gitsigns setqflist<cr>";
+      key = "<leader>gx";
+      mode = "n";
+      options = {
+        silent = true;
+        nowait = true;
+      };
+    }
+  ];
   nvimtree-keymaps = [
     {
       action = "<cmd>lua _G.FUNCS.focus_or_close()<cr>";
@@ -93,6 +149,14 @@ let
         silent = true;
       };
     }
+    {
+      action = "<cmd>TodoTelescope<cr>";
+      key = "<leader>ft";
+      mode = "n";
+      options = {
+        silent = true;
+      };
+    }
   ];
 in
 [
@@ -132,4 +196,4 @@ in
       nowait = true;
     };
   }
-] ++ nvimtree-keymaps ++ wincmd-keymaps ++ telescope-keymaps
+] ++ nvimtree-keymaps ++ wincmd-keymaps ++ telescope-keymaps ++ git_keymaps

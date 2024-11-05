@@ -1,7 +1,84 @@
 { pkgs, ... }:
 let
+  debugger = {
+    dap = {
+      enable = true;
+      adapters = {
+        servers = {};
+      };
+    };
+  };
+  testing = {
+    neotest.enable = true;
+  };
+  git = {
+    gitsigns = {
+      enable = true;
+      settings = {
+        current_line_blame = true;
+        trouble = true;
+      };
+    };
+  };
   ui = {
-    noice.enable = true;
+    rainbow-delimiters.enable = true;
+    todo-comments.enable = true;
+    zen-mode = {
+      enable = true;
+      settings = {
+        on_close = ''
+          function()
+            require("gitsigns.actions").toggle_current_line_blame()
+            vim.cmd('IBLEnable')
+            vim.opt.relativenumber = true
+            vim.opt.signcolumn = "yes:2"
+            require("gitsigns.actions").refresh()
+          end
+        '';
+        on_open = ''
+          function()
+            require("gitsigns.actions").toggle_current_line_blame()
+            vim.cmd('IBLDisable')
+            vim.opt.relativenumber = false
+            vim.opt.signcolumn = "no"
+            require("gitsigns.actions").refresh()
+          end
+        '';
+        plugins = {
+          gitsigns = {
+            enabled = true;
+          };
+          options = {
+            enabled = true;
+            ruler = false;
+            showcmd = false;
+          };
+          tmux = {
+            enabled = false;
+          };
+          twilight = {
+            enabled = false;
+          };
+        };
+        window = {
+          backdrop = 0.95;
+          height = 1;
+          options = {
+            signcolumn = "no";
+          };
+          width = 0.8;
+        };
+      };
+    };
+    wilder = {
+      enable = true;
+    };
+    trouble = {
+      enable = true;
+      settings = {
+        auto_close = true;
+      };
+    };
     dressing.enable = true;
     lualine.enable = true;
     bufferline.enable = true;
@@ -135,6 +212,7 @@ let
     copilot-cmp.enable = true;
     luasnip.enable = true;
     cmp_luasnip.enable = true;
+    cmp-dap.enable = true;
     cmp = {
       enable = true;
       autoEnableSources = true;
@@ -222,7 +300,7 @@ let
       };
     };
   };
-  plugins = ui // workspace // editor // lsp;
+  plugins = ui // workspace // editor // lsp // git // testing // debugger;
 in
 plugins
 
