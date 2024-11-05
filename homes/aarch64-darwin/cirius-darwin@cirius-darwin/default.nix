@@ -1,4 +1,4 @@
-{ lib, osConfig, ... }:
+{ lib, osConfig, pkgs, ... }:
 let
   user = lib.cirius.findOrNull osConfig.cirius.users.users "username" "cirius-darwin";
 in
@@ -18,6 +18,10 @@ in
     fish = {
       enable = true;
       customPaths = [ "~/Applications" ];
+      aliases = {
+        "rbnix" = "darwin-rebuild switch --flake .#cirius-darwin";
+        "tf" = "${pkgs.terraform}/bin/terraform";
+      };
     };
     aws = {
       enable = true;
