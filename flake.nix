@@ -55,7 +55,7 @@
         nixvim.homeManagerModules.nixvim
       ];
 
-      systems.modules.nixos = [  ];
-      systems.modules.darwin = [  ];
+      systems.modules.nixos = [ ];
+      systems.modules.darwin = [ ];
     };
 }

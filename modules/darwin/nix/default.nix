@@ -17,6 +17,7 @@ in
       nixfmt-rfc-style
       nixpkgs-fmt
       nixd
+      ps
     ];
   };
 }

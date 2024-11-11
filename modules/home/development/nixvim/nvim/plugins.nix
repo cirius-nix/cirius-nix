@@ -4,7 +4,7 @@ let
     dap = {
       enable = true;
       adapters = {
-        servers = {};
+        servers = { };
       };
     };
   };
@@ -12,13 +12,13 @@ let
     neotest.enable = true;
   };
   git = {
-    gitsigns = {
-      enable = true;
-      settings = {
-        current_line_blame = true;
-        trouble = true;
-      };
-    };
+    # gitsigns = {
+    #   enable = true;
+    #   settings = {
+    #     current_line_blame = true;
+    #     trouble = true;
+    #   };
+    # };
   };
   ui = {
     rainbow-delimiters.enable = true;
@@ -45,9 +45,9 @@ let
           end
         '';
         plugins = {
-          gitsigns = {
-            enabled = true;
-          };
+          # gitsigns = {
+          #   enabled = true;
+          # };
           options = {
             enabled = true;
             ruler = false;
@@ -287,9 +287,6 @@ let
           impl.enable = true;
         };
         completion = { };
-        diagnostics = {
-          golangci_lint.enable = true;
-        };
         formatting = {
           goimports.enable = true;
           prettier = {

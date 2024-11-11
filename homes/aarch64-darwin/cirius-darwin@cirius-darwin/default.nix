@@ -16,6 +16,7 @@ in
     go.enable = true;
     starship.enable = true;
     api-client.enable = true;
+    node.enable = true;
     fish = {
       enable = true;
       customPaths = [ "~/Applications" ];

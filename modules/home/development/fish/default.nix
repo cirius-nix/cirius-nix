@@ -39,13 +39,16 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [ ];
+    home.packages = with pkgs;[ any-nix-shell ];
 
     programs.fish = {
       inherit (cfg) enable;
       shellAliases = aliases // cfg.aliases;
       interactiveShellInit = ''
+        ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
+
         set fish_greeting # Disable greeting
+        set -g GOBIN $HOME/go/bin
 
         function aws_profile
           set profile $argv[1]
