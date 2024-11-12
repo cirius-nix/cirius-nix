@@ -1,8 +1,7 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
+{ config
+, pkgs
+, lib
+, ...
 }:
 
 let
@@ -42,24 +41,20 @@ in
     programs = {
       fish.enable = enabledFish;
       bash = mkIf enabledFish {
-        interactiveShellInit = ''
-          if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
-          then
-            shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""
-            exec ${pkgs.fish}/bin/fish $LOGIN_OPTION
-          fi
-        '';
+        interactiveShellInit = '''';
       };
     };
 
     users.users = listToAttrs (
-      map (user: {
-        name = user.username;
-        value = {
-          description = user.name;
-          shell = pkgs.${user.shell};
-        };
-      }) cfg.users
+      map
+        (user: {
+          name = user.username;
+          value = {
+            description = user.name;
+            shell = pkgs.${user.shell};
+          };
+        })
+        cfg.users
     );
   };
 }
