@@ -1,4 +1,60 @@
 let
+  testing_keymaps = [
+    {
+      mode = "n";
+      key = "<leader>tr";
+      action = "<cmd>Neotest run file<cr>";
+      options = {
+        silent = true;
+        nowait = true;
+      };
+    }
+    {
+      mode = "n";
+      key = "<leader>tl";
+      action = "<cmd>Neotest run last<cr>";
+      options = {
+        silent = true;
+        nowait = true;
+      };
+    }
+    {
+      mode = "n";
+      key = "<leader>tc";
+      action = "<cmd>Coverage<cr>";
+      options = {
+        silent = true;
+        nowait = true;
+      };
+    }
+    {
+      mode = "n";
+      key = "<leader>tC";
+      action = "<cmd>CoverageSummary<cr>";
+      options = {
+        silent = true;
+        nowait = true;
+      };
+    }
+    {
+      mode = "n";
+      key = "<leader>to";
+      action = "<cmd>Neotest summary toggle<cr>";
+      options = {
+        silent = true;
+        nowait = true;
+      };
+    }
+    {
+      mode = "n";
+      key = "<leader>tp";
+      action = "<cmd>Neotest output-panel toggle<cr>";
+      options = {
+        silent = true;
+        nowait = true;
+      };
+    }
+  ];
   git_keymaps = [
     {
       action = "<cmd>Gitsigns diffthis<cr>";
@@ -196,4 +252,13 @@ in
       nowait = true;
     };
   }
-] ++ nvimtree-keymaps ++ wincmd-keymaps ++ telescope-keymaps ++ git_keymaps
+  {
+    mode = "n";
+    key = "<leader>m";
+    action = "<cmd>ZenMode<cr>";
+    options = {
+      silent = true;
+      nowait = true;
+    };
+  }
+] ++ nvimtree-keymaps ++ wincmd-keymaps ++ telescope-keymaps ++ git_keymaps ++ testing_keymaps

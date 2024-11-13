@@ -9,45 +9,38 @@ let
     };
   };
   testing = {
-    neotest.enable = true;
+    neotest = {
+      enable = true;
+      adapters.go = {
+        enable = true;
+        settings = {
+          args = {
+            __raw = ''
+              {
+                "-v",
+                "-race",
+                "-coverprofile=" .. vim.fn.getcwd() .. "/coverage.out",
+              }
+            '';
+          };
+        };
+      };
+      settings = { };
+    };
+    coverage = {
+      enable = true;
+    };
   };
-  git = {
-    # gitsigns = {
-    #   enable = true;
-    #   settings = {
-    #     current_line_blame = true;
-    #     trouble = true;
-    #   };
-    # };
-  };
+  git = { };
   ui = {
     rainbow-delimiters.enable = true;
     todo-comments.enable = true;
     zen-mode = {
       enable = true;
       settings = {
-        on_close = ''
-          function()
-            require("gitsigns.actions").toggle_current_line_blame()
-            vim.cmd('IBLEnable')
-            vim.opt.relativenumber = true
-            vim.opt.signcolumn = "yes:2"
-            require("gitsigns.actions").refresh()
-          end
-        '';
-        on_open = ''
-          function()
-            require("gitsigns.actions").toggle_current_line_blame()
-            vim.cmd('IBLDisable')
-            vim.opt.relativenumber = false
-            vim.opt.signcolumn = "no"
-            require("gitsigns.actions").refresh()
-          end
-        '';
+        on_close = '''';
+        on_open = '''';
         plugins = {
-          # gitsigns = {
-          #   enabled = true;
-          # };
           options = {
             enabled = true;
             ruler = false;

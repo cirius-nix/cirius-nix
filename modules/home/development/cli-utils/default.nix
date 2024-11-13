@@ -31,9 +31,8 @@ in
         curl
         libglvnd
         # glxinfo
-        go-swagger
-        go-swag
         air
+        btop
       ];
     };
 
