@@ -50,6 +50,8 @@ in
         set fish_greeting # Disable greeting
         set -g GOBIN $HOME/go/bin
 
+        set -g EDITOR nvim
+
         function aws_profile
           set profile $argv[1]
           set -e argv[1]

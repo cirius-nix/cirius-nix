@@ -1,4 +1,36 @@
 let
+  companion_keymaps = [
+    {
+      mode = [
+        "n"
+        "v"
+      ];
+      key = "<leader>a";
+      action = "CodeCompanion";
+      options = {
+        silent = true;
+        desc = "+codecompanion";
+      };
+    }
+    {
+      key = "<leader>ac";
+      action = ":CodeCompanionToggle<CR>";
+      mode = "n";
+      options = {
+        silent = true;
+        desc = "Toggle CodeCompanion";
+      };
+    }
+    {
+      key = "<leader>af";
+      action = ":CodeCompanionActions<CR>";
+      mode = "n";
+      options = {
+        silent = true;
+        desc = "CodeCompanion Actions";
+      };
+    }
+  ];
   testing_keymaps = [
     {
       mode = "n";
@@ -289,4 +321,4 @@ in
       nowait = true;
     };
   }
-] ++ nvimtree-keymaps ++ wincmd-keymaps ++ telescope-keymaps ++ git_keymaps ++ testing_keymaps
+] ++ nvimtree-keymaps ++ wincmd-keymaps ++ telescope-keymaps ++ git_keymaps ++ testing_keymaps ++ companion_keymaps

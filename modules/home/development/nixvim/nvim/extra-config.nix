@@ -43,6 +43,45 @@ let
 in
 {
   extraConfigLua = ''
+    require("codecompanion").setup({
+      strategies = {
+        chat = {
+          adapter = "anthropic",
+        },
+        inline = {
+          adapter = "anthropic",
+        },
+        agent = {
+          adapter = "anthropic",
+        },
+      },
+    });
+
+    require('lspconfig.ui.windows').default_options = {
+      border = "rounded"
+    }
+
+    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+      vim.lsp.handlers.hover, {
+        border = "rounded"
+      }
+    )
+
+    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+      vim.lsp.handlers.signature_help, {
+        border = "rounded"
+      }
+    )
+
+    vim.diagnostic.config({
+      float = { border = "rounded" },
+      virtual_text = {
+        prefix = "",
+      },
+      signs = true,
+      underline = true,
+      update_in_insert = true,
+    })
   '';
   extraConfigLuaPre = extraFuncs;
   extraConfigLuaPost = ''

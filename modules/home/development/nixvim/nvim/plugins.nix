@@ -137,6 +137,8 @@ let
         enable = true;
         updateRoot = false;
       };
+      renderer.icons.gitPlacement = "after";
+      diagnostics.enable = true;
     };
   };
   lsp = {
@@ -157,6 +159,7 @@ let
         };
         extra = [
           { action = "<cmd>Lspsaga hover_doc<cr>"; key = "K"; }
+          { action = "<cmd>lua vim.lsp.buf.format({ async = true })<cr>"; key = "<leader>lF"; }
           { action = "<cmd>Lspsaga goto_type_definition<cr>"; key = "<leader>lD"; }
           { action = "<cmd>Lspsaga code_action<cr>"; key = "<leader>la"; }
           { action = "<cmd>Lspsaga goto_definition<cr>"; key = "<leader>ld"; }
@@ -249,16 +252,12 @@ let
         };
         window = {
           completion = {
-            winhighlight =
-              "FloatBorder:CmpBorder,Normal:CmpPmenu,CursorLine:CmpSel,Search:PmenuSel";
             scrollbar = false;
             sidePadding = 0;
-            border = [ "╭" "─" "╮" "│" "╯" "─" "╰" "│" ];
+            border = "rounded";
           };
           settings.documentation = {
-            border = [ "╭" "─" "╮" "│" "╯" "─" "╰" "│" ];
-            winhighlight =
-              "FloatBorder:CmpBorder,Normal:CmpPmenu,CursorLine:CmpSel,Search:PmenuSel";
+            border = "rounded";
           };
         };
         performance = {
@@ -283,23 +282,17 @@ let
         sources = [
           { name = "nvim_lsp"; }
           { name = "luasnip"; keywordLength = 3; }
+          { name = "codeium"; }
           { name = "buffer"; option.get_bufnrs.__raw = "vim.api.nvim_list_bufs"; }
           { name = "nvim_lsp_signature_help"; }
           { name = "path"; }
           { name = "buffer"; }
         ];
       };
-      filetype = {
-        lua = {
-          sources = [
-            { name = "nvim_lsp"; }
-            { name = "nvim_lua"; }
-          ];
-        };
-      };
     };
     lsp-format = {
       enable = true;
+      lspServersToEnable = "all";
     };
     none-ls = {
       enable = true;
