@@ -9,6 +9,7 @@ in
       userName = user.name;
       userEmail = user.email;
     };
+    helix.enable = true;
     delta.enable = true;
     lazygit.enable = true;
     db.enable = true;

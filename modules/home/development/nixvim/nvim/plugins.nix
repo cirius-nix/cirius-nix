@@ -1,4 +1,4 @@
-_:
+{ pkgs, ... }:
 let
   ai = {
     codeium-nvim = {
@@ -111,6 +111,13 @@ let
   workspace = {
     telescope = {
       enable = true;
+    };
+    spectre = {
+      enable = true;
+      replacePackage = pkgs.gnused;
+      settings = {
+        is_block_ui_break = true;
+      };
     };
   };
   editor = {
@@ -297,6 +304,20 @@ let
     none-ls = {
       enable = true;
       enableLspFormat = true;
+      onAttach = {
+        __raw = ''
+          function(client, bufnr)
+            local ok, lspformat = pcall(require, "lsp-format")
+            if ok then
+              require('lsp-format').on_attach(client, bufnr)
+            end
+
+            if client.server_capabilities.inlayHintProvider then
+                vim.lsp.inlay_hint(bufnr, true)
+            end
+          end
+        '';
+      };
       sources = {
         code_actions = {
           statix.enable = true;

@@ -1,4 +1,24 @@
 let
+  search_keymaps = [
+    {
+      mode = [ "n" ];
+      key = "<leader>s";
+      action = "<cmd>lua require('spectre').toggle()<cr>";
+      options = {
+        silent = true;
+        desc = "Search & Replace";
+      };
+    }
+    {
+      mode = [ "v" ];
+      key = "<leader>s";
+      action = "<cmd>lua require('spectre').open_visual()<cr>";
+      options = {
+        silent = true;
+        desc = "Search & Replace";
+      };
+    }
+  ];
   companion_keymaps = [
     {
       mode = [
@@ -321,4 +341,4 @@ in
       nowait = true;
     };
   }
-] ++ nvimtree-keymaps ++ wincmd-keymaps ++ telescope-keymaps ++ git_keymaps ++ testing_keymaps ++ companion_keymaps
+] ++ nvimtree-keymaps ++ wincmd-keymaps ++ telescope-keymaps ++ git_keymaps ++ testing_keymaps ++ companion_keymaps ++ search_keymaps
