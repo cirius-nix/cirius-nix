@@ -18,6 +18,7 @@ in
       dbeaver-bin
       mycli
       pgcli
+      nodePackages.sql-formatter
     ];
   };
 }

@@ -1,5 +1,6 @@
 {
   timeout = true;
+
   autowrite = true;
   clipboard = "unnamedplus";
   completeopt = "menu,menuone,noselect";

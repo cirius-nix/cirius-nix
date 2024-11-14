@@ -1,5 +1,10 @@
-{ pkgs, ... }:
+_:
 let
+  ai = {
+    codeium-nvim = {
+      enable = true;
+    };
+  };
   debugger = {
     dap = {
       enable = true;
@@ -31,7 +36,23 @@ let
       enable = true;
     };
   };
-  git = { };
+  git = {
+    lazygit = {
+      enable = true;
+    };
+    git-worktree = {
+      enable = true;
+      enableTelescope = true;
+    };
+    gitsigns = {
+      enable = true;
+      settings = {
+        current_line_blame = true;
+        current_line_blame_formatter = "   <author>, <committer_time:%R> • <summary>";
+        trouble = true;
+      };
+    };
+  };
   ui = {
     rainbow-delimiters.enable = true;
     todo-comments.enable = true;
@@ -81,9 +102,6 @@ let
       cmp = {
         enable = true;
       };
-      symbolMap = {
-        Copilot = " ";
-      };
       extraOptions = {
         maxwidth = 50;
         ellipsis_char = "...";
@@ -117,7 +135,7 @@ let
       respectBufCwd = true;
       updateFocusedFile = {
         enable = true;
-        updateRoot = true;
+        updateRoot = false;
       };
     };
   };
@@ -159,6 +177,9 @@ let
         tsserver.enable = true;
         tailwindcss.enable = true;
         eslint.enable = true;
+        sqls.enable = true;
+        prismals.enable = true;
+        html.enable = true;
         yamlls = {
           enable = true;
           extraOptions = {
@@ -197,15 +218,12 @@ let
       json = { enable = true; };
       yaml = { enable = true; };
     };
-    copilot-lua = {
-      suggestion = { enabled = false; };
-      panel = { enabled = false; };
-      copilotNodeCommand = "${pkgs.nodejs_22}/bin/node";
-    };
-    copilot-cmp.enable = true;
     luasnip.enable = true;
     cmp_luasnip.enable = true;
     cmp-dap.enable = true;
+    cmp-buffer.enable = true;
+    cmp-nvim-lsp.enable = true;
+    cmp-path = { enable = true; };
     cmp = {
       enable = true;
       autoEnableSources = true;
@@ -224,9 +242,24 @@ let
       };
       settings = {
         preselect = "cmp.PreselectMode.Item";
+        experimental = { ghost_test = true; };
         formatting = { fields = [ "kind" "abbr" "menu" ]; };
         experimental = {
           ghostText = true;
+        };
+        window = {
+          completion = {
+            winhighlight =
+              "FloatBorder:CmpBorder,Normal:CmpPmenu,CursorLine:CmpSel,Search:PmenuSel";
+            scrollbar = false;
+            sidePadding = 0;
+            border = [ "╭" "─" "╮" "│" "╯" "─" "╰" "│" ];
+          };
+          settings.documentation = {
+            border = [ "╭" "─" "╮" "│" "╯" "─" "╰" "│" ];
+            winhighlight =
+              "FloatBorder:CmpBorder,Normal:CmpPmenu,CursorLine:CmpSel,Search:PmenuSel";
+          };
         };
         performance = {
           debounce = 60;
@@ -250,7 +283,7 @@ let
         sources = [
           { name = "nvim_lsp"; }
           { name = "luasnip"; keywordLength = 3; }
-          { name = "copilot"; }
+          { name = "buffer"; option.get_bufnrs.__raw = "vim.api.nvim_list_bufs"; }
           { name = "nvim_lsp_signature_help"; }
           { name = "path"; }
           { name = "buffer"; }
@@ -265,10 +298,8 @@ let
         };
       };
     };
-
     lsp-format = {
       enable = true;
-      lspServersToEnable = "all";
     };
     none-ls = {
       enable = true;
@@ -280,8 +311,14 @@ let
           impl.enable = true;
         };
         completion = { };
+        diagnostics = {
+          statix.enable = true;
+        };
         formatting = {
+          sqlfluff.enable = true;
           goimports.enable = true;
+          shellharden.enable = true;
+          shfmt.enable = true;
           prettier = {
             enable = true;
             disableTsServerFormatter = true;
@@ -290,7 +327,7 @@ let
       };
     };
   };
-  plugins = ui // workspace // editor // lsp // git // testing // debugger;
+  plugins = ui // workspace // editor // lsp // git // testing // debugger // ai;
 in
 plugins
 

@@ -85,6 +85,24 @@ let
     }
     {
       action = "<cmd>Gitsigns stage_hunk<cr>";
+      key = "ga";
+      mode = "n";
+      options = {
+        silent = true;
+        nowait = true;
+      };
+    }
+    {
+      action = "<cmd>Gitsigns undo_stage_hunk<cr>";
+      key = "gA";
+      mode = "n";
+      options = {
+        silent = true;
+        nowait = true;
+      };
+    }
+    {
+      action = "<cmd>Gitsigns stage_hunk<cr>";
       key = "<leader>ga";
       mode = "n";
       options = {
@@ -108,6 +126,16 @@ let
       options = {
         silent = true;
         nowait = true;
+      };
+    }
+    {
+      action = "<cmd>LazyGit<cr>";
+      key = "<leader>gl";
+      mode = "n";
+      options = {
+        silent = true;
+        nowait = true;
+        desc = "LazyGit (Root Dir)";
       };
     }
   ];

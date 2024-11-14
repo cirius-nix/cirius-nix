@@ -46,5 +46,6 @@ in
   '';
   extraConfigLuaPre = extraFuncs;
   extraConfigLuaPost = ''
+    require("telescope").load_extension("lazygit")
   '';
 }
