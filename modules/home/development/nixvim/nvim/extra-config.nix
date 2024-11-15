@@ -44,6 +44,17 @@ in
 {
   extraConfigLua = ''
     require("codecompanion").setup({
+      adapters = {
+        authropic = function()
+          local authropic_api_key = os.getenv("AUTHROPIC_API_KEY")
+          print(authropic_api_key)
+          return require("codecompanion.adapters").extend("authropic", {
+            env = {
+              api_key = authropic_api_key,
+            }
+          })
+        end
+      },
       strategies = {
         chat = {
           adapter = "anthropic",
@@ -56,6 +67,22 @@ in
         },
       },
     });
+
+
+    require("img-clip").setup({
+      default = {
+        embed_image_as_base64 = false,
+        prompt_for_file_name = false,
+        drag_and_drop = {
+          insert_mode = true,
+        },
+        use_absolute_path = true,
+      },
+    })
+
+    require("render-markdown").setup({
+      file_types = { "markdown", "Avante" },
+    })
 
     require('lspconfig.ui.windows').default_options = {
       border = "rounded"

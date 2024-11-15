@@ -171,7 +171,8 @@ let
           { action = "<cmd>Lspsaga code_action<cr>"; key = "<leader>la"; }
           { action = "<cmd>Lspsaga goto_definition<cr>"; key = "<leader>ld"; }
           { action = "<cmd>Lspsaga finder<cr>"; key = "<leader>lf"; }
-          { action = "<cmd>Lspsaga outline<cr>"; key = "<leader>lo"; }
+          { action = "<cmd>Telescope lsp_document_symbols<cr>"; key = "<leader>lo"; }
+          { action = "<cmd>Telescope lsp_workspace_symbols<cr>"; key = "<leader>lO"; }
           { action = "<cmd>Lspsaga rename mode=n<cr>"; key = "<leader>lr"; }
           { action = "<cmd>TroubleToggle document_diagnostics<cr>"; key = "<leader>lx"; }
           { action = "<cmd>TroubleToggle workspace_diagnostics<cr>"; key = "<leader>lx"; }

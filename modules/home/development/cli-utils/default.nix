@@ -33,6 +33,8 @@ in
         # glxinfo
         air
         btop
+        gnused
+        thefuck
       ];
     };
 

@@ -47,10 +47,20 @@ in
       interactiveShellInit = ''
         ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
 
+        # disable greeting
         set fish_greeting # Disable greeting
-        set -g GOBIN $HOME/go/bin
 
+        ${pkgs.thefuck}/bin/thefuck --alias | source
+
+        # Editor
         set -g EDITOR nvim
+        set -g PSQL_EDITOR nvim
+
+        # PAGER tool
+        set -g PAGER ${pkgs.less}/bin/less -S
+
+        # Set golang binary directory
+        set -g GOBIN $HOME/go/bin
 
         function aws_profile
           set profile $argv[1]

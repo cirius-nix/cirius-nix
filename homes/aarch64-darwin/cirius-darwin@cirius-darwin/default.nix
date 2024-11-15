@@ -18,6 +18,7 @@ in
     starship.enable = true;
     api-client.enable = true;
     node.enable = true;
+    zed.enable = true;
     fish = {
       enable = true;
       customPaths = [ "~/Applications" ];
