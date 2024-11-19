@@ -179,17 +179,17 @@ let
         ];
       };
       servers = {
-        nil-ls.enable = true;
+        nil_ls.enable = true;
         nixd.enable = true;
         gopls.enable = true;
-        lua-ls.enable = true;
+        lua_ls.enable = true;
         jsonls.enable = true;
         terraformls.enable = true;
         tsserver.enable = true;
         tailwindcss.enable = true;
         eslint.enable = true;
         sqls.enable = true;
-        prismals.enable = true;
+        # prismals.enable = true;
         html.enable = true;
         yamlls = {
           enable = true;
