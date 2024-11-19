@@ -32,7 +32,7 @@ in
     aws = {
       enable = true;
     };
-    # nixvim.enable = true;
+    nixvim.enable = true;
     vscode.enable = true;
     postman.enable = true;
   };

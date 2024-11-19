@@ -27,6 +27,7 @@
     virtualisation.enable = true;
     clipboard.enable = true;
     input-method.enable = true;
+    bluetooth.enable = true;
   };
 
   boot.loader = {
