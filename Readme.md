@@ -9,14 +9,14 @@ Packages are always in stable status. No cheating, no workaround to provide the 
 
 ## Roadmap
 
-<b>IMPORTANT!!!</b> Line with Beta Feature will be removed when closing the
-beta version and merging to stable branch.
+<b>IMPORTANT!!! Line with `(Beta Feature)` will be removed when closing the
+beta version and merging to stable branch. New feature will be developed in beta branch from 2024-11-19 10:00AM VNT</b>
 
 My configuration is still in development state. Here is the roadmap of my progress:
 
-- [x] Support multiple architectures. With [Snowfall](https://snowfall.org) powered, It's done.
+- [x] Support multiple architectures. With [Snowfall](https://snowfall.org) powered, it's done.
 - [x] Config NixVim to make it as default code editor:
-    - [x] Temporally config Nixvim with latest packages while waiting for NixVim 24.11 release. (Beta Feature)
+    - [x] Temporally config Nixvim with latest packages while waiting for NixVim 24.11 release. `(Beta Feature)`
     - [] Config debuggers
     - [] Config testing adapters
     - [x] Intergrate with LSPs
@@ -28,7 +28,7 @@ My configuration is still in development state. Here is the roadmap of my progre
 ## Intro
 
 My nix configuration offers:<br>
-- Supported MacOS / NixOS. For MacOS, seamlessly integrated and managed Nix through [Nix-Darwin](https://github.com/LnL7/nix-darwin).
+- Supported MacOS / NixOS. For MacOS, seamlessly integrated and managed Nix by [Nix-Darwin](https://github.com/LnL7/nix-darwin).
 - Configured Nixvim with required plugins for development.
 - Secrets will be managed by [SOPS](https://github.com/Mic92/sops-nix) by default.
 - Supported Templates & Devshells to manage needed packages + package's versions for earch projects.
