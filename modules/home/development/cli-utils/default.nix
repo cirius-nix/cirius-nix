@@ -30,12 +30,10 @@ in
         wget
         curl
         libglvnd
-        # glxinfo
         air
         btop
         gnused
         thefuck
-        rPackages.precommit
       ];
     };
 
