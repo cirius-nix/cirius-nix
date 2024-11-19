@@ -1,6 +1,6 @@
 <div align="center">
 
-# Cirius Nix
+# Cirius Nix (24.11 Beta)
 
 Cirius Nix is my personal dotfiles. Managed by Nix + Snowfall lib ❄️<br>
 Packages are always in stable status. No cheating, no workaround to provide the best user experiment.
@@ -9,10 +9,14 @@ Packages are always in stable status. No cheating, no workaround to provide the 
 
 ## Roadmap
 
+<b>IMPORTANT!!!</b> Line with Beta Feature will be removed when closing the
+beta version and merging to stable branch.
+
 My configuration is still in development state. Here is the roadmap of my progress:
 
 - [x] Support multiple architectures. With [Snowfall](https://snowfall.org) powered, It's done.
 - [x] Config NixVim to make it as default code editor:
+    - [x] Temporally config Nixvim with latest packages while waiting for NixVim 24.11 release. (Beta Feature)
     - [] Config debuggers
     - [] Config testing adapters
     - [x] Intergrate with LSPs
