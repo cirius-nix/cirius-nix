@@ -22,8 +22,8 @@ progress:
 - [x] Config NixVim to make it as default code editor:
   - [x] Temporally config Nixvim with latest packages while waiting for NixVim
         24.11 release. `(Beta Feature)`
-  - [] Config debuggers
-  - [] Config testing adapters
+  - [ ] Config debuggers
+  - [ ] Config testing adapters
   - [x] Intergrate with LSPs
   - [x] Added some tinker plugins
 - [ ] Implement SOPS nix to manage secrets.
@@ -31,7 +31,7 @@ progress:
       machine.
 - [ ] Update structure & usage for this project.
 
-## Tasks of this branches
+## Tasks of current branch
 
 - [x] System: Upgrade version from 24.05 to 24.11
 - [x] NixVim: Remove `none-ls` by another plugins to handle `code-action`,
@@ -42,6 +42,7 @@ progress:
   - [ ] Use .... as `hover` provider.
 - [ ] NixVim: Build testing, debugging adapters.
 - [ ] NixVim: Update layout to adapt with `Snowfall` structure.
+- [ ] NixVim: Migrate keybinding declarations to new `which-key` behavior.
 
 ## Intro
 
