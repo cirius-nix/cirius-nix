@@ -2,8 +2,10 @@
 
 # Cirius Nix
 
-Cirius Nix is my personal dotfiles. Managed by Nix + Snowfall lib ❄️<br>
-Packages are always in stable status. No cheating, no workaround to provide the best user experiment.
+Cirius Nix is my personal dotfiles. Managed by Nix + Snowfall lib ❄️. Packages
+are always in stable status. No cheating, no workaround to provide the best user
+experiment.<br> Because of new version of Nix (24.11). My tasks is moved to this
+[branch](https://github.com/cirius-nix/cirius-nix/tree/feat/24.11).
 
 </div>
 
