@@ -1,7 +1,8 @@
-{ config
-, pkgs
-, lib
-, ...
+{
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 
 let
@@ -20,7 +21,6 @@ in
       pgcli
       nodePackages.sql-formatter
       less
-      replibyte
     ];
     home.file.".config/pgcli/config" = {
       text = ''

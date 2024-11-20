@@ -1,15 +1,16 @@
-{ config
-, lib
-, pkgs
-, ...
-}:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}@inputs:
 
 let
   inherit (lib) mkEnableOption mkIf;
 
   cfg = config.cirius.development.nixvim;
 
-  extraCfgLua = import ./nvim/extra-config.nix;
+  extraCfgLua = import ./extra-config.nix;
 in
 {
   options.cirius.development.nixvim = {
@@ -17,16 +18,16 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs;[ nodejs_22 ];
+    home.packages = with pkgs; [ nodejs_22 ];
     programs.nixvim = {
       inherit (cfg) enable;
       colorschemes.vscode.enable = true;
       editorconfig = {
         enable = true;
       };
-      plugins = import ./nvim/plugins.nix pkgs;
-      opts = import ./nvim/options.nix;
-      keymaps = import ./nvim/keymaps.nix;
+      plugins = import ./plugins.nix inputs;
+      opts = import ./options.nix;
+      keymaps = import ./keymaps.nix;
       clipboard.register = "unnamedplus";
       globals = {
         mapleader = " ";
