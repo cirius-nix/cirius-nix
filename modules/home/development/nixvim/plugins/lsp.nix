@@ -2,6 +2,28 @@
 {
   nix.enable = true;
   nix-develop.enable = true;
+  typescript-tools = {
+    enable = true;
+    settings = {
+      settings = {
+        separate_diagnostic_server = true;
+        publish_diagnostic_on = "insert_leave";
+        tsserver_max_memory = "auto";
+        tsserver_locale = "en";
+        complete_function_calls = false;
+        include_completions_with_insert_text = true;
+        code_lens = "off";
+        disable_member_code_lens = true;
+        jsx_close_tag = {
+          enable = false;
+          filetypes = [
+            "javascriptreact"
+            "typescriptreact"
+          ];
+        };
+      };
+    };
+  };
   lsp = {
     enable = true;
     keymaps = {
@@ -72,7 +94,7 @@
       tsserver.enable = true;
       tailwindcss.enable = true;
       eslint.enable = true;
-      sqls.enable = true;
+      # sqls.enable = true;
       # prismals.enable = true;
       html.enable = true;
       yamlls = {
@@ -365,37 +387,17 @@
       };
     };
   };
-  none-ls = {
-    enable = true;
-    onAttach = {
-      __raw = ''
-        function(client, bufnr)
-          if client.server_capabilities.inlayHintProvider then
-              vim.lsp.inlay_hint(bufnr, true)
-          end
-        end
-      '';
-    };
-    sources = {
-      code_actions = {
-        statix.enable = true;
-        gomodifytags.enable = true;
-        impl.enable = true;
-      };
-      completion = { };
-      diagnostics = {
-        statix.enable = true;
-      };
-      formatting = {
-        sqlfluff.enable = true;
-        goimports.enable = true;
-        shellharden.enable = true;
-        shfmt.enable = true;
-        prettier = {
-          enable = true;
-          disableTsServerFormatter = true;
-        };
-      };
-    };
-  };
+  # none-ls = {
+  #   enable = true;
+  #   sources = {
+  #     code_actions = {
+  #       statix.enable = true;
+  #       gomodifytags.enable = true;
+  #       impl.enable = true;
+  #     };
+  #     diagnostics = {
+  #       statix.enable = true;
+  #     };
+  #   };
+  # };
 }

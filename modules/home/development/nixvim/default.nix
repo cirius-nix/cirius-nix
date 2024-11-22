@@ -29,6 +29,14 @@ in
       opts = import ./options.nix;
       keymaps = import ./keymaps.nix;
       clipboard.register = "unnamedplus";
+      performance = {
+        byteCompileLua = {
+          enable = true;
+          nvimRuntime = true;
+          configs = true;
+          plugins = true;
+        };
+      };
       globals = {
         mapleader = " ";
         maplocalleader = "\\";

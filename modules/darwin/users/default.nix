@@ -1,7 +1,8 @@
-{ config
-, pkgs
-, lib
-, ...
+{
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 
 let
@@ -46,15 +47,13 @@ in
     };
 
     users.users = listToAttrs (
-      map
-        (user: {
-          name = user.username;
-          value = {
-            description = user.name;
-            shell = pkgs.${user.shell};
-          };
-        })
-        cfg.users
+      map (user: {
+        name = user.username;
+        value = {
+          description = user.name;
+          shell = pkgs.${user.shell};
+        };
+      }) cfg.users
     );
   };
 }

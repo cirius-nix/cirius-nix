@@ -1,7 +1,8 @@
-{ inputs
-, lib
-, pkgs
-, ...
+{
+  inputs,
+  lib,
+  pkgs,
+  ...
 }:
 let
   inherit (inputs) pre-commit-hooks;
@@ -35,7 +36,6 @@ pre-commit-hooks.lib.${pkgs.system}.run {
         enable = true;
         package = pkgs.eslint_d;
       };
-
 
       luacheck.enable = true;
 

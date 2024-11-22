@@ -6,7 +6,7 @@ let
       action = "<cmd>lua require('spectre').toggle()<cr>";
       options = {
         silent = true;
-        desc = "Search & Replace";
+        desc = "Search To Replace";
       };
     }
     {
@@ -15,7 +15,7 @@ let
       action = "<cmd>lua require('spectre').open_visual()<cr>";
       options = {
         silent = true;
-        desc = "Search & Replace";
+        desc = "Search To Replace";
       };
     }
   ];
@@ -29,7 +29,7 @@ let
       action = "CodeCompanion";
       options = {
         silent = true;
-        desc = "+codecompanion";
+        desc = "AI";
       };
     }
     {
@@ -38,7 +38,7 @@ let
       mode = "n";
       options = {
         silent = true;
-        desc = "Toggle CodeCompanion";
+        desc = "Toggle Prompt";
       };
     }
     {
@@ -47,7 +47,7 @@ let
       mode = "n";
       options = {
         silent = true;
-        desc = "CodeCompanion Actions";
+        desc = "Open Actions";
       };
     }
   ];
@@ -59,6 +59,7 @@ let
       options = {
         silent = true;
         nowait = true;
+        desc = "Test File";
       };
     }
     {
@@ -68,6 +69,7 @@ let
       options = {
         silent = true;
         nowait = true;
+        desc = "Test Last";
       };
     }
     {
@@ -77,6 +79,7 @@ let
       options = {
         silent = true;
         nowait = true;
+        desc = "Show Coverage Highlight";
       };
     }
     {
@@ -86,6 +89,7 @@ let
       options = {
         silent = true;
         nowait = true;
+        desc = "Show Coverage Summary";
       };
     }
     {
@@ -95,6 +99,7 @@ let
       options = {
         silent = true;
         nowait = true;
+        desc = "Toggle Test Summary";
       };
     }
     {
@@ -104,6 +109,7 @@ let
       options = {
         silent = true;
         nowait = true;
+        desc = "Show Test Panel";
       };
     }
   ];
@@ -142,6 +148,7 @@ let
       options = {
         silent = true;
         nowait = true;
+        desc = "Stage Hunk";
       };
     }
     {
@@ -151,6 +158,7 @@ let
       options = {
         silent = true;
         nowait = true;
+        desc = "Undo Stage Hunk";
       };
     }
     {
@@ -160,6 +168,7 @@ let
       options = {
         silent = true;
         nowait = true;
+        desc = "Stage Hunk";
       };
     }
     {
@@ -169,6 +178,7 @@ let
       options = {
         silent = true;
         nowait = true;
+        desc = "Undo Stage Hunk";
       };
     }
     {
@@ -178,6 +188,7 @@ let
       options = {
         silent = true;
         nowait = true;
+        desc = "Open Quick Fix";
       };
     }
     {
@@ -199,6 +210,7 @@ let
       options = {
         silent = true;
         nowait = true;
+        desc = "File Explorer";
       };
     }
   ];
@@ -209,6 +221,7 @@ let
       mode = "n";
       options = {
         silent = true;
+        desc = "Move To Left";
       };
     }
     {
@@ -217,6 +230,7 @@ let
       mode = "n";
       options = {
         silent = true;
+        desc = "Move To Down";
       };
     }
     {
@@ -225,6 +239,7 @@ let
       mode = "n";
       options = {
         silent = true;
+        desc = "Move to Up";
       };
     }
     {
@@ -233,6 +248,7 @@ let
       mode = "n";
       options = {
         silent = true;
+        desc = "Move To Right";
       };
     }
   ];
@@ -243,6 +259,7 @@ let
       mode = "n";
       options = {
         silent = true;
+        desc = "Find Files";
       };
     }
     {
@@ -251,6 +268,7 @@ let
       mode = "n";
       options = {
         silent = true;
+        desc = "Grep String";
       };
     }
     {
@@ -259,6 +277,7 @@ let
       mode = "v";
       options = {
         silent = true;
+        desc = "Search Selected Text";
       };
     }
     {
@@ -267,6 +286,7 @@ let
       mode = "v";
       options = {
         silent = true;
+        desc = "Wtf";
       };
     }
     {
@@ -275,6 +295,7 @@ let
       mode = "n";
       options = {
         silent = true;
+        desc = "Show Opened Buffers";
       };
     }
     {
@@ -283,6 +304,7 @@ let
       mode = "n";
       options = {
         silent = true;
+        desc = "Search History";
       };
     }
     {
@@ -291,6 +313,7 @@ let
       mode = "n";
       options = {
         silent = true;
+        desc = "Todolist";
       };
     }
   ];
@@ -311,7 +334,7 @@ in
     action = "<cmd>UndotreeToggle<CR>";
     options = {
       silent = true;
-      desc = "Undotree";
+      desc = "Open Undo Tree";
     };
   }
   {
@@ -321,6 +344,7 @@ in
     options = {
       silent = true;
       nowait = true;
+      desc = "Escape";
     };
   }
   {
@@ -330,6 +354,7 @@ in
     options = {
       silent = true;
       nowait = true;
+      desc = "Escape";
     };
   }
   {
@@ -339,6 +364,14 @@ in
     options = {
       silent = true;
       nowait = true;
+      desc = "Focus Mode";
     };
   }
-] ++ nvimtree-keymaps ++ wincmd-keymaps ++ telescope-keymaps ++ git_keymaps ++ testing_keymaps ++ companion_keymaps ++ search_keymaps
+]
+++ nvimtree-keymaps
+++ wincmd-keymaps
+++ telescope-keymaps
+++ git_keymaps
+++ testing_keymaps
+++ companion_keymaps
+++ search_keymaps

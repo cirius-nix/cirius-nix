@@ -1,4 +1,5 @@
-{ mkShell, pkgs, ... }: mkShell {
+{ mkShell, pkgs, ... }:
+mkShell {
   packages = with pkgs; [
     nodePackages."@angular/cli"
     nodejs_22

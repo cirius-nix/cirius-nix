@@ -1,7 +1,8 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 
 let
@@ -39,7 +40,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs;[ any-nix-shell ];
+    home.packages = with pkgs; [ any-nix-shell ];
 
     programs.fish = {
       inherit (cfg) enable;

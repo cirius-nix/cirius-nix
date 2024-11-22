@@ -1,4 +1,4 @@
-{lib,...}: {
+{
   cirius = {
     # define the user
     users = {

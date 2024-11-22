@@ -1,4 +1,9 @@
-{ lib, osConfig, pkgs, ... }:
+{
+  lib,
+  osConfig,
+  pkgs,
+  ...
+}:
 let
   user = lib.cirius.findOrNull osConfig.cirius.users.users "username" "cirius";
 in

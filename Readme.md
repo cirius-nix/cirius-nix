@@ -43,6 +43,7 @@ progress:
 - [ ] NixVim: Build testing, debugging adapters.
 - [ ] NixVim: Update layout to adapt with `Snowfall` structure.
 - [ ] NixVim: Migrate keybinding declarations to new `which-key` behavior.
+- [ ] NixVim: Use `Avante` as AI helper.
 
 ## Intro
 
