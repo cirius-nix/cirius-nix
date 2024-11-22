@@ -22,7 +22,6 @@ in
       nixfmt-rfc-style
       nixpkgs-fmt
       nixd
-      appimage-run
     ];
     nix = {
       # package = pkgs.nixVersions.latest;
