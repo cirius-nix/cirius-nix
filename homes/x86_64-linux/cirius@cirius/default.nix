@@ -49,6 +49,7 @@ in
       inherit (user) name;
       inherit (user) email;
     };
+    office.enable = true;
     browsers.enable = true;
     secrets.enable = true;
     fonts.enable = true;
