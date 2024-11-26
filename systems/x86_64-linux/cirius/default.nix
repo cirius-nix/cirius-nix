@@ -29,9 +29,8 @@
     input-method.enable = true;
     bluetooth.enable = true;
     appimage.enable = true;
-    gpu = {
-      nvidia.enable = true;
-    };
+    nvidia.enable = true;
+    zen.enable = true;
   };
 
   boot.loader = {

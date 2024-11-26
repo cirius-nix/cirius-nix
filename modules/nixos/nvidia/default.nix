@@ -6,8 +6,7 @@
 }:
 
 let
-  inherit (lib) mkDefault mkEnableOption mkIf;
-  inherit (pkgs.nvidia) nvidiaPackage;
+  inherit (lib) mkEnableOption mkIf;
 
   cfg = config.cirius.nvidia;
 in
@@ -42,7 +41,6 @@ in
       };
 
       nvidia = {
-        package = mkDefault nvidiaPackage;
         modesetting.enable = true;
 
         powerManagement = {
