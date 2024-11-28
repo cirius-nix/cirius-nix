@@ -91,7 +91,7 @@
       lua_ls.enable = true;
       jsonls.enable = true;
       terraformls.enable = true;
-      tsserver.enable = true;
+      ts_ls.enable = true;
       tailwindcss.enable = true;
       eslint.enable = true;
       # sqls.enable = true;

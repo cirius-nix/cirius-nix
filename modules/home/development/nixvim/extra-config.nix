@@ -115,6 +115,15 @@ in
 
     require("render-markdown").setup({
       file_types = { "markdown", "Avante" },
+      render_modes = true,
+      heading = { 
+        position = 'inline',
+        width = 'block',
+        left_margin = 0.5,
+        left_pad = 0.2,
+        right_pad = 0.2,
+        border = true,
+      },
     })
 
     require('lspconfig.ui.windows').default_options = {
