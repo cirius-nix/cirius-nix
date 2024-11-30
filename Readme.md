@@ -19,6 +19,9 @@ progress:
 
 - [x] Support multiple architectures. With [Snowfall](https://snowfall.org)
       powered, it's done.
+  - [ ] Config KDE + Hyprland for linux users.
+    - [x] KDE
+    - [ ] Hyprland
 - [x] Config NixVim to make it as default code editor:
   - [x] Temporally config Nixvim with latest packages while waiting for NixVim
         24.11 release. `(Beta Feature)`
