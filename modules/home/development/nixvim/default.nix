@@ -21,7 +21,7 @@ in
     home.packages = with pkgs; [ nodejs_22 ];
     programs.nixvim = {
       inherit (cfg) enable;
-      colorschemes.vscode.enable = true;
+      colorschemes.ayu.enable = true;
       editorconfig = {
         enable = true;
       };
@@ -83,6 +83,26 @@ in
             repo = "render-markdown.nvim";
             rev = "82184c4a3c3580a7a859b2cb7e58f16c10fd29ef";
             hash = "sha256-8xt2bjdNqMU3Um1mFDpUPEzQtUzwgBYv6nRw2tkKL8k=";
+          };
+        })
+        (pkgs.vimUtils.buildVimPlugin {
+          pname = "go.nvim";
+          version = "latest";
+          src = pkgs.fetchFromGitHub {
+            owner = "ray-x";
+            repo = "go.nvim";
+            rev = "6368756601a358b1491ac2ff10d0e2939a76df5e";
+            hash = "sha256-dBpkzEGLjpwN5JZoV9QQbSQEkUszueopDvlwi7l3OXE=";
+          };
+        })
+        (pkgs.vimUtils.buildVimPlugin {
+          pname = "guihua.lua";
+          version = "latest";
+          src = pkgs.fetchFromGitHub {
+            owner = "ray-x";
+            repo = "guihua.lua";
+            rev = "d783191eaa75215beae0c80319fcce5e6b3beeda";
+            hash = "sha256-XpUsbj1boDfbyE8C6SdOvZdkd97682VVC81fvQ5WA/4";
           };
         })
       ];

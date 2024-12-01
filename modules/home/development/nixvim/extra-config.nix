@@ -76,6 +76,12 @@ let
 in
 {
   extraConfigLua = ''
+    require("go").setup({
+      lsp_inlay_hints = {
+        enable = true,
+        style = 'inlay', -- eof
+      };
+    })
     require("codecompanion").setup({
       adapters = {
         authropic = function()
