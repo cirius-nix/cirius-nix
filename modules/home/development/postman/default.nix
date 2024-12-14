@@ -1,7 +1,8 @@
-{ config
-, pkgs
-, lib
-, ...
+{
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 
 let
@@ -14,5 +15,10 @@ in
     enable = mkEnableOption "postman";
   };
 
-  config = mkIf cfg.enable { home.packages = with pkgs;[ postman newman ]; };
+  config = mkIf cfg.enable {
+    home.packages = with pkgs; [
+      postman
+      newman
+    ];
+  };
 }

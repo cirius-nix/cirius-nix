@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   imports = [ ./hardware-configuration.nix ];
 
@@ -33,13 +34,30 @@
     zen.enable = true;
   };
 
+  services = {
+    displayManager.sddm.enable = true;
+    desktopManager.plasma6.enable = true;
+    xserver = {
+      enable = true;
+      xkb = {
+        layout = "us";
+        variant = "";
+      };
+    };
+
+    printing.enable = false;
+  };
+
+  environment.systemPackages = with pkgs; [
+    kdePackages.qtstyleplugin-kvantum
+    kdePackages.libksysguard
+    kdePackages.ksystemlog
+    wayland-utils
+  ];
+
   boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
-  };
-
-  services = {
-    printing.enable = false;
   };
 
   nixpkgs.config.allowUnfree = true;

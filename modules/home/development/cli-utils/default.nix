@@ -36,6 +36,7 @@ in
         gnused
         thefuck
         sshpass
+        bat
       ];
     };
 
