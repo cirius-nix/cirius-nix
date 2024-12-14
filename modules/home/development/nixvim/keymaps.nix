@@ -1,4 +1,112 @@
 let
+  custom_keymaps = [
+    {
+      mode = [ "n" ];
+      key = "<leader>q";
+      action = ''
+        function()
+          -- check if current file type is DAP filetypes or not
+          local dap_filetypes = { "dap-repl" }
+        end
+      '';
+      options = {
+        silent = true;
+        desc = "Continue";
+      };
+    }
+  ];
+  debugging_keymaps = [
+    {
+      mode = [ "n" ];
+      key = "<leader>dD";
+      action = "<cmd>DapContinue<cr>";
+      options = {
+        silent = true;
+        desc = "Continue";
+      };
+    }
+    {
+      mode = [ "n" ];
+      key = "<leader>do";
+      action = "<cmd>DapStepOver<cr>";
+      options = {
+        silent = true;
+        desc = "Step Over";
+      };
+    }
+    {
+      mode = [ "n" ];
+      key = "<leader>dr";
+      action = "<cmd>DapRerun<cr>";
+      options = {
+        silent = true;
+        desc = "Rerun";
+      };
+    }
+    {
+      mode = [ "n" ];
+      key = "<leader>dn";
+      action = "<cmd>DapStepInto<cr>";
+      options = {
+        silent = true;
+        desc = "Step Step Into";
+      };
+    }
+    {
+      mode = [ "n" ];
+      key = "<leader>dN";
+      action = "<cmd>DapStepOut<cr>";
+      options = {
+        silent = true;
+        desc = "Step Step Out";
+      };
+    }
+    {
+      mode = [ "n" ];
+      key = "<leader>db";
+      action = "<cmd>DapToggleBreakpoint<cr>";
+      options = {
+        silent = true;
+        desc = "Toggle Breakpoint";
+      };
+    }
+    {
+      mode = [ "n" ];
+      key = "<leader>dB";
+      action = "<cmd>lua require'dap'.clear_breakpoints()<cr>";
+      options = {
+        silent = true;
+        desc = "Clear Breakpoints";
+      };
+    }
+    {
+      mode = [ "n" ];
+      key = "<leader>bb";
+      action = "<cmd>DapToggleBreakpoint<cr>";
+      options = {
+        silent = true;
+        desc = "DAP Toggle Breakpoint";
+      };
+    }
+    {
+      mode = [ "n" ];
+      key = "<F4>";
+      action = "<cmd>DapToggleBreakpoint<cr>";
+      options = {
+        silent = true;
+        desc = "Toggle Breakpoint";
+      };
+    }
+    {
+      mode = [ "n" ];
+      key = "<leader>fd";
+      action = "<cmd>DapUiToggle<cr>";
+      options = {
+        silent = true;
+        desc = "DAP UI";
+      };
+    }
+  ];
   search_keymaps = [
     {
       mode = [ "n" ];
@@ -263,6 +371,15 @@ let
       };
     }
     {
+      action = "<cmd>Telescope file_browser<cr>";
+      key = "<leader>fF";
+      mode = "n";
+      options = {
+        silent = true;
+        desc = "Find Files";
+      };
+    }
+    {
       action = "<cmd>Telescope live_grep<cr>";
       key = "<leader>fs";
       mode = "n";
@@ -375,3 +492,5 @@ in
 ++ testing_keymaps
 ++ companion_keymaps
 ++ search_keymaps
+++ debugging_keymaps
+++ custom_keymaps

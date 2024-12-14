@@ -20,6 +20,7 @@ in
     db.enable = true;
     cli-utils.enable = true;
     go.enable = true;
+    java.enable = true;
     starship.enable = true;
     api-client.enable = true;
     node.enable = true;

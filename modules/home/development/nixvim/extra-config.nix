@@ -19,6 +19,8 @@ let
     end, {
       desc = "Re-enable autoformat-on-save",
     })
+
+    -- Toggle auto format buffer on save.
     vim.api.nvim_create_user_command("FormatToggle", function(args)
       if args.bang then
         -- Toggle formatting for current buffer
@@ -31,6 +33,22 @@ let
       desc = "Toggle autoformat-on-save",
       bang = true,
     })
+
+    -- Turn off paste mode when leaving insert
+    vim.api.nvim_create_autocmd("InsertLeave", {
+      pattern = "*",
+      command = "set nopaste",
+    })
+
+    -- Fix conceallevel for json files
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = {"json", "jsonc"},
+      callback = function()
+        vim.wo.spell = false
+        vim.wo.conceallevel = 0
+      end,
+    })
+
   '';
   extraFuncs = ''
     _G.FUNCS = {
@@ -161,5 +179,16 @@ in
   extraConfigLuaPre = extraFuncs + autoCommands;
   extraConfigLuaPost = ''
     require("telescope").load_extension("lazygit")
+
+    local dap, dapui =require("dap"),require("dapui")
+    dap.listeners.after.event_initialized["dapui_config"]=function()
+      dapui.open()
+    end
+    dap.listeners.before.event_terminated["dapui_config"]=function()
+      dapui.close()
+    end
+    dap.listeners.before.event_exited["dapui_config"]=function()
+      dapui.close()
+    end
   '';
 }
