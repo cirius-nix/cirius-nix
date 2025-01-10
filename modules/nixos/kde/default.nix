@@ -16,9 +16,10 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages =
-      with pkgs;
-      [
-      ];
+    environment.systemPackages = with pkgs; [
+      latte-dock
+      kdePackages.kconfig
+      kdePackages.filelight
+    ];
   };
 }

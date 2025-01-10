@@ -14,6 +14,7 @@ in
       userName = user.name;
       userEmail = user.email;
     };
+    kdev.enable = true;
     delta.enable = true;
     lazygit.enable = true;
     db.enable = true;
@@ -53,5 +54,6 @@ in
     browsers.enable = true;
     secrets.enable = true;
     fonts.enable = true;
+
   };
 }
