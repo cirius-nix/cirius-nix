@@ -32,6 +32,7 @@
     appimage.enable = true;
     nvidia.enable = true;
     zen.enable = true;
+    term.enable = true;
   };
 
   services = {

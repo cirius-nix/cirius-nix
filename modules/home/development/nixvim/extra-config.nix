@@ -94,61 +94,21 @@ let
 in
 {
   extraConfigLua = ''
-    require("go").setup({
-      lsp_inlay_hints = {
-        enable = true,
-        style = 'inlay', -- eof
-      };
-    })
-    require("codecompanion").setup({
-      adapters = {
-        authropic = function()
-          local authropic_api_key = os.getenv("AUTHROPIC_API_KEY")
-          print(authropic_api_key)
-          return require("codecompanion.adapters").extend("authropic", {
-            env = {
-              api_key = authropic_api_key,
-            }
-          })
-        end
-      },
-      strategies = {
-        chat = {
-          adapter = "anthropic",
+    local ok, renderMD = pcall(require, "render-markdown")
+    if ok then
+      require("render-markdown").setup({
+        file_types = { "markdown", "Avante" },
+        render_modes = true,
+        heading = { 
+          position = 'inline',
+          width = 'block',
+          left_margin = 0.5,
+          left_pad = 0.2,
+          right_pad = 0.2,
+          border = true,
         },
-        inline = {
-          adapter = "anthropic",
-        },
-        agent = {
-          adapter = "anthropic",
-        },
-      },
-    });
-
-
-    require("img-clip").setup({
-      default = {
-        embed_image_as_base64 = false,
-        prompt_for_file_name = false,
-        drag_and_drop = {
-          insert_mode = true,
-        },
-        use_absolute_path = true,
-      },
-    })
-
-    require("render-markdown").setup({
-      file_types = { "markdown", "Avante" },
-      render_modes = true,
-      heading = { 
-        position = 'inline',
-        width = 'block',
-        left_margin = 0.5,
-        left_pad = 0.2,
-        right_pad = 0.2,
-        border = true,
-      },
-    })
+      })
+    end
 
     require('lspconfig.ui.windows').default_options = {
       border = "rounded"

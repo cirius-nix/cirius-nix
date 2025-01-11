@@ -1,4 +1,8 @@
 {
+  render-markdown = {
+    enable = true;
+    settings = { };
+  };
   undotree = {
     enable = true;
     settings = {
