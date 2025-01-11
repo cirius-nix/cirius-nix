@@ -3,31 +3,24 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
     pre-commit-hooks.url = "github:cachix/git-hooks.nix";
-
     nur.url = "github:nix-community/NUR";
-
     darwin = {
       url = "github:lnl7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     snowfall-lib = {
       url = "github:snowfallorg/lib";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     hyprland = {
       url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
       inputs = {
@@ -62,13 +55,11 @@
       lib = inputs.snowfall-lib.mkLib {
         inherit inputs;
         src = ./.;
-
         snowfall = {
           meta = {
             name = "cirius-nix";
             title = "Cirius Nix Dotfiles";
           };
-
           namespace = "cirius";
         };
       };
@@ -77,15 +68,11 @@
       channels-config = {
         allowUnfree = true;
       };
-
       overlays = [ inputs.nur.overlays.default ];
-
       homes.modules = with inputs; [
         nixvim.homeManagerModules.nixvim
       ];
-
-      systems.modules.nixos = [
-      ];
+      systems.modules.nixos = [ ];
       systems.modules.darwin = [ ];
     };
 }

@@ -13,7 +13,15 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.programs.wezterm = {
+    programs.kitty = {
+      enable = true;
+      shellIntegration.enableFishIntegration = true;
+      themeFile = "Atom";
+      settings = {
+        font_family = "Cascadia Mono NF";
+      };
+    };
+    programs.wezterm = {
       enable = true;
       extraConfig = builtins.readFile ./assets/wezterm/wezterm.lua;
     };
