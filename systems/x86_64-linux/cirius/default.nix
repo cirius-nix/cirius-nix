@@ -45,6 +45,7 @@
         variant = "";
       };
     };
+    flatpak.enable = true;
 
     printing.enable = false;
   };

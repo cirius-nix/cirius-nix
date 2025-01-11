@@ -41,6 +41,7 @@ in
     nixvim.enable = true;
     vscode.enable = true;
     postman.enable = true;
+    term.enable = true;
   };
 
   cirius.packages = {
@@ -54,6 +55,5 @@ in
     browsers.enable = true;
     secrets.enable = true;
     fonts.enable = true;
-
   };
 }
