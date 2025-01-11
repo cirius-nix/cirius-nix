@@ -1,4 +1,8 @@
 {
+  transparent = {
+    enable = true;
+    settings = { };
+  };
   web-devicons.enable = true;
   rainbow-delimiters.enable = true;
   todo-comments.enable = true;

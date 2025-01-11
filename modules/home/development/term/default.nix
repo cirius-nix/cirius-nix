@@ -16,9 +16,14 @@ in
     programs.kitty = {
       enable = true;
       shellIntegration.enableFishIntegration = true;
-      themeFile = "Atom";
+      themeFile = "Molokai";
       settings = {
         font_family = "Cascadia Mono NF";
+        tab_bar_edge = "top";
+        tab_bar_style = "slant";
+        tab_bar_align = "center";
+        background_opacity = 0.9;
+        background_blur = 20;
       };
     };
     programs.wezterm = {
