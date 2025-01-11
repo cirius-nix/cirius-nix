@@ -1,8 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 
 let
@@ -17,7 +16,8 @@ in
 
   config = mkIf cfg.enable {
     i18n.inputMethod = {
-      enabled = "fcitx5";
+      enable = true;
+      type = "fcitx5";
       fcitx5 = {
         waylandFrontend = true;
         addons =

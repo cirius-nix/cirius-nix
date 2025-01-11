@@ -4,6 +4,8 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    pre-commit-hooks.url = "github:cachix/git-hooks.nix";
+
     nur.url = "github:nix-community/NUR";
 
     darwin = {
@@ -23,6 +25,33 @@
 
     nixvim = {
       url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    hyprland = {
+      url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
+    hyprlock = {
+      url = "github:hyprwm/Hyprlock";
+      inputs.nixpkgs.follows = "hyprland/nixpkgs";
+    };
+    hyprpaper = {
+      url = "github:hyprwm/hyprpaper";
+      inputs.nixpkgs.follows = "hyprland/nixpkgs";
+    };
+    hyprland-contrib = {
+      url = "github:hyprwm/contrib";
+      inputs.nixpkgs.follows = "hyprland/nixpkgs";
+    };
+    hyprland-plugins = {
+      url = "github:hyprwm/hyprland-plugins";
+      inputs.hyprland.follows = "hyprland";
+    };
+    hypr-socket-watch = {
+      url = "github:khaneliman/hypr-socket-watch";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -49,13 +78,14 @@
         allowUnfree = true;
       };
 
-      overlays = [ inputs.nur.overlay ];
+      overlays = [ inputs.nur.overlays.default ];
 
       homes.modules = with inputs; [
         nixvim.homeManagerModules.nixvim
       ];
 
-      systems.modules.nixos = [  ];
-      systems.modules.darwin = [  ];
+      systems.modules.nixos = [
+      ];
+      systems.modules.darwin = [ ];
     };
 }

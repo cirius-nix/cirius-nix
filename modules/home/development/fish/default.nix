@@ -1,7 +1,8 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 
 let
@@ -39,13 +40,28 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [ ];
+    home.packages = with pkgs; [ any-nix-shell ];
 
     programs.fish = {
       inherit (cfg) enable;
       shellAliases = aliases // cfg.aliases;
       interactiveShellInit = ''
+        ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
+
+        # disable greeting
         set fish_greeting # Disable greeting
+
+        ${pkgs.thefuck}/bin/thefuck --alias | source
+
+        # Editor
+        set -g EDITOR nvim
+        set -g PSQL_EDITOR nvim
+
+        # PAGER tool
+        set -g PAGER ${pkgs.less}/bin/less -S
+
+        # Set golang binary directory
+        set -g GOBIN $HOME/go/bin
 
         function aws_profile
           set profile $argv[1]

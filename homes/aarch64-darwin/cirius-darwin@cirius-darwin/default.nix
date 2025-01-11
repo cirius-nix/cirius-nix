@@ -1,4 +1,9 @@
-{ lib, osConfig, pkgs, ... }:
+{
+  lib,
+  osConfig,
+  pkgs,
+  ...
+}:
 let
   user = lib.cirius.findOrNull osConfig.cirius.users.users "username" "cirius-darwin";
 in
@@ -9,12 +14,17 @@ in
       userName = user.name;
       userEmail = user.email;
     };
+    helix.enable = true;
     delta.enable = true;
     lazygit.enable = true;
     db.enable = true;
     cli-utils.enable = true;
     go.enable = true;
+    java.enable = true;
     starship.enable = true;
+    api-client.enable = true;
+    node.enable = true;
+    zed.enable = true;
     fish = {
       enable = true;
       customPaths = [ "~/Applications" ];

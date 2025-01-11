@@ -1,7 +1,8 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 
 let
@@ -16,13 +17,13 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = mkIf
-      cfg.noncommercial
-      (with pkgs.jetbrains;
+    home.packages = mkIf cfg.noncommercial (
+      with pkgs.jetbrains;
       [
         webstorm
         rider
         writerside
-      ]);
+      ]
+    );
   };
 }

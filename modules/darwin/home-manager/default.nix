@@ -1,8 +1,9 @@
-{config, lib, ...}:
-let 
-inherit (lib) mkEnableOption mkIf;
-cfg = config.cirius.home-manager;
-in {
+{ config, lib, ... }:
+let
+  inherit (lib) mkEnableOption mkIf;
+  cfg = config.cirius.home-manager;
+in
+{
   options.cirius.home-manager = {
     enable = mkEnableOption "home-manager";
   };

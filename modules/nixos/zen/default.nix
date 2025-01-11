@@ -7,19 +7,16 @@
 
 let
   inherit (lib) mkEnableOption mkIf;
-
-  cfg = config.cirius.kde;
+  cfg = config.cirius.zen;
 in
 {
-  options.cirius.kde = {
-    enable = mkEnableOption "KDE";
+  options.cirius.zen = {
+    enable = mkEnableOption "zen";
   };
 
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
-      latte-dock
-      kdePackages.kconfig
-      kdePackages.filelight
+      zenmonitor
     ];
   };
 }

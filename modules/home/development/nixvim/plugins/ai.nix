@@ -1,0 +1,5 @@
+{
+  codeium-nvim = {
+    enable = true;
+  };
+}

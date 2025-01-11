@@ -1,8 +1,7 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
+{ config
+, pkgs
+, lib
+, ...
 }:
 
 let
@@ -34,6 +33,12 @@ in
         # glxinfo
         go-swagger
         air # live reload for Go apps
+        air
+        btop
+        gnused
+        thefuck
+        sshpass
+        bat
       ];
     };
 

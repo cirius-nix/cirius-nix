@@ -1,4 +1,9 @@
-{ lib, osConfig, pkgs, ... }:
+{
+  lib,
+  osConfig,
+  pkgs,
+  ...
+}:
 let
   user = lib.cirius.findOrNull osConfig.cirius.users.users "username" "cirius";
 in
@@ -9,6 +14,7 @@ in
       userName = user.name;
       userEmail = user.email;
     };
+    kdev.enable = true;
     delta.enable = true;
     lazygit.enable = true;
     db.enable = true;
@@ -44,8 +50,10 @@ in
       inherit (user) name;
       inherit (user) email;
     };
+    office.enable = true;
     browsers.enable = true;
     secrets.enable = true;
     fonts.enable = true;
+
   };
 }

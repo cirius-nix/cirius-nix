@@ -1,24 +1,23 @@
 {
   config,
-  pkgs,
   lib,
+  pkgs,
   ...
 }:
 
 let
   inherit (lib) mkEnableOption mkIf;
 
-  cfg = config.cirius.development.postman;
+  cfg = config.cirius.development.java;
 in
 {
-  options.cirius.development.postman = {
-    enable = mkEnableOption "postman";
+  options.cirius.development.java = {
+    enable = mkEnableOption "Java";
   };
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      postman
-      newman
+      jdk
     ];
   };
 }
