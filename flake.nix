@@ -78,13 +78,14 @@
         allowUnfree = true;
       };
 
-      overlays = [ inputs.nur.overlay ];
+      overlays = [ inputs.nur.overlays.default ];
 
       homes.modules = with inputs; [
         nixvim.homeManagerModules.nixvim
       ];
 
-      systems.modules.nixos = [ ];
+      systems.modules.nixos = [
+      ];
       systems.modules.darwin = [ ];
     };
 }
