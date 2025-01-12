@@ -1,7 +1,8 @@
-{ config
-, pkgs
-, lib
-, ...
+{
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 
 let
@@ -40,11 +41,28 @@ in
         sshpass
         bat
       ];
+      shellAliases = {
+        la = lib.mkForce "${lib.getExe config.programs.eza.package} -lah --tree";
+        tree = lib.mkForce "${lib.getExe config.programs.eza.package} --tree --icons=always";
+      };
     };
 
     programs = {
+      eza = {
+        enable = true;
+        enableBashIntegration = true;
+        enableZshIntegration = true;
+        enableNushellIntegration = true;
+        enableFishIntegration = true;
+        extraOptions = [
+          "--group-directories-first"
+          "--header"
+        ];
+        git = true;
+        icons = "auto";
+      };
       direnv = {
-        inherit (cfg) enable;
+        enable = true;
         nix-direnv = {
           enable = true;
         };

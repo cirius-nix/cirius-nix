@@ -25,6 +25,39 @@ in
         tab_bar_align = "center";
         background_opacity = 0.9;
         background_blur = 20;
+        enabled_layouts = "tall:bias=50;full_size=1;mirrored=false";
+      };
+      keybindings = {
+        "alt+1" = "goto_tab 1";
+        "alt+2" = "goto_tab 2";
+        "alt+3" = "goto_tab 3";
+        "alt+4" = "goto_tab 4";
+        "alt+5" = "goto_tab 5";
+        "alt+6" = "goto_tab 6";
+        "alt+7" = "goto_tab 7";
+        "alt+8" = "goto_tab 8";
+        "alt+9" = "goto_tab 9";
+        "ctrl+shift+t" = "new_tab_with_cwd";
+        "ctrl+a>shift+q" = "close_tab";
+
+        "ctrl+shift+v" = "paste_from_clipboard";
+        "ctrl+shift+s" = "paste_from_selection";
+        "ctrl+shift+c" = "copy_to_clipboard";
+        "alt+v" = "paste_from_clipboard";
+        "alt+c" = "copy_to_clipboard";
+
+        "ctrl+a>+i" = "next_layout";
+        "ctrl+a>enter" = "new_window";
+        "ctrl+a>q" = "close_window";
+        "ctrl+a>1" = "first_window";
+        "ctrl+a>2" = "second_window";
+        "ctrl+a>3" = "third_window";
+        "ctrl+a>4" = "fourth_window";
+        "ctrl+a>5" = "fifth_window";
+        "ctrl+a>6" = "sixth_window";
+        "ctrl+a>7" = "seventh_window";
+        "ctrl+a>8" = "eighth_window";
+        "ctrl+a>9" = "ninth_window";
       };
     };
     programs.wezterm = {

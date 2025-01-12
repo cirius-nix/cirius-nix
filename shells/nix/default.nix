@@ -25,8 +25,8 @@ mkShell {
     nixpkgs-hammering
     nixpkgs-lint
     nixpkgs-review
-    snowfall-flake.packages.${system}.flake
     statix
+    snowfall-flake.packages.${system}.flake
   ];
 
   shellHooks = ''
