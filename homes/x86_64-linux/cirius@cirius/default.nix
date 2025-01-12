@@ -44,6 +44,12 @@ in
     term.enable = true;
   };
 
+  cirius.desktop-environment = {
+    hyprland = {
+      enable = true;
+    };
+  };
+
   cirius.packages = {
     home-manager = {
       enable = true;

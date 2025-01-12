@@ -17,6 +17,7 @@ in
       enable = true;
       shellIntegration.enableFishIntegration = true;
       themeFile = "Molokai";
+      extraConfig = builtins.readFile ./assets/kitty/extra.conf;
       settings = {
         font_family = "Cascadia Mono NF";
         tab_bar_edge = "top";

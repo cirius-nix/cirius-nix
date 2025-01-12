@@ -38,6 +38,7 @@ in
       dive
       podman-tui
       podman-compose
+      docker-client
     ];
 
     systemd.user.services = {

@@ -6,7 +6,6 @@
 }:
 let
   inherit (lib) mkEnableOption mkIf;
-
   cfg = config.cirius.nix;
 in
 {
