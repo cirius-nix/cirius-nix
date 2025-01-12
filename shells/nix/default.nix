@@ -1,12 +1,11 @@
 {
   inputs,
-  lib,
   pkgs,
   system,
   namespace,
+  mkShell,
 }:
 let
-  inherit (lib) mkShell;
   inherit (inputs) snowfall-flake;
 in
 mkShell {
