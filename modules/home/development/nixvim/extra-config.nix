@@ -190,5 +190,9 @@ in
     dap.listeners.before.event_exited["dapui_config"]=function()
       dapui.close()
     end
+
+    require("nx").setup {
+      nx_cmd_root = "npx nx",
+    }
   '';
 }

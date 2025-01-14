@@ -31,6 +31,10 @@ in
       aliases = {
         "rbnix" = "darwin-rebuild switch --flake .#cirius-darwin";
         "tf" = "${pkgs.terraform}/bin/terraform";
+        "gco" = "${pkgs.git}/bin/git checkout";
+        "gpl" = "${pkgs.git}/bin/git pull origin";
+        "gps" = "${pkgs.git}/bin/git push origin";
+        "gm" = "${pkgs.git}/bin/git merge";
       };
     };
     aws = {

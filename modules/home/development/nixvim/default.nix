@@ -96,6 +96,16 @@ in
           };
         })
         (pkgs.vimUtils.buildVimPlugin {
+          pname = "nx.nvim";
+          version = "latest";
+          src = pkgs.fetchFromGitHub {
+            owner = "Equilibris";
+            repo = "nx.nvim";
+            rev = "f8a3a21b3d540889401a40d1f2803083794c0372";
+            hash = "sha256-Yl7tg466650w4CZcuFdnUZhXk6z/uq0AHa64EKeZx/o=";
+          };
+        })
+        (pkgs.vimUtils.buildVimPlugin {
           pname = "guihua.lua";
           version = "latest";
           src = pkgs.fetchFromGitHub {

@@ -14,6 +14,32 @@ let
         desc = "Continue";
       };
     }
+    {
+      mode = [ "n" ];
+      key = "<leader>\\";
+      action = ''
+        function()
+          require('Snacks').terminal.toggle()
+        end
+      '';
+      options = {
+        silent = false;
+        desc = "Terminal";
+      };
+    }
+    {
+      mode = [ "n" ];
+      key = "<leader>bd";
+      action = ''
+        function()
+          require('Snacks').bufdelete()
+        end
+      '';
+      options = {
+        silent = true;
+        desc = "Wipe current buffer";
+      };
+    }
   ];
   debugging_keymaps = [
     {
@@ -474,16 +500,7 @@ in
       desc = "Escape";
     };
   }
-  {
-    mode = "n";
-    key = "<leader>m";
-    action = "<cmd>ZenMode<cr>";
-    options = {
-      silent = true;
-      nowait = true;
-      desc = "Focus Mode";
-    };
-  }
+
 ]
 ++ nvimtree-keymaps
 ++ wincmd-keymaps

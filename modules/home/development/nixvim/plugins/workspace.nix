@@ -1,7 +1,14 @@
 { pkgs, ... }:
 {
+  snacks = {
+    enable = false;
+    settings = { };
+  };
   telescope = {
     enable = true;
+    settings =
+      {
+      };
     extensions = {
       file-browser = {
         enable = true;

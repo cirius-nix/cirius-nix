@@ -95,6 +95,18 @@
       terraformls.enable = true;
       ts_ls.enable = true;
       tailwindcss.enable = true;
+      angularls = {
+        enable = true;
+        rootDir = {
+          __raw = ''
+            (function()
+            	local util = require("lspconfig.util")
+            	root_dir = util.root_pattern("angular.json", "project.json")
+            	return root_dir
+            end)()
+          '';
+        };
+      };
       eslint.enable = true;
       # sqls.enable = true;
       # prismals.enable = true;
@@ -312,7 +324,9 @@
           "shellharden"
           "shfmt"
         ];
-        sql = [ "sqlfluff" ];
+        sql = [
+          "sql_formatter"
+        ];
         terraform = [ "terraform_fmt" ];
         toml = [ "taplo" ];
         typescript = {
@@ -329,6 +343,13 @@
       };
 
       formatters = {
+        sql_formatter = {
+          prepend_args = {
+            __raw = ''
+              { "-c", vim.fn.expand("~/.config/sql_formatter.json") },
+            '';
+          };
+        };
         taplo = {
           command = lib.getExe pkgs.taplo;
         };
