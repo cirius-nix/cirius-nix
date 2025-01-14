@@ -1,24 +1,27 @@
-{ config
-, pkgs
-, lib
-, ...
+{
+  config,
+  pkgs,
+  lib,
+  namespace,
+  ...
 }:
 
 let
   inherit (lib) mkEnableOption mkIf;
-  cfg = config.cirius.packages.browsers;
+  cfg = config.${namespace}.packages.browsers;
 in
 {
-  options.cirius.packages.browsers = {
+  options.${namespace}.packages.browsers = {
     enable = mkEnableOption "browsers";
   };
 
-  config = mkIf cfg.enable {
+  config = mkIf (cfg.enable && !pkgs.stdenv.isDarwin) {
     home = {
       packages = with pkgs; [
+        firefox
         floorp
-        microsoft-edge
-        kdePackages.kget
+        google-chrome
+        chromium
       ];
     };
   };

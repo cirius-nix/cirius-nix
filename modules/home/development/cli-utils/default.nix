@@ -2,17 +2,18 @@
   config,
   pkgs,
   lib,
+  namespace,
   ...
 }:
 
 let
   inherit (lib) mkEnableOption mkIf;
 
-  devCfg = config.cirius.development;
+  devCfg = config.${namespace}.development;
   cfg = devCfg.cli-utils;
 in
 {
-  options.cirius.development.cli-utils = {
+  options.${namespace}.development.cli-utils = {
     enable = mkEnableOption "CLI Utilities";
   };
 
@@ -22,6 +23,7 @@ in
         jq
         atuin
         fzf
+        yazi
         ripgrep
         tree-sitter
         unzip
@@ -31,15 +33,13 @@ in
         wget
         curl
         libglvnd
-        # glxinfo
-        go-swagger
-        air # live reload for Go apps
-        air
         btop
         gnused
         thefuck
-        sshpass
         bat
+        zip
+        unzip
+        fastfetch
       ];
       shellAliases = {
         la = lib.mkForce "${lib.getExe config.programs.eza.package} -lah --tree";

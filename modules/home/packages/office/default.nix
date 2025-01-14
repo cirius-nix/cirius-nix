@@ -2,15 +2,16 @@
   config,
   pkgs,
   lib,
+  namespace,
   ...
 }:
 
 let
   inherit (lib) mkEnableOption mkIf;
-  cfg = config.cirius.packages.office;
+  cfg = config.${namespace}.packages.office;
 in
 {
-  options.cirius.packages.office = {
+  options.${namespace}.packages.office = {
     enable = mkEnableOption "office";
   };
 

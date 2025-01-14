@@ -2,14 +2,15 @@
   config,
   lib,
   pkgs,
+  namespace,
   ...
 }:
 let
   inherit (lib) mkEnableOption mkIf;
-  cfg = config.cirius.packages.chat;
+  cfg = config.${namespace}.packages.chat;
 in
 {
-  options.cirius.packages.chat = {
+  options.${namespace}.packages.chat = {
     enable = mkEnableOption "Chat";
   };
 

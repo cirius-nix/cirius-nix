@@ -78,6 +78,14 @@ NOTE:
   (You can see it in `/etc/nixos/configuration.nix` &
   `/etc/nixos/hardware-configuration.nix`)
 
+### Useful snippets
+
+- Check current env is `linux`:
+
+```nix
+pkgs.stdenv.isLinux
+```
+
 ### NixOS / Linux based
 
 Updating...

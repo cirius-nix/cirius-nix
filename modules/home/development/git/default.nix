@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  namespace,
   ...
 }:
 
@@ -9,17 +10,28 @@ let
   inherit (lib) mkEnableOption mkIf;
   inherit (lib.cirius) mkStrOption;
 
-  cfg = config.cirius.development.git;
+  cfg = config.${namespace}.development.git;
 in
 {
-  options.cirius.development.git = {
+  options.${namespace}.development.git = {
     enable = mkEnableOption "Git";
     userName = mkStrOption null "The full name of the user.";
     userEmail = mkStrOption null "The e-mail address of the user.";
+    pager = mkEnableOption "Pager as paging package";
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [ gh ];
+    home.packages = with pkgs; [
+      gh
+      delta
+    ];
+    programs.lazygit = {
+      inherit (cfg) enable;
+
+      settings.git.paging = {
+        pager = if cfg.pager then "delta --dark --syntax-theme 'Dracula' --paging=never" else "less";
+      };
+    };
     programs.git = {
       inherit (cfg) enable userName userEmail;
 

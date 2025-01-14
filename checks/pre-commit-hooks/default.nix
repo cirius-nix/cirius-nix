@@ -46,7 +46,6 @@ pre-commit-hooks.lib.${pkgs.system}.run {
       prettier = {
         enable = true;
         inherit excludes fail_fast verbose;
-
         description = "pre-commit hook for prettier";
         settings = {
           binPath = "${lib.getExe pkgs.prettierd}";

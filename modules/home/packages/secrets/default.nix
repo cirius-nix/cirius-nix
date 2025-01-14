@@ -2,15 +2,16 @@
   config,
   pkgs,
   lib,
+  namespace,
   ...
 }:
 
 let
   inherit (lib) mkEnableOption mkIf;
-  cfg = config.cirius.packages.secrets;
+  cfg = config.${namespace}.packages.secrets;
 in
 {
-  options.cirius.packages.secrets = {
+  options.${namespace}.packages.secrets = {
     enable = mkEnableOption "secrets";
   };
 

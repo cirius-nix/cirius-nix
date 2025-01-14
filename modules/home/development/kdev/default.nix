@@ -2,14 +2,15 @@
   config,
   lib,
   pkgs,
+  namespace,
   ...
 }:
 let
   inherit (lib) mkEnableOption mkIf;
-  cfg = config.cirius.development.kdev;
+  cfg = config.${namespace}.development.kdev;
 in
 {
-  options.cirius.development.kdev = {
+  options.${namespace}.development.kdev = {
     enable = mkEnableOption "KDev";
   };
 

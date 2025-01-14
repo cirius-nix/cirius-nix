@@ -1,0 +1,59 @@
+{
+  config,
+  lib,
+  namespace,
+  ...
+}:
+let
+  cfg = config.${namespace}.development.ide.nixvim;
+  inherit (lib) mkIf;
+in
+{
+  config = mkIf cfg.enable {
+    programs.nixvim = {
+      opts = {
+        timeout = true;
+        autowrite = true;
+        clipboard = "unnamedplus";
+        completeopt = "menu,menuone,noselect";
+        conceallevel = 3;
+        confirm = true;
+        cursorline = true;
+        expandtab = true;
+        formatoptions = "jcroqlnt";
+        grepformat = "%f:%l:%c:%m";
+        grepprg = "rg --vimgrep";
+        ignorecase = true;
+        inccommand = "nosplit";
+        laststatus = 3;
+        list = true;
+        mouse = "a";
+        number = true;
+        pumblend = 10;
+        pumheight = 10;
+        relativenumber = false;
+        scrolloff = 4;
+        shiftround = true;
+        shiftwidth = 2;
+        showmode = false;
+        sidescrolloff = 8;
+        signcolumn = "yes";
+        smartcase = true;
+        smartindent = true;
+        splitbelow = true;
+        splitkeep = "screen";
+        splitright = true;
+        tabstop = 2;
+        termguicolors = true;
+        timeoutlen = 500;
+        undofile = true;
+        undolevels = 10000;
+        updatetime = 200;
+        virtualedit = "block";
+        wildmode = "longest:full,full";
+        winminwidth = 5;
+        wrap = false;
+      };
+    };
+  };
+}

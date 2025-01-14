@@ -2,16 +2,17 @@
   config,
   pkgs,
   lib,
+  namespace,
   ...
 }:
 
 let
   inherit (builtins) any listToAttrs;
   inherit (lib) mkEnableOption mkIf mkOption;
-  inherit (lib.cirius) mkEnumOption mkStrOption;
+  inherit (lib.${namespace}) mkEnumOption mkStrOption;
   inherit (lib.types) listOf submodule;
 
-  cfg = config.cirius.users;
+  cfg = config.${namespace}.users;
 
   user = {
     options = {
@@ -29,7 +30,7 @@ in
 
 {
   options = {
-    cirius.users = {
+    ${namespace}.users = {
       enable = mkEnableOption "Users";
       users = mkOption {
         type = listOf (submodule user);

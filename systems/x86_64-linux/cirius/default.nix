@@ -1,38 +1,76 @@
-{ pkgs, ... }:
+{ pkgs, namespace, ... }:
+let
+  user = {
+    username = "cirius";
+    name = "Cirius";
+    email = "hieu.tran21198@gmail.com";
+    shell = "fish";
+  };
+in
 {
   imports = [ ./hardware-configuration.nix ];
 
-  cirius = {
-    # define the user
+  ${namespace} = {
     users = {
       enable = true;
       users = [
-        {
-          username = "cirius";
-          name = "Cirius";
-          email = "hieu.tran21198@gmail.com";
-          shell = "fish";
-        }
+        user
       ];
     };
+    motherboard = {
+      enable = true;
+    };
+    core = {
+      nix = {
+        enable = true;
+        nixLd = {
+          enable = true;
+        };
+      };
+      clipboard.enable = true;
+      input-method.enable = true;
+      bluetooth.enable = true;
+      keyring.enable = true; # TODO: move keyring to desktop-environment settings.
+      locale.enable = true;
+      network = {
+        enable = true;
+        hostname = "cirius";
+        enableWarp = true;
+      };
+      audio.enable = true;
+      security.enable = true;
+      ssh.enable = true;
+      power-profile.enable = true;
+      virtualisation = {
+        enable = true;
+        waydroid = {
+          enable = false;
+          autoStart = true;
+        };
+      };
+    };
+    applications = {
+      home-manager.enable = true;
+      browsers.enable = true;
+      appimage.enable = true;
+      looking-glass.enable = true;
+      looking-glass.user = user.username;
+    };
+    cpu-utils.amd = {
+      enable = true;
+      extraUdevRules = {
+        "DeepCool-AG400" =
+          ''SUBSYSTEM=="hidraw", ATTRS{idVendor}=="3633", ATTRS{idProduct}=="0008", MODE="0666"'';
+      };
+    };
+    gpu-drivers = {
+      nvidia.enable = true;
+    };
 
-    # enable modules defined in: pkg_root/modules/nixos
-    home-manager.enable = true;
-    locale.enable = true;
-    network.enable = true;
-    nix.enable = true;
-    security.enable = true;
-    ssh.enable = true;
-    pirewire.enable = true;
-    kde.enable = true;
-    virtualisation.enable = true;
-    clipboard.enable = true;
-    input-method.enable = true;
-    bluetooth.enable = true;
-    appimage.enable = true;
-    nvidia.enable = true;
-    zen.enable = true;
-    term.enable = true;
+    desktop-environment = {
+      kind = "kde";
+    };
+    fonts.enable = true;
   };
 
   services = {
@@ -45,16 +83,25 @@
         variant = "";
       };
     };
-    flatpak.enable = true;
-
     printing.enable = false;
   };
 
+  systemd.services.deepcool-digital = {
+    description = "DeepCool Digital";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network.target" ];
+
+    serviceConfig = {
+      ExecStart = ''${builtins.toString ./assets/deepcool-digital-linux} -m auto'';
+      Restart = "always";
+      User = "root";
+      Group = "root";
+    };
+  };
+
   environment.systemPackages = with pkgs; [
-    kdePackages.qtstyleplugin-kvantum
-    kdePackages.libksysguard
-    kdePackages.ksystemlog
     wayland-utils
+    kdePackages.filelight
   ];
 
   boot.loader = {

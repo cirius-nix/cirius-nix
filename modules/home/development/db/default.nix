@@ -2,25 +2,28 @@
   config,
   pkgs,
   lib,
+  namespace,
   ...
 }:
 
 let
   inherit (lib) mkEnableOption mkIf;
-  cfg = config.cirius.development.db;
+  cfg = config.${namespace}.development.db;
+
 in
+
 {
-  options.cirius.development.db = {
+  options.${namespace}.development.db = {
     enable = mkEnableOption "Database";
   };
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      # dbeaver-bin
       mycli
       pgcli
       nodePackages.sql-formatter
       less
+      jetbrains.datagrip
     ];
     home.file.".myclirc" = {
       text = ''

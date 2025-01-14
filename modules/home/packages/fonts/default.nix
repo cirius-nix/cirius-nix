@@ -2,15 +2,16 @@
   config,
   pkgs,
   lib,
+  namespace,
   ...
 }:
 
 let
   inherit (lib) mkEnableOption mkIf;
-  cfg = config.cirius.packages.fonts;
+  cfg = config.${namespace}.packages.fonts;
 in
 {
-  options.cirius.packages.fonts = {
+  options.${namespace}.packages.fonts = {
     enable = mkEnableOption "fonts";
   };
 
@@ -19,6 +20,9 @@ in
       packages = with pkgs; [
         meslo-lgs-nf
         cascadia-code
+        nerd-fonts.monaspace
+        nerd-fonts.iosevka
+        nerd-fonts.symbols-only
       ];
     };
   };
