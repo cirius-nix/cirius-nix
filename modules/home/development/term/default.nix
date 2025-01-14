@@ -25,9 +25,11 @@ in
         tab_bar_align = "center";
         background_opacity = 0.9;
         background_blur = 20;
-        enabled_layouts = "tall:bias=50;full_size=1;mirrored=false";
+        enabled_layouts = "splits:split_axis=horizontal,stack";
       };
       keybindings = {
+        "ctrl+a>o" = "toggle_layout stack";
+
         "alt+1" = "goto_tab 1";
         "alt+2" = "goto_tab 2";
         "alt+3" = "goto_tab 3";
@@ -45,9 +47,8 @@ in
         "ctrl+shift+c" = "copy_to_clipboard";
         "alt+v" = "paste_from_clipboard";
         "alt+c" = "copy_to_clipboard";
-
-        "ctrl+a>+i" = "next_layout";
-        "ctrl+a>enter" = "new_window";
+        "ctrl+a>x" = "launch --location=hsplit --cwd=current";
+        "ctrl+a>v" = "launch --location=vsplit --cwd=current";
         "ctrl+a>q" = "close_window";
         "ctrl+a>1" = "first_window";
         "ctrl+a>2" = "second_window";
@@ -58,6 +59,19 @@ in
         "ctrl+a>7" = "seventh_window";
         "ctrl+a>8" = "eighth_window";
         "ctrl+a>9" = "ninth_window";
+        "ctrl+a>h" = "neighboring_window left";
+        "ctrl+a>j" = "neighboring_window down";
+        "ctrl+a>k" = "neighboring_window up";
+        "ctrl+a>l" = "neighboring_window right";
+        "ctrl+left" = "neighboring_window left";
+        "ctrl+down" = "neighboring_window down";
+        "ctrl+up" = "neighboring_window up";
+        "ctrl+right" = "neighboring_window right";
+        "shift+up" = "move_window up";
+        "shift+left" = "move_window left";
+        "shift+down" = "move_window down";
+        "shift+right" = "move_window right";
+        "ctrl+a>r" = "layout_action rotate";
       };
     };
     programs.wezterm = {

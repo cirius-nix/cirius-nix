@@ -61,5 +61,6 @@ in
     browsers.enable = true;
     secrets.enable = true;
     fonts.enable = true;
+    chat.enable = true;
   };
 }

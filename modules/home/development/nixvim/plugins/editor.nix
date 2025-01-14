@@ -1,4 +1,8 @@
 {
+  sleuth = {
+    enable = true;
+    settings = { };
+  };
   render-markdown = {
     enable = true;
     settings = { };
@@ -29,6 +33,11 @@
   };
   treesitter = {
     enable = true;
+    settings = {
+      hightlint = {
+        enable = true;
+      };
+    };
   };
   mini = {
     enable = true;

@@ -1,11 +1,19 @@
 {
+  fidget = {
+    enable = true;
+  };
   transparent = {
     enable = true;
     settings = { };
   };
   web-devicons.enable = true;
   rainbow-delimiters.enable = true;
-  todo-comments.enable = true;
+  todo-comments = {
+    enable = true;
+    settings = {
+      signs = false;
+    };
+  };
   notify = {
     enable = true;
   };
