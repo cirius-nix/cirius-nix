@@ -1,4 +1,7 @@
-{ pkgs, namespace, ... }:
+{
+  namespace,
+  ...
+}:
 let
   user = {
     username = "cirius";
@@ -53,8 +56,11 @@ in
       home-manager.enable = true;
       browsers.enable = true;
       appimage.enable = true;
-      looking-glass.enable = true;
-      looking-glass.user = user.username;
+      looking-glass = {
+        enable = true;
+        user = user.username;
+      };
+      cli-utils.enable = true;
     };
     cpu-utils.amd = {
       enable = true;
@@ -68,22 +74,9 @@ in
     };
 
     desktop-environment = {
-      kind = "kde";
+      kind = "hyprland";
     };
     fonts.enable = true;
-  };
-
-  services = {
-    displayManager.sddm.enable = true;
-    desktopManager.plasma6.enable = true;
-    xserver = {
-      enable = true;
-      xkb = {
-        layout = "us";
-        variant = "";
-      };
-    };
-    printing.enable = false;
   };
 
   systemd.services.deepcool-digital = {
@@ -98,11 +91,6 @@ in
       Group = "root";
     };
   };
-
-  environment.systemPackages = with pkgs; [
-    wayland-utils
-    kdePackages.filelight
-  ];
 
   boot.loader = {
     systemd-boot.enable = true;

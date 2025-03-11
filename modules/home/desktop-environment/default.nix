@@ -12,6 +12,9 @@ in
       kind = mkEnumOption [
         "kde"
         "hyprland"
+        "gnome"
+        "pantheon"
+        "deepin"
       ] "kde" "Desktop Environment";
     };
   };

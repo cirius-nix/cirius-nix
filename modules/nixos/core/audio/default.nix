@@ -1,4 +1,5 @@
 {
+  pkgs,
   config,
   lib,
   namespace,
@@ -16,11 +17,16 @@ in
   };
 
   config = mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      pavucontrol
+      pulseaudioFull
+      pulseview
+      pulsemixer
+    ];
+    security.rtkit.enable = true;
     services = {
       pipewire = {
         enable = true;
-        alsa.enable = true;
-        alsa.support32Bit = true;
         pulse.enable = true;
       };
     };

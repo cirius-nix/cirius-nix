@@ -92,9 +92,9 @@ in
   };
 
   cirius.desktop-environment = {
-    kind = "kde";
+    kind = "pantheon";
     hyprland = {
-      theme = "gruvbox";
+      theme = "deepin";
       themes = {
         qt.enable = true;
         gtk.enable = true;

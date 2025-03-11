@@ -11,11 +11,25 @@ let
   deCfg = config.${namespace}.desktop-environment;
 in
 {
-
   config = mkIf (deCfg.kind == "kde") {
     environment.systemPackages = with pkgs; [
-      latte-dock
       kdePackages.kconfig
+      kdePackages.filelight
+      wayland-utils
+      egl-wayland
     ];
+
+    services = {
+      displayManager.sddm.enable = true;
+      desktopManager.plasma6.enable = true;
+      xserver = {
+        enable = true;
+        xkb = {
+          layout = "us";
+          variant = "";
+        };
+      };
+      printing.enable = false;
+    };
   };
 }

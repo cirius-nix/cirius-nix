@@ -40,6 +40,10 @@ in
       etc."greetd/environments".text = ''"Hyprland"'';
       sessionVariables = {
       };
+      systemPackages = with pkgs; [
+        wayland-utils
+        egl-wayland
+      ];
     };
     services.power-profiles-daemon.enable = true;
     ${namespace} = {
