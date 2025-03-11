@@ -18,10 +18,8 @@ in
 
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
-      pavucontrol
-      pulseaudioFull
-      pulseview
-      pulsemixer
+      wireplumber
+      pipewire
     ];
     security.rtkit.enable = true;
     services = {

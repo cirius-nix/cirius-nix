@@ -35,7 +35,10 @@ in
   };
 
   config = mkIf (deCfg.kind == "hyprland") {
-    programs.hyprland.enable = true;
+    programs.hyprland = {
+      enable = true;
+      withUWSM = true;
+    };
     environment = {
       etc."greetd/environments".text = ''"Hyprland"'';
       sessionVariables = {
@@ -45,7 +48,19 @@ in
         egl-wayland
       ];
     };
-    services.power-profiles-daemon.enable = true;
+    services = {
+      displayManager.sddm.enable = true;
+      desktopManager.plasma6.enable = true;
+      xserver = {
+        enable = true;
+        xkb = {
+          layout = "us";
+          variant = "";
+        };
+      };
+      printing.enable = false;
+      power-profiles-daemon.enable = true;
+    };
     ${namespace} = {
       core = {
         keyring = enabled;
@@ -57,7 +72,6 @@ in
             ''
               export PATH=$PATH:${pp-programs}
               export HYPRLAND_INSTANCE_SIGNATURE=$(command ls -t $XDG_RUNTIME_DIR/hypr | head -n 1)
-
               hyprctl --batch '${
                 concatStringsSep " " [
                   "keyword animations:enabled 0;"
@@ -66,7 +80,6 @@ in
                   "keyword misc:vfr 0"
                 ]
               }'
-
               powerprofilesctl set performance
               notify-send -a 'Gamemode' 'Optimizations activated' -u 'low'
             '';
@@ -75,7 +88,6 @@ in
             ''
               export PATH=$PATH:${pp-programs}
               export HYPRLAND_INSTANCE_SIGNATURE=$(command ls -t $XDG_RUNTIME_DIR/hypr | head -n 1)
-
               hyprctl --batch '${
                 concatStringsSep " " [
                   "keyword animations:enabled 1;"
@@ -84,7 +96,6 @@ in
                   "keyword misc:vfr 1"
                 ]
               }'
-
               powerprofilesctl set balanced
               notify-send -a 'Gamemode' 'Optimizations deactivated' -u 'low'
             '';

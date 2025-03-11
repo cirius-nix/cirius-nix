@@ -100,6 +100,8 @@ let
         ];
       }) outputList
     );
+
+  enabled = pkgs.stdenv.isLinux && deCfg.kind == "hyprland" && cfg.enable;
 in
 {
   options.${namespace}.desktop-environment.hyprland.bar = {
@@ -113,13 +115,12 @@ in
         [ ];
   };
 
-  config = mkIf (pkgs.stdenv.isLinux && deCfg.kind == "hyprland" && cfg.enable) {
+  config = mkIf enabled {
     systemd.user.services.waybar.Service.ExecStart = mkIf cfg.debug (
       mkForce "${getExe pkgs.waybar} -l debug"
     );
 
     home.packages = with pkgs; [
-      # wireplumber
       coreutils
       helvum
     ];
@@ -133,13 +134,5 @@ in
       ];
       style = "${hyprCfg.themes.cssColorVars}${style}${controlCenterStyle}${powerStyle}${statsStyle}${workspacesStyle}${trayStyle}";
     };
-
-    #FIXME: use my secrets
-    # sops.secrets = lib.mkIf osConfig.${namespace}.security.sops.enable {
-    #   weather_config = {
-    #     sopsFile = lib.snowfall.fs.get-file "secrets/cirius/default.yaml";
-    #     path = "${config.home.homeDirectory}/weather_config.json";
-    #   };
-    # };
   };
 }
