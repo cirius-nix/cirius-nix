@@ -30,17 +30,10 @@ in
       # t -> transparent, cannot be shadowed by other binds.
       # i -> ignore mods, will ignore modifiers.
       settings = {
-        "$mainMod" = "SUPER";
-        "$HYPER" = "SUPER_SHIFT_CTRL";
-        "$ALT-HYPER" = "SHIFT_ALT_CTRL";
-        "$RHYPER" = "SUPER_ALT_R_CTRL_R";
-        "$LHYPER" = "SUPER_ALT_L_CTRL_L";
-
         # default applications
-        "$term" = "${getExe pkgs.kitty}";
-        "$browser" = "${getExe pkgs.floorp}";
-        "$editor" = "${getExe pkgs.neovim}";
-        "$explorer" = "${pkgs.kdePackages.dolphin}/bin/dolphin";
+        # "$term" = "${getExe pkgs.kitty}";
+        # "$browser" = "${getExe pkgs.floorp}";
+        # "$editor" = "${getExe pkgs.neovim}";
         "$music" = "${getExe pkgs.youtube-music}";
         "$notification_center" = "${getExe' config.services.swaync.package "swaync-client"}";
         "$launcher" = "anyrun";
@@ -77,12 +70,7 @@ in
             "$mainMod, SPACE, exec, run-as-service $($launchpad)"
 
             # apps
-            "$mainMod, RETURN, exec, $term"
             "$mainMod_SHIFT, P, exec, $color_picker"
-            "$mainMod, B, exec, $browser"
-            "$mainMod_SHIFT, E, exec, $explorer"
-            # "$mainMod, E, exec, $term yazi"
-            "$mainMod, E, exec, $explorer"
             "$mainMod, DELETE, exec, $screen-locker --immediate"
             "$mainMod, N, exec, $notification_center -t -sw"
             "$mainMod, ', exec, $cliphist"
@@ -116,9 +104,6 @@ in
             "SUPER_CTRLALT, Print, exec, $screen-recorder screen"
             "SUPER_CTRLALTSHIFT, Print, exec, $screen-recorder area"
 
-            # ░█░░░█▀█░█░█░█▀█░█░█░▀█▀
-            # ░█░░░█▀█░░█░░█░█░█░█░░█░
-            # ░▀▀▀░▀░▀░░▀░░▀▀▀░▀▀▀░░▀░
             "SUPER_ALT, V, togglefloating,"
             "$mainMod, P, pseudo, # dwindle"
             "$mainMod, J, togglesplit, # dwindle"
@@ -160,10 +145,6 @@ in
             # Inactive
             "ALT_SHIFT,grave,movetoworkspace,special:inactive"
             "ALT,grave,togglespecialworkspace,inactive"
-
-            # ░█▄█░█▀█░█▀█░▀█▀░▀█▀░█▀█░█▀▄
-            # ░█░█░█░█░█░█░░█░░░█░░█░█░█▀▄
-            # ░▀░▀░▀▀▀░▀░▀░▀▀▀░░▀░░▀▀▀░▀░▀
             # simple movement between monitors
             "SUPER_ALT, up, focusmonitor, u"
             "SUPER_ALT, k, focusmonitor, u"
@@ -175,18 +156,15 @@ in
             "SUPER_ALT, l, focusmonitor, r"
 
             # moving current workspace to monitor
-            # "$HYPER,down,movecurrentworkspacetomonitor,d"
-            # "$HYPER,j,movecurrentworkspacetomonitor,d"
-            # "$HYPER,up,movecurrentworkspacetomonitor,u"
-            # "$HYPER,k,movecurrentworkspacetomonitor,u"
-            # "$HYPER,left,movecurrentworkspacetomonitor,l"
-            # "$HYPER,h,movecurrentworkspacetomonitor,l"
-            # "$HYPER,right,movecurrentworkspacetomonitor,r"
-            # "$HYPER,l,movecurrentworkspacetomonitor,r"
+            # "$hyper,down,movecurrentworkspacetomonitor,d"
+            # "$hyper,j,movecurrentworkspacetomonitor,d"
+            # "$hyper,up,movecurrentworkspacetomonitor,u"
+            # "$hyper,k,movecurrentworkspacetomonitor,u"
+            # "$hyper,left,movecurrentworkspacetomonitor,l"
+            # "$hyper,h,movecurrentworkspacetomonitor,l"
+            # "$hyper,right,movecurrentworkspacetomonitor,r"
+            # "$hyper,l,movecurrentworkspacetomonitor,r"
           ]
-          # ░█░█░█▀█░█▀▄░█░█░█▀▀░█▀█░█▀█░█▀▀░█▀▀
-          # ░█▄█░█░█░█▀▄░█▀▄░▀▀█░█▀▀░█▀█░█░░░█▀▀
-          # ░▀░▀░▀▀▀░▀░▀░▀░▀░▀▀▀░▀░░░▀░▀░▀▀▀░▀▀▀
           # Switch workspaces with CTRL_ALT + [0-9]
           ++ (builtins.concatLists (
             builtins.genList (
@@ -205,19 +183,13 @@ in
             ) 10
           ));
         bindl = [
-          # ░█▀▀░█░█░█▀▀░▀█▀░█▀▀░█▄█
-          # ░▀▀█░░█░░▀▀█░░█░░█▀▀░█░█
-          # ░▀▀▀░░▀░░▀▀▀░░▀░░▀▀▀░▀░▀
           # Kill and restart crashed hyprlock
           "$mainMod, BackSpace, exec, pkill -SIGUSR1 hyprlock || WAYLAND_DISPLAY=wayland-1 $screen-locker --immediate"
           "$mainMod, DEL, exec, systemctl --user exit"
-          "$LHYPER, L, exit,"
-          "$RHYPER, R, exec, reboot"
-          "$RHYPER, P, exec, shutdown"
+          "$lHyper, L, exit,"
+          "$rHyper, R, exec, reboot"
+          "$rHyper, P, exec, shutdown"
 
-          # ░█▄█░█▀▀░█▀▄░▀█▀░█▀█
-          # ░█░█░█▀▀░█░█░░█░░█▀█
-          # ░▀░▀░▀▀▀░▀▀░░▀▀▀░▀░▀
           ",XF86AudioRaiseVolume,exec,wpctl set-volume @DEFAULT_AUDIO_SINK@ 2.5%+"
           ",XF86AudioLowerVolume,exec,wpctl set-volume @DEFAULT_AUDIO_SINK@ 2.5%-"
           ",XF86AudioMute,exec,wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"

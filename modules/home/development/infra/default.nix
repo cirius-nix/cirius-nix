@@ -17,6 +17,19 @@ in
   };
 
   config = mkIf cfg.enable {
+    ${namespace}.development.cli-utils.fish = {
+      interactiveFuncs = {
+        aws_profile = ''
+          set profile $argv[1]
+          set -e argv[1]
+
+          ${pkgs.aws-vault}/bin/aws-vault exec $profile fish -d 12h $argv
+        '';
+        aws_log_func = ''
+          aws logs tail "/aws/lambda/$argv[1]" --follow --format json
+        '';
+      };
+    };
     home.packages = with pkgs; [
       awscli2
       aws-vault

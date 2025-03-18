@@ -16,6 +16,12 @@ in
   };
 
   config = mkIf cfg.enable {
+    ${namespace}.development.cli-utils.fish = {
+      interactiveEnvs = {
+        GOBIN = "$HOME/go/bin";
+      };
+      customPaths = [ "$GOBIN" ];
+    };
     home.packages = with pkgs; [
       go
       gotools

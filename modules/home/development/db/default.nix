@@ -18,6 +18,11 @@ in
   };
 
   config = mkIf cfg.enable {
+    ${namespace}.development.cli-utils.fish = {
+      interactiveEnvs = {
+        PAGER = "${pkgs.less}/bin/less -S";
+      };
+    };
     home.packages = with pkgs; [
       mycli
       pgcli

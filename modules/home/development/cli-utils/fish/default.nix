@@ -12,18 +12,10 @@ let
     mkIf
     mkOption
     types
-    concatMapStringsSep
-    optional
     ;
   devCfg = config.${namespace}.development;
   cfg = devCfg.cli-utils.fish;
-  goCfg = devCfg.langs.go;
-  fastFetchCfg = devCfg.cli-utils.fastfetch;
 
-  initialPaths = [ "~/.local/bin" ] ++ optional goCfg.enable "~/go/bin";
-  aliases = {
-    "ns" = "nix-shell";
-  };
 in
 {
   options.${namespace}.development.cli-utils.fish = {
@@ -38,52 +30,104 @@ in
       default = { };
       description = "List of aliases to add";
     };
+    interactiveEnvs = mkOption {
+      type = types.attrsOf types.str;
+      default = { };
+      description = "List of interactive envs to add";
+    };
+    interactiveCommands = mkOption {
+      type = types.listOf types.str;
+      default = [
+        "${pkgs.nix-your-shell}/bin/nix-your-shell fish | source"
+      ];
+      description = "List of commands to run in interactive shell";
+    };
+    interactiveFuncs = mkOption {
+      type = types.attrsOf types.str;
+      default = { };
+      description = "List of interactive functions to add";
+    };
   };
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       nix-your-shell
     ];
+
     programs.fish = {
       enable = true;
-      shellAliases = aliases // cfg.aliases;
+      shellAliases = lib.mkMerge [
+        {
+          "ns" = "nix-shell";
+        }
+        cfg.aliases
+      ];
       interactiveShellInit =
-        ''
-          # disable greeting
-          set fish_greeting # Disable greeting
+        let
+          # Use Case                                  | mkMerge    | Use foldl' lib.attrsets.recursiveUpdate
+          # ------------------------------------------|------------|--------------------------------------
+          # Inside `options` or `config`              | ✅ Yes     | ❌ No
+          # Dynamic merging in `let` bindings         | ❌ No      | ✅ Yes
+          # Works with multiple option sets           | ✅ Yes     | ❌ No
+          # Merging attribute sets dynamically        | ❌ No      | ✅ Yes
+          #  Understanding foldl' lib.attrsets.recursiveUpdate in Nix
+          # 1️⃣ What is foldl'?
+          #
+          # foldl' (left fold) reduces a list to a single value by applying a function repeatedly.
+          #
+          #     It takes an initial value and a list, then applies the function from left to right.
+          #
+          # 2️⃣ What is lib.attrsets.recursiveUpdate?
+          #
+          # lib.attrsets.recursiveUpdate merges two attribute sets.
+          #
+          #     If an attribute exists in both sets, the second one overrides the first.
+          #     If attributes are nested, it merges them recursively.
 
-          ${pkgs.thefuck}/bin/thefuck --alias | source
+          mergedEnvs = lib.foldl' lib.attrsets.recursiveUpdate { } [ cfg.interactiveEnvs ];
+          envsStr = lib.concatStringsSep "\n" (
+            lib.mapAttrsToList (name: value: "set -gx ${name} ${value}") mergedEnvs
+          );
 
-          # Editor
-          set -g EDITOR nvim
-          set -g PSQL_EDITOR nvim
+          mergedFuncs = lib.foldl' lib.attrsets.recursiveUpdate { } [ cfg.interactiveFuncs ];
+          funcsStr = lib.concatStringsSep "\n" (
+            lib.mapAttrsToList (name: value: ''
+              function ${name}
+                ${value}
+              end
+            '') mergedFuncs
+          );
 
-          # PAGER tool
-          set -g PAGER ${pkgs.less}/bin/less -S
+          listPaths = lib.unique (
+            lib.concatLists [
+              [ "$HOME/.local/bin" ]
+              cfg.customPaths
+            ]
+          );
 
-          # Set golang binary directory
-          set -g GOBIN $HOME/go/bin
-
-          function aws_profile
-            set profile $argv[1]
-            set -e argv[1]
-
-            ${pkgs.aws-vault}/bin/aws-vault exec $profile fish -d 12h $argv
-          end
-
-          ${concatMapStringsSep "\n" (path: ''
+          pathsStrs = lib.concatMapStringsSep "\n" (path: ''
             if test -d ${path}
               if not contains ${path} $PATH
                 set -p PATH ${path}
               end
             end
-          '') (initialPaths ++ cfg.customPaths)}
+          '') listPaths;
 
-          ${pkgs.nix-your-shell}/bin/nix-your-shell fish | source
-        ''
-        + (lib.optionalString (fastFetchCfg.enable) ''
-          ${pkgs.fastfetch}/bin/fastfetch
-        '');
+          mergedCommands = lib.unique (lib.concatLists [ cfg.interactiveCommands ]);
+          listCommandsStr = lib.concatStringsSep "\n" mergedCommands;
+        in
+        lib.concatStringsSep "\n" [
+          "set fish_greeting # disable default greeting"
+          "# Interactive environments"
+          envsStr
+          "# Interactive functions"
+          funcsStr
+          "# Interactive paths"
+          pathsStrs
+          "# Interactive commands"
+          listCommandsStr
+        ];
+
       plugins = [
         {
           name = "z";

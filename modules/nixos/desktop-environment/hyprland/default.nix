@@ -1,3 +1,5 @@
+# this package contains system configuration for hyprland.
+# for the user configuration, go to home manager config for that.
 {
   config,
   lib,

@@ -15,6 +15,11 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    ${namespace}.development.cli-utils.fish = {
+      interactiveCommands = [
+        "${pkgs.fastfetch}/bin/fastfetch"
+      ];
+    };
     home = {
       packages = with pkgs; [
         fastfetch

@@ -53,8 +53,10 @@ in
       };
     };
     applications = {
+      benchmark.enable = true;
       home-manager.enable = true;
       browsers.enable = true;
+      office.enable = true;
       appimage.enable = true;
       looking-glass = {
         enable = true;

@@ -24,6 +24,11 @@ in
   };
 
   config = mkIf cfg.enable {
+    ${namespace}.development.cli-utils.fish = {
+      interactiveEnvs = {
+        "EDITOR" = "nvim";
+      };
+    };
     home.packages = with pkgs; [
       nodejs_22 # dependencies
     ];

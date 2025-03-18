@@ -75,8 +75,8 @@ in
           "gm" = "${pkgs.git}/bin/git merge";
           "gaa" = "${pkgs.git}/bin/git add .";
           "g" = "${pkgs.git}/bin/git";
+          "cat" = "${pkgs.bat}/bin/bat";
         };
-
       };
     };
     langs = {
@@ -98,6 +98,9 @@ in
       themes = {
         qt.enable = true;
         gtk.enable = true;
+      };
+      coreVariables = {
+        mainMod = "SUPER";
       };
       screenlock.enable = true;
       services = {
@@ -140,6 +143,10 @@ in
     fonts.enable = true;
     chat.enable = true;
     stacer.enable = true;
+    explorer = {
+      enable = true;
+      termbased = false;
+    };
   };
 
   cirius.system = {

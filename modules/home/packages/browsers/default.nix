@@ -16,6 +16,15 @@ in
   };
 
   config = mkIf (cfg.enable && !pkgs.stdenv.isDarwin) {
+    ${namespace}.desktop-environment.hyprland = {
+      variables = {
+        browser = lib.getExe pkgs.floorp;
+      };
+      shortcuts = [
+        "$mainMod, B, exec, $browser"
+      ];
+    };
+
     home = {
       packages = with pkgs; [
         firefox

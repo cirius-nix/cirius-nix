@@ -1,4 +1,7 @@
-{ lib, ... }:
+{
+  lib,
+  ...
+}:
 let
   inherit (lib) mapAttrs mkOption types;
   inherit (lib.lists) findFirst;

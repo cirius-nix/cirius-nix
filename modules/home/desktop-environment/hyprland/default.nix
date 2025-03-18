@@ -10,15 +10,46 @@ let
     mkIf
     getExe
     types
+    mkOption
+    mkMerge
     ;
 
   inherit (lib.${namespace}) mkOpt;
   deCfg = config.${namespace}.desktop-environment;
   cfg = deCfg.hyprland;
+
 in
 {
   imports = lib.snowfall.fs.get-non-default-nix-files ./.;
-  options.cirius.desktop-environment.hyprland = {
+  options.${namespace}.desktop-environment.hyprland = {
+    coreVariables = mkOption {
+      type = types.submodule {
+        options = {
+          # modifiers
+          mainMod = mkOpt types.str "SUPER" "The main mod key";
+          hyper = mkOpt types.str "SUPER_SHIFT_CTRL" "The hyper key";
+          rHyper = mkOpt types.str "SUPER_ALT_R_CTRL_R" "The right hyper key";
+          lHyper = mkOpt types.str "SUPER_ALT_L_CTRL_L" "The left hyper key";
+          aHyper = mkOpt types.str "SUPER_ALT_CTRL" "The alt hyper key";
+
+          # application variables.
+          editor = mkOpt types.str (getExe pkgs.neovim) "The editor - Neovim";
+        };
+      };
+    };
+    variables = mkOption {
+      type = types.attrsOf types.str;
+      default = {
+        browser = mkOpt types.str (getExe pkgs.firefox) "The browser - Firefox";
+      };
+      description = "Custom variables for hyprland.";
+    };
+    shortcuts = mkOption {
+      type = types.listOf types.str;
+      default = [ ];
+      description = "Custom shortcuts for hyprland";
+    };
+    enableGreeting = mkOpt types.bool true "Enable the greeting";
     theme = mkOpt types.str "gruvbox" "The theme to use";
     appendConfig = lib.mkOption {
       type = lib.types.lines;
@@ -55,10 +86,57 @@ in
           ];
         };
         xwayland.enable = true;
-        settings = {
-          exec = [ "${getExe pkgs.libnotify} --icon ~/.face -u normal \"Hello $(whoami)\"" ];
-          monitor = ",preferred,auto,1.5";
-        };
+        settings =
+          let
+            # - Make default greeting options.
+            # - Executes "Hello $(whoami)" in libnotify.
+            greetingOpts = (
+              lib.optionalAttrs cfg.enableGreeting {
+                exec = [ "${getExe pkgs.libnotify} --icon ~/.face -u normal \"Hello $(whoami)\"" ];
+                monitor = ",preferred,auto,1.5";
+              }
+            );
+
+            # - Loops over all attributes in vals.
+            # - Checks if the key starts with $ using lib.hasPrefix "$" name.
+            # - If not, it adds $ to the beginning.
+            # - Returns the modified key-value pairs.
+            mapVals =
+              vals:
+              lib.mapAttrs' (
+                name: val: lib.nameValuePair (if lib.hasPrefix "$" name then name else "$" + name) val
+              ) vals;
+
+            # mergedVals will be used for coreVariables and variables
+            # coreVariables has types of submodule, variables has attrsOf str. So
+            # we cannot use mkMerge directly.
+            # Solution:
+            # ✔ Uses `recursiveUpdate` instead of mkMerge to properly combine
+            # coreVariables and variables.
+            # ✔ Ensures keys in coreVariables can be overridden in variables.
+            # ✔ Prefixes $ only if missing using mapAttrs'.
+            # ✔ More readable and structured Nix code.
+            mergedVals = lib.recursiveUpdate cfg.variables cfg.coreVariables;
+
+            # Example config:
+            # cfg.enableGreeting = true;
+            # cfg.coreVariables = { hyper = "SUPER_SHIFT_CTRL"; };
+            # cfg.variables = { mainMod = "SUPER"; };
+            # cfg.shortcuts = [
+            #   "$mainMod, B, exec, $browser"
+            # ];
+
+          in
+          mkMerge [
+            # Greeting
+            greetingOpts
+            # Mappings
+            (mapVals mergedVals)
+            # Shortcuts
+            {
+              bind = lib.unique (lib.concatLists [ cfg.shortcuts ]);
+            }
+          ];
       };
     home =
       let

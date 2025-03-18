@@ -13,9 +13,20 @@ in
 {
   options.${namespace}.development.term = {
     enable = mkEnableOption "term";
+    main = lib.${namespace}.mkEnumOption [
+      "kitty"
+      "weztem"
+    ] "kitty" "Main terminal for internal used";
   };
 
   config = mkIf cfg.enable {
+    ${namespace}.desktop-environment.hyprland = {
+      variables = {
+        term = lib.getExe pkgs.kitty;
+      };
+      shortcuts = [ "$mainMod, RETURN, exec, $term" ];
+    };
+
     programs = {
       starship = {
         inherit (cfg) enable;
