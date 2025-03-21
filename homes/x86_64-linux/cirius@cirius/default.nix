@@ -17,36 +17,24 @@ in
       userEmail = user.email;
       pager = true;
     };
+    langs = {
+      go.enable = true;
+      node.enable = true;
+      nix.enable = true;
+    };
     ide = {
       nixvim = {
         enable = true;
         plugins = {
           ai = {
             enable = true;
-            codeium = true;
+            # TODO: need instruct model for chat.
+            ollamaModel = "qwen2.5-coder:latest"; # deepseek-coder:6.7b | starcoder2:3b | qwen2.5-coder:latest
+            ollamaHost = "127.0.0.1:11434";
           };
           debugging.enable = true;
           formatter = {
             enable = true;
-          };
-          languages = {
-            nix.enable = true;
-            typescript = {
-              enable = true;
-              formatTimeout = 1000;
-              enableAngularls = true;
-            };
-            go = {
-              enable = true;
-              use3rdPlugins = {
-                rayxgo = {
-                  enable = false;
-                  config = ''
-                    require('go').setup({});
-                  '';
-                };
-              };
-            };
           };
         };
       };
@@ -79,11 +67,6 @@ in
         };
       };
     };
-    langs = {
-      go.enable = true;
-      java.enable = true;
-      node.enable = true;
-    };
 
     infra = {
       enable = true;
@@ -95,6 +78,11 @@ in
     kind = "hyprland";
     hyprland = {
       theme = "gruvbox";
+      events = {
+        onEmptyWorkspaces = {
+          "2" = [ "zen" ];
+        };
+      };
       themes = {
         qt.enable = true;
         gtk.enable = true;

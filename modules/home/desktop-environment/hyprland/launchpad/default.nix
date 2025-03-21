@@ -19,6 +19,15 @@ in
     enable = mkBoolOpt true "Whether to enable the Launchpad in the desktop environment.";
   };
   config = mkIf enabled {
+    wayland.windowManager.hyprland = {
+      settings = {
+        windowrulev2 = [
+          "float, class:Rofi"
+          "stayfocused, class:Rofi"
+        ];
+      };
+    };
+
     programs.rofi = {
       enable = true;
       package = pkgs.rofi-wayland;
@@ -47,7 +56,6 @@ in
         ''
           * {
             ${hyprCfg.themes.standardColorVars}
-
             bg-col:  ${colors.base.rgb};
             bg-col-light: ${colors.crust.rgb};
             border-col: ${colors.text.rgb};

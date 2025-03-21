@@ -20,6 +20,7 @@ in
       go.enable = true;
       java.enable = true;
       node.enable = true;
+      nix.enable = true;
     };
     cli-utils = {
       enable = true;
@@ -46,50 +47,14 @@ in
       nixvim = {
         enable = true;
         plugins = {
-          ai.enable = true;
+          ai = {
+            enable = true;
+            ollamaModel = "qwen2.5-coder:latest"; # deepseek-coder:6.7b | starcoder2:3b | qwen2.5-coder:latest
+            ollamaHost = "127.0.0.1:11434";
+          };
           debugging.enable = true;
           formatter = {
             enable = true;
-          };
-          languages = {
-            nix.enable = true;
-            typescript = {
-              enable = true;
-              formatTimeout = 1000;
-              enableAngularls = true;
-            };
-            go = {
-              enable = true;
-              use3rdPlugins = {
-                rayxgo = {
-                  enable = true;
-                  # >   - go.reftool
-                  # >   - go.launch
-                  # >   - go.runner
-                  # >   - go.alt_getopt
-                  # >   - go
-                  #    - go.gotest
-                  #    - go.null_ls
-                  #    - go.inlay
-                  #    - go.project
-                  #    - go.comment
-                  #    - go.tags
-                  #    - go.ginkgo
-                  #    - go.gotests
-                  #    - go.ts.go
-                  #    - go.ts.utils
-                  #    - go.ts.nodes
-                  #    - go.snips
-                  #    - go.format
-                  #    - go.fixplurals
-                  #    - snips.all
-                  #    - snips.go
-                  config = ''
-                    require('go').setup({});
-                  '';
-                };
-              };
-            };
           };
         };
       };

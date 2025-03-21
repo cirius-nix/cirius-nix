@@ -27,14 +27,29 @@ in
 {
   options.${namespace}.development.ide.db = {
     enable = mkEnableOption "Database";
-    # specificPkgs = mkOption {
-    #   type = with types; listOf package;
-    #   default = [ ];
-    #   description = "A list of packages to be installed.";
-    # };
+    # ensure that lib.getExe can find the binary from those names.
+    main = lib.${namespace}.mkEnumOption [
+      "datagrip"
+    ] "datagrip" "Main Database IDE";
   };
 
   config = mkIf cfg.enable {
+    ${namespace}.desktop-environment.hyprland = {
+      variables = {
+        "mainDBIde" = cfg.main;
+      };
+      events.onEmptyWorkspaces = {
+        "3" = [ "$mainDBIde" ];
+      };
+      rules.winv2 = {
+        center = {
+          "" = [ "class:^(.*jetbrains.*)$, title:^(Confirm Exit|Open Project|win424|win201|splash)$" ];
+        };
+        size = {
+          "640 400" = [ "class:^(.*jetbrains.*)$, title:^(splash)$" ];
+        };
+      };
+    };
     home.packages =
       with pkgs;
       [

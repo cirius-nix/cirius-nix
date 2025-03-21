@@ -14,10 +14,21 @@ let
     mkMerge
     ;
 
-  inherit (lib.${namespace}) mkOpt;
+  inherit (lib.${namespace}) mkOpt mkAttrsOption;
   deCfg = config.${namespace}.desktop-environment;
   cfg = deCfg.hyprland;
 
+  rulesWinv2Enum = [
+    "center"
+    "opacity"
+    "size"
+    "move"
+    "pin"
+    "float"
+    "tile"
+    "workspace"
+    "idleinhibit"
+  ];
 in
 {
   imports = lib.snowfall.fs.get-non-default-nix-files ./.;
@@ -49,7 +60,7 @@ in
       default = [ ];
       description = "Custom shortcuts for hyprland";
     };
-    enableGreeting = mkOpt types.bool true "Enable the greeting";
+    enableGreeting = mkOpt types.bool false "Enable the greeting";
     theme = mkOpt types.str "gruvbox" "The theme to use";
     appendConfig = lib.mkOption {
       type = lib.types.lines;
@@ -58,6 +69,14 @@ in
     prependConfig = lib.mkOption {
       type = lib.types.lines;
       default = "";
+    };
+    events = {
+      onEmptyWorkspaces = mkAttrsOption (with lib.types; listOf str) { } "Set event on empty workspaces";
+    };
+    rules = {
+      winv2 = lib.genAttrs rulesWinv2Enum (
+        rule: mkAttrsOption (with lib.types; listOf str) { } "Set ${rule} rules"
+      );
     };
   };
   config = mkIf (deCfg.kind == "hyprland") {
@@ -126,8 +145,25 @@ in
             #   "$mainMod, B, exec, $browser"
             # ];
 
+            onEmptyWorkspaceHandlers = lib.mapAttrsToList (
+              name: values: map (value: "${name}, on-created-empty:${value}") values
+            ) cfg.events.onEmptyWorkspaces;
+
           in
           mkMerge [
+            {
+              workspace =
+                let
+                  mapEvent =
+                    eventName: events:
+                    (lib.mapAttrsToList (name: values: map (value: "${name}, ${eventName}:${value}") values) events);
+                in
+                lib.unique (
+                  lib.flatten [
+                    (mapEvent "on-created-empty" cfg.events.onEmptyWorkspaces)
+                  ]
+                );
+            }
             # Greeting
             greetingOpts
             # Mappings
@@ -135,6 +171,15 @@ in
             # Shortcuts
             {
               bind = lib.unique (lib.concatLists [ cfg.shortcuts ]);
+            }
+            {
+              windowrulev2 =
+                let
+                  mapRules =
+                    rule: defs:
+                    (lib.mapAttrsToList (name: values: (map (value: "${rule} ${name}, ${value}") values)) defs);
+                in
+                lib.unique (lib.flatten (map (rule: mapRules rule cfg.rules.winv2.${rule}) rulesWinv2Enum));
             }
           ];
       };
@@ -144,7 +189,6 @@ in
       in
       {
         packages = with pkgs; [
-          xwaylandvideobridge
           grim
           slurp
           libgcc

@@ -16,6 +16,15 @@ in
   };
 
   config = mkIf cfg.enable {
+    ${namespace} = {
+      development.ide.nixvim.plugins = {
+        languages.typescript = {
+          enable = true;
+          formatTimeout = 1000;
+          enableAngularls = true;
+        };
+      };
+    };
     home.packages = with pkgs; [
       nodejs_22
       corepack_22

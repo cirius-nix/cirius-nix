@@ -30,6 +30,14 @@ in
   };
 
   config = mkIf cfg.enable {
+    # virtualisation.docker = {
+    #   enable = true;
+    #   storageDriver = "overlay2"; # 'overlay2' for systemd; 'btrfs' for btrfs ; etc.
+    #   rootless = {
+    #     enable = true;
+    #     setSocketVariable = true; # Set DOCKER\_HOST for rootless Docker
+    #   };
+    # };
     virtualisation = {
       podman = {
         enable = true;

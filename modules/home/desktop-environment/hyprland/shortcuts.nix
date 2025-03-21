@@ -3,19 +3,13 @@
   lib,
   pkgs,
   namespace,
-  osConfig,
   ...
 }:
 let
   inherit (lib) mkIf getExe getExe';
-  # FIXME: do not hardcode here
-  user = lib.cirius.findOrNull osConfig.cirius.users.users "username" "cirius";
   convert = getExe' pkgs.imagemagick "convert";
-  grimblast = getExe pkgs.grimblast;
   wl-copy = getExe' pkgs.wl-clipboard "wl-copy";
   wl-paste = getExe' pkgs.wl-clipboard "wl-paste";
-  getDateTime = getExe (pkgs.writeShellScriptBin "getDateTime" ''echo $(date +'%Y%m%d_%H%M%S')'');
-  screenshot-path = "/home/${user.username}/Pictures/screenshots";
   deCfg = config.${namespace}.desktop-environment;
 in
 {
@@ -44,19 +38,6 @@ in
         # "$window-inspector" = "${getExe hyprland-contrib.packages.${system}.hyprprop}";
         # screenshot commands
         "$notify-screenshot" = ''${getExe pkgs.libnotify} --icon "$file" "Screenshot Saved"'';
-        "$screenshot-path" = "/home/${user.username}/Pictures/screenshots";
-        "$grimblast_area_file" =
-          ''file="${screenshot-path}/$(${getDateTime}).png" && ${grimblast} --freeze --notify save area "$file"'';
-        "$grimblast_active_file" =
-          ''file="${screenshot-path}/$(${getDateTime}).png" && ${grimblast} --notify save active "$file"'';
-        "$grimblast_screen_file" =
-          ''file="${screenshot-path}/$(${getDateTime}).png" && ${grimblast} --notify save screen "$file"'';
-        "$grimblast_area_swappy" = ''${grimblast} --freeze save area - | ${getExe pkgs.swappy} -f -'';
-        "$grimblast_active_swappy" = ''${grimblast} save active - | ${getExe pkgs.swappy} -f -'';
-        "$grimblast_screen_swappy" = ''${grimblast} save screen - | ${getExe pkgs.swappy} -f -'';
-        "$grimblast_area_clipboard" = "${grimblast} --freeze --notify copy area";
-        "$grimblast_active_clipboard" = "${grimblast} --notify copy active";
-        "$grimblast_screen_clipboard" = "${grimblast} --notify copy screen";
 
         # utility commands
         "$color_picker" =
@@ -79,26 +60,6 @@ in
 
             # kill window
             "$mainMod, Q, killactive,"
-
-            # screenshots
-            # File
-            ", Print, exec, $grimblast_active_file"
-            "SHIFT, Print, exec, $grimblast_area_file"
-            # "SHIFT_CTRL, S, exec, $grimblast_area_file"
-            "$mainMod, Print, exec, $grimblast_screen_file"
-
-            # Area / Window
-            "ALT, Print, exec, $grimblast_active_swappy"
-            "ALT_CTRL, Print, exec, $grimblast_area_swappy"
-            "ALT_SUPER, Print, exec, $grimblast_screen_swappy"
-            # "SUPER_CTRL_SHIFT, S, exec, $grimblast_screen_swappy"
-
-            # Clipboard
-            "CTRL, Print, exec, $grimblast_active_clipboard"
-            "CTRL_SHIFT, Print, exec, $grimblast_area_clipboard"
-            "SUPER_CTRL, Print, exec, $grimblast_screen_clipboard"
-
-            "SUPER_SHIFT, S, exec, $grimblast_area_clipboard"
 
             # Screen recording
             "SUPER_CTRLALT, Print, exec, $screen-recorder screen"

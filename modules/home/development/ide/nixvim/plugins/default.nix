@@ -7,27 +7,6 @@
 }:
 let
   cfg = config.${namespace}.development.ide.nixvim;
-  aiCfg = config.${namespace}.development.ide.nixvim.plugins.ai;
-
-  aiSources = [
-    { name = "copilot"; }
-    { name = "codeium"; }
-  ];
-  cmpSources = (if aiCfg.enable then aiSources else [ ]) ++ [
-    { name = "nvim_lsp"; }
-    {
-      name = "luasnip";
-      keywordLength = 3;
-    }
-    {
-      name = "buffer";
-      option.get_bufnrs.__raw = "vim.api.nvim_list_bufs";
-    }
-    { name = "nvim_lsp_signature_help"; }
-    { name = "path"; }
-    { name = "buffer"; }
-  ];
-
   inherit (lib) mkIf;
 in
 {
@@ -338,7 +317,21 @@ in
               "<C-Space>" = "cmp.mapping.complete()";
               "<CR>" = "cmp.mapping.confirm({ select = true })";
             };
-            sources = cmpSources;
+            sources = [
+              { name = "cmp-ai"; }
+              { name = "nvim_lsp"; }
+              {
+                name = "luasnip";
+                keywordLength = 3;
+              }
+              {
+                name = "buffer";
+                option.get_bufnrs.__raw = "vim.api.nvim_list_bufs";
+              }
+              { name = "nvim_lsp_signature_help"; }
+              { name = "path"; }
+              { name = "buffer"; }
+            ];
           };
         };
         neotest = {

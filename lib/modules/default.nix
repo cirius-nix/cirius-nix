@@ -11,6 +11,8 @@ let
     nullOr
     package
     str
+    listOf
+    attrsOf
     ;
 in
 rec {
@@ -22,6 +24,18 @@ rec {
     mkOption {
       inherit default description;
       type = nullOr (enum values);
+    };
+  mkListOption =
+    type: default: description:
+    mkOption {
+      inherit default description;
+      type = nullOr (listOf type);
+    };
+  mkAttrsOption =
+    type: default: description:
+    mkOption {
+      inherit default description;
+      type = nullOr (attrsOf type);
     };
   mkStrOption =
     default: description:

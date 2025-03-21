@@ -58,6 +58,8 @@ in
       browsers.enable = true;
       office.enable = true;
       appimage.enable = true;
+      diskman.enable = true;
+      ai.enable = true;
       looking-glass = {
         enable = true;
         user = user.username;
@@ -96,6 +98,8 @@ in
       Group = "root";
     };
   };
+
+  nix.settings.auto-optimise-store = true;
 
   boot.loader = {
     systemd-boot.enable = true;

@@ -16,6 +16,15 @@ in
   };
 
   config = mkIf cfg.enable {
+    ${namespace}.desktop-environment.hyprland = {
+      rules = {
+        winv2 = {
+          float = {
+            "" = [ "class:Enpass" ];
+          };
+        };
+      };
+    };
     home = {
       packages = with pkgs; [
         enpass

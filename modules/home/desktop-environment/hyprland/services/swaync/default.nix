@@ -16,7 +16,6 @@ let
     config.wayland.windowManager.hyprland.package
     coreutils
     grim
-    grimblast
     hyprpicker
     jq
     libnotify

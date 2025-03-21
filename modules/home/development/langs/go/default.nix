@@ -16,12 +16,29 @@ in
   };
 
   config = mkIf cfg.enable {
-    ${namespace}.development.cli-utils.fish = {
-      interactiveEnvs = {
-        GOBIN = "$HOME/go/bin";
+    ${namespace} = {
+      development = {
+        cli-utils.fish = {
+          interactiveEnvs = {
+            GOBIN = "$HOME/go/bin";
+          };
+          customPaths = [ "$GOBIN" ];
+        };
+        ide.nixvim = {
+          plugins = {
+            languages = {
+              go = {
+                enable = true;
+                use3rdPlugins = {
+                  rayxgo.enable = false;
+                };
+              };
+            };
+          };
+        };
       };
-      customPaths = [ "$GOBIN" ];
     };
+
     home.packages = with pkgs; [
       go
       gotools

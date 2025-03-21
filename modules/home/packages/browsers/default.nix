@@ -23,6 +23,16 @@ in
       shortcuts = [
         "$mainMod, B, exec, $browser"
       ];
+      rules = {
+        winv2 = {
+          idleinhibit = {
+            "fullscreen" = [ ];
+            "focus" = [
+              "idleinhibit focus, class:^(mpv|.+exe)$"
+            ];
+          };
+        };
+      };
     };
 
     home = {
