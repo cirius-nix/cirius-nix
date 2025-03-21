@@ -15,13 +15,15 @@ in
   };
 
   config = mkIf cfg.enable {
-    ${namespace}.desktop-environment.hyprland = {
-      rules.winv2.workspace = {
-        "5 silent" = [
-          "class:^(org.telegram.desktop)$"
-          "class:^(discord)$"
-          "class:^(Caprine)$"
-        ];
+    ${namespace} = lib.optionalAttrs pkgs.stdenv.isLinux {
+      desktop-environment.hyprland = {
+        rules.winv2.workspace = {
+          "5 silent" = [
+            "class:^(org.telegram.desktop)$"
+            "class:^(discord)$"
+            "class:^(Caprine)$"
+          ];
+        };
       };
     };
     home.packages = with pkgs; [

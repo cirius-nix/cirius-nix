@@ -24,11 +24,39 @@ in
       default = "";
     };
     enableWarp = mkEnableOption "Cloudflare WARP";
+    virtualHosts = mkOption {
+      description = "Virtual Hosts";
+      type = types.submodule {
+        options = {
+          enable = mkEnableOption "Enable virtual hosts. (Using nginx)";
+          hosts = mkOption {
+            type = types.attrsOf types.submodule {
+              options = {
+                root = mkOption {
+                  description = "Root";
+                  type = types.str;
+                };
+              };
+            };
+            description = "Hostnames";
+            default = { };
+          };
+        };
+      };
+      default = { };
+    };
   };
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [ dig ];
+    environment.systemPackages = with pkgs; [
+      dig
+      motrix
+    ];
     services.cloudflare-warp = {
       enable = cfg.enableWarp;
+    };
+    services.nginx = mkIf cfg.virtualHosts.enable {
+      enable = true;
+      virtualHosts = lib.mergeAttrs [ cfg.virtualHosts.hosts ];
     };
     networking = {
       dhcpcd = {

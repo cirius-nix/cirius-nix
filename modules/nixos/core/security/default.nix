@@ -18,5 +18,8 @@ in
     security.rtkit = {
       inherit (cfg) enable;
     };
+    security.polkit = {
+      enable = true;
+    };
   };
 }

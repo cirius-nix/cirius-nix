@@ -52,7 +52,17 @@ in
         settings = {
           auto_sync = true;
           sync_frequency = "5m";
-          style = "compact";
+          style = "compact"; # compact | full | auto
+          # Use CTRL-R to switch between modes.
+          # global (default)	Search history from all hosts, all sessions, all directories
+          # host	Search history just from this host
+          # session	Search history just from the current session
+          # directory	Search history just from the current directory
+          # workspace	Search history just from the current git repository (>17.0)
+          filter_mode = "workspace";
+          filter_mode_shell_up_key_binding = "workspace";
+          workspaces = true;
+          secret_filter = true;
         };
       };
       thefuck = {
@@ -67,8 +77,7 @@ in
             "*.ino:C++"
             ".ignore:Git Ignore"
           ];
-          pager = "less --RAW-CONTROL-CHARS --quit-if-one-screen --mouse";
-          paging = "never";
+          pager = "less --RAW-CONTROL-CHARS --mouse";
           theme = "TwoDark";
         };
       };

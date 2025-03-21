@@ -12,7 +12,7 @@ in
     };
   };
   config = {
-    programs.uwsm.enable = true;
+    programs.uwsm.enable = false;
     # programs.uwsm.waylandCompositors = {
     #   sway = {
     #     prettyName = "sway";

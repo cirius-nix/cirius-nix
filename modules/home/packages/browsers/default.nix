@@ -16,20 +16,22 @@ in
   };
 
   config = mkIf (cfg.enable && !pkgs.stdenv.isDarwin) {
-    ${namespace}.desktop-environment.hyprland = {
-      variables = {
-        browser = lib.getExe pkgs.floorp;
-      };
-      shortcuts = [
-        "$mainMod, B, exec, $browser"
-      ];
-      rules = {
-        winv2 = {
-          idleinhibit = {
-            "fullscreen" = [ ];
-            "focus" = [
-              "idleinhibit focus, class:^(mpv|.+exe)$"
-            ];
+    ${namespace} = lib.optionalAttrs pkgs.stdenv.isLinux {
+      desktop-environment.hyprland = {
+        variables = {
+          browser = lib.getExe pkgs.floorp;
+        };
+        shortcuts = [
+          "$mainMod, B, exec, $browser"
+        ];
+        rules = {
+          winv2 = {
+            idleinhibit = {
+              "fullscreen" = [ ];
+              "focus" = [
+                "idleinhibit focus, class:^(mpv|.+exe)$"
+              ];
+            };
           };
         };
       };

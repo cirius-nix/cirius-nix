@@ -18,6 +18,7 @@ in
       kdePackages.partitionmanager
       kdePackages.filelight
       baobab
+      smartmontools
     ];
   };
 }

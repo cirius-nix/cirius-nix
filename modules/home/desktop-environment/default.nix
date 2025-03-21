@@ -1,6 +1,8 @@
 {
   lib,
   namespace,
+  osConfig,
+  pkgs,
   ...
 }:
 let
@@ -8,14 +10,18 @@ let
 in
 {
   options.${namespace} = {
-    desktop-environment = {
-      kind = mkEnumOption [
-        "kde"
-        "hyprland"
-        "gnome"
-        "pantheon"
-        "deepin"
-      ] "kde" "Desktop Environment";
-    };
+    desktop-environment =
+      if (!pkgs.stdenv.isDarwin) then
+        {
+          kind = mkEnumOption [
+            "kde"
+            "hyprland"
+            "gnome"
+            "pantheon"
+            "deepin"
+          ] osConfig.${namespace}.desktop-environment.kind "Desktop Environment";
+        }
+      else
+        { };
   };
 }

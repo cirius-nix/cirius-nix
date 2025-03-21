@@ -12,56 +12,52 @@ let
     ;
   cfg = config.${namespace}.development.ide.db;
 
-  specificPkgs =
-    with pkgs;
-    (
-      if (!pkgs.stdenv.isDarwin) then
-        [
-          jetbrains.datagrip
-          dbeaver-bin
-        ]
-      else
-        [ ]
-    );
 in
 {
   options.${namespace}.development.ide.db = {
     enable = mkEnableOption "Database";
-    # ensure that lib.getExe can find the binary from those names.
     main = lib.${namespace}.mkEnumOption [
       "datagrip"
     ] "datagrip" "Main Database IDE";
   };
 
   config = mkIf cfg.enable {
-    ${namespace}.desktop-environment.hyprland = {
-      variables = {
-        "mainDBIde" = cfg.main;
-      };
-      events.onEmptyWorkspaces = {
-        "3" = [ "$mainDBIde" ];
-      };
-      rules.winv2 = {
-        center = {
-          "" = [ "class:^(.*jetbrains.*)$, title:^(Confirm Exit|Open Project|win424|win201|splash)$" ];
+    ${namespace} = lib.optionalAttrs pkgs.stdenv.isLinux {
+      desktop-environment.hyprland = {
+        variables = {
+          "mainDBIde" = cfg.main;
         };
-        size = {
-          "640 400" = [ "class:^(.*jetbrains.*)$, title:^(splash)$" ];
+        events.onEmptyWorkspaces = {
+          "3" = [ "$mainDBIde" ];
+        };
+        rules.winv2 = {
+          center = {
+            "" = [ "class:^(.*jetbrains.*)$, title:^(Confirm Exit|Open Project|win424|win201|splash)$" ];
+          };
+          size = {
+            "640 400" = [ "class:^(.*jetbrains.*)$, title:^(splash)$" ];
+          };
         };
       };
     };
+
     home.packages =
       with pkgs;
-      [
-        # depedencies
-        nodePackages.sql-formatter
-        less
+      lib.flatten [
+        [
+          # depedencies
+          nodePackages.sql-formatter
+          less
+          # cli
+          mycli
+          pgcli
+        ]
 
-        # cli
-        mycli
-        pgcli
-      ]
-      ++ specificPkgs;
+        (lib.optional pkgs.stdenv.isLinux [
+          jetbrains.datagrip
+          dbeaver-bin
+        ])
+      ];
 
     home.file = {
       ".myclirc".text = ''

@@ -7,8 +7,6 @@
 }:
 let
   cfg = config.${namespace}.development.ide;
-  nixvimCfg = config.${namespace}.development.ide.nixvim;
-
   inherit (lib) mkEnableOption;
 in
 {
@@ -19,25 +17,13 @@ in
   config = {
     home.packages =
       with pkgs;
-      [
-      ]
-      ++ (
-        if cfg.useJetbrainsNC then
-          with pkgs;
-          [
+      lib.flatten [
+        (lib.optional pkgs.stdenv.isLinux [
+          vscode-fhs
+          (lib.optional cfg.useJetbrainsNC [
             jetbrains.webstorm
-          ]
-        else
-          [ ]
-      )
-      ++ (
-        if (!nixvimCfg.enable) then
-          with pkgs;
-          [
-            vscode
-          ]
-        else
-          [ ]
-      );
+          ])
+        ])
+      ];
   };
 }

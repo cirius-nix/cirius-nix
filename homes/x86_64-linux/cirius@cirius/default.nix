@@ -8,9 +8,39 @@ let
   user = lib.cirius.findOrNull osConfig.cirius.users.users "username" "cirius";
   # m1 = "HDMI-A-1";
   m2 = "DP-2";
+
+  osAICfg = osConfig.cirius.applications.ai;
+  ollamaPort = osAICfg.port;
+
+  inherit (lib.cirius) mkEnabled;
 in
 {
   cirius.development = {
+    ai = {
+      enable = true;
+      tabby = {
+        port = 11001;
+        localRepos = [ ];
+        model = {
+          # chat = {
+          #   kind = "openai/chat";
+          #   model_name = "qwen2.5-coder:7b-base";
+          #   api_endpoint = "http://localhost:${builtins.toString ollamaPort}/v1";
+          # };
+          completion = {
+            kind = "ollama/completion";
+            api_endpoint = "http://localhost:${builtins.toString ollamaPort}";
+            model_name = "qwen2.5-coder:3b-base";
+            prompt_template = "<|fim_prefix|> {prefix} <|fim_suffix|>{suffix} <|fim_middle|>";
+          };
+          embedding = {
+            kind = "ollama/embedding";
+            model_name = "nomic-embed-text:latest";
+            api_endpoint = "http://localhost:${builtins.toString ollamaPort}";
+          };
+        };
+      };
+    };
     git = {
       enable = true;
       userName = user.name;
@@ -19,27 +49,32 @@ in
     };
     langs = {
       go.enable = true;
-      node.enable = true;
       nix.enable = true;
     };
     ide = {
       nixvim = {
         enable = true;
         plugins = {
-          ai = {
-            enable = true;
-            # TODO: need instruct model for chat.
-            ollamaModel = "qwen2.5-coder:latest"; # deepseek-coder:6.7b | starcoder2:3b | qwen2.5-coder:latest
-            ollamaHost = "127.0.0.1:11434";
-          };
-          debugging.enable = true;
-          formatter = {
-            enable = true;
+          ai = mkEnabled;
+          searching = mkEnabled;
+          debugging = mkEnabled;
+          testing = mkEnabled;
+          formatter = mkEnabled;
+          languages = {
+            dataPresentation = mkEnabled;
+            go = mkEnabled;
+            lua = mkEnabled;
+            markup = mkEnabled;
+            nix = mkEnabled;
+            shells = mkEnabled;
+            sql = mkEnabled;
+            terraform = mkEnabled;
+            typescript = mkEnabled;
           };
         };
       };
-      db.enable = true;
-      helix.enable = true;
+      db = mkEnabled;
+      helix = mkEnabled;
       useJetbrainsNC = true;
     };
     api-client.enable = true;
@@ -75,7 +110,6 @@ in
   };
 
   cirius.desktop-environment = {
-    kind = "hyprland";
     hyprland = {
       theme = "gruvbox";
       events = {

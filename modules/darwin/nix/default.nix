@@ -2,14 +2,15 @@
   config,
   lib,
   pkgs,
+  namespace,
   ...
 }:
 let
   inherit (lib) mkEnableOption mkIf;
-  cfg = config.cirius.nix;
+  cfg = config.${namespace}.nix;
 in
 {
-  options.cirius.nix = {
+  options.${namespace}.nix = {
     enable = mkEnableOption "Nix";
   };
 

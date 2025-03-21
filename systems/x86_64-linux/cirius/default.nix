@@ -33,7 +33,7 @@ in
       clipboard.enable = true;
       input-method.enable = true;
       bluetooth.enable = true;
-      keyring.enable = true; # TODO: move keyring to desktop-environment settings.
+      keyring.enable = true;
       locale.enable = true;
       network = {
         enable = true;
@@ -47,8 +47,8 @@ in
       virtualisation = {
         enable = true;
         waydroid = {
-          enable = false;
-          autoStart = true;
+          enable = true;
+          autoStart = false;
         };
       };
     };
@@ -59,7 +59,9 @@ in
       office.enable = true;
       appimage.enable = true;
       diskman.enable = true;
-      ai.enable = true;
+      ai = {
+        enable = true;
+      };
       looking-glass = {
         enable = true;
         user = user.username;
@@ -81,7 +83,7 @@ in
       # systemctl --user unmask pipewire-pulse
       # systemctl --user unmask pipewire-pulse.socket
       # systemctl --user --now enable pipewire pipewire-pulse
-      kind = "hyprland";
+      kind = "kde";
     };
     fonts.enable = true;
   };

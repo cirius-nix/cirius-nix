@@ -1,0 +1,7 @@
+keys:
+  - &cirius-darwin age1t9jnlavgssytkgm95grf8hkmkw7hjmfrtk7vtjgmjg2dufrnt5csrngujz
+creation_rules:
+  - path_regex: secrets/cirius-darwin/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *cirius-darwin

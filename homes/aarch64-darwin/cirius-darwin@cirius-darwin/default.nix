@@ -1,77 +1,133 @@
 {
+  config,
   lib,
-  osConfig,
   pkgs,
   ...
 }:
 let
-  user = lib.cirius.findOrNull osConfig.cirius.users.users "username" "cirius-darwin";
+  namespace = "cirius";
+  user = config.${namespace}.user;
+  ollamaPort = 11000;
+  tabbyPort = 11001;
+  inherit (lib.${namespace}) mkEnabled;
 in
 {
-  cirius.development = {
-    git = {
-      enable = true;
-      userName = user.name;
-      userEmail = user.email;
-      pager = true;
+  ${namespace} = {
+    # TODO: implement user.
+    user = {
+      email = "hieu.tran21198@gmail.com";
+      name = "Minh Hieu Tran";
     };
-    api-client.enable = true;
-    langs = {
-      go.enable = true;
-      java.enable = true;
-      node.enable = true;
-      nix.enable = true;
-    };
-    cli-utils = {
-      enable = true;
-      fish = {
+    development = {
+      ai = {
         enable = true;
-        customPaths = [ "~/Applications" ];
-        aliases = {
-          "rbnix" = "darwin-rebuild switch --flake .#cirius-darwin";
-          "tf" = "${pkgs.terraform}/bin/terraform";
-          "gco" = "${pkgs.git}/bin/git checkout";
-          "gpl" = "${pkgs.git}/bin/git pull origin";
-          "gps" = "${pkgs.git}/bin/git push origin";
-          "gm" = "${pkgs.git}/bin/git merge";
-        };
-      };
-    };
-    infra = {
-      enable = true;
-    };
-    ide = {
-      db = {
-        enable = true;
-      };
-      nixvim = {
-        enable = true;
-        plugins = {
-          ai = {
-            enable = true;
-            ollamaModel = "qwen2.5-coder:latest"; # deepseek-coder:6.7b | starcoder2:3b | qwen2.5-coder:latest
-            ollamaHost = "127.0.0.1:11434";
-          };
-          debugging.enable = true;
-          formatter = {
-            enable = true;
+        tabby = {
+          port = tabbyPort;
+          localRepos = [
+            {
+              name = "cirius-nix";
+              repo = "${user.homeDir}/Workspace/github/personal/cirius-nix/cirius-nix";
+            }
+            {
+              name = "wbs";
+              repo = "${user.homeDir}/Workspace/github/personal/wbs";
+            }
+            {
+              name = "wbs-frontend";
+              repo = "${user.homeDir}/Workspace/github/personal/wbs-frontend";
+            }
+          ];
+          model = {
+            # chat = {
+            #   kind = "openai/chat";
+            #   model_name = "qwen2.5-coder:7b-base";
+            #   api_endpoint = "http://localhost:${builtins.toString ollamaPort}/v1";
+            # };
+            completion = {
+              kind = "ollama/completion";
+              api_endpoint = "http://localhost:${builtins.toString ollamaPort}";
+              model_name = "qwen2.5-coder:3b-base";
+              prompt_template = "<|fim_prefix|> {prefix} <|fim_suffix|>{suffix} <|fim_middle|>";
+            };
+            embedding = {
+              kind = "ollama/embedding";
+              model_name = "nomic-embed-text:latest";
+              api_endpoint = "http://localhost:${builtins.toString ollamaPort}";
+            };
           };
         };
       };
-      helix = {
+      git = {
+        enable = true;
+        pager = true;
+      };
+      api-client.enable = true;
+      langs = {
+        go.enable = true;
+        java.enable = true;
+        node.enable = true;
+        nix.enable = true;
+      };
+      cli-utils = {
+        enable = true;
+        fish = {
+          enable = true;
+          customPaths = [ "~/Applications" ];
+          aliases = {
+            "rbnix" = "sudo darwin-rebuild switch --flake .#${user.username}";
+            "tf" = "${pkgs.terraform}/bin/terraform";
+            "gco" = "${pkgs.git}/bin/git checkout";
+            "gpl" = "${pkgs.git}/bin/git pull origin";
+            "gps" = "${pkgs.git}/bin/git push origin";
+            "gm" = "${pkgs.git}/bin/git merge";
+          };
+        };
+      };
+      infra = {
         enable = true;
       };
+      ide = {
+        db = {
+          enable = true;
+        };
+        nixvim = {
+          enable = true;
+          plugins = {
+            ai = mkEnabled;
+            searching = mkEnabled;
+            debugging = mkEnabled;
+            testing = mkEnabled;
+            formatter = mkEnabled;
+            languages = {
+              dataPresentation = mkEnabled;
+              go = mkEnabled;
+              lua = mkEnabled;
+              markup = mkEnabled;
+              nix = mkEnabled;
+              shells = mkEnabled;
+              sql = mkEnabled;
+              terraform = mkEnabled;
+              typescript = mkEnabled;
+            };
+          };
+        };
+        helix = {
+          enable = true;
+        };
+      };
+      term.enable = true;
     };
-    term.enable = true;
-  };
 
-  cirius.packages = {
-    home-manager = {
-      enable = true;
-      inherit (user) username;
-      inherit (user) name;
-      inherit (user) email;
+    packages = {
+      home-manager = {
+        enable = true;
+        inherit (user) username name email;
+      };
+      security = {
+        enable = true;
+        secretFile = builtins.toString ../../../secrets/${user.username}/default.yaml;
+      };
+      fonts.enable = true;
     };
-    fonts.enable = true;
   };
 }

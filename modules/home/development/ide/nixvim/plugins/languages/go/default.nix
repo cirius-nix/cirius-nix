@@ -9,69 +9,64 @@ let
   inherit (lib)
     mkIf
     mkEnableOption
-    mkOption
-    types
     ;
+  inherit (lib.${namespace}.nixvim) mkEnabled;
 
   cfg = config.${namespace}.development.ide.nixvim.plugins.languages.go;
-
-  rayxgoModuleType = types.submodule (
-    { config, ... }:
-    {
-      options = {
-        enable = mkEnableOption "Enable go.nvim";
-        configPre = mkOption {
-          type = types.str;
-          default = "";
-        };
-        config = mkOption {
-          type = types.str;
-          default = ''
-            require('go').setup({})
-          '';
-        };
-        configPost = mkOption {
-          type = types.str;
-          default = "";
-        };
-      };
-    }
-  );
 
 in
 {
   options.${namespace}.development.ide.nixvim.plugins.languages.go = {
-    enable = mkEnableOption "Enable Go support";
-    use3rdPlugins = mkOption {
-      type = types.submodule {
-        options = {
-          rayxgo = mkOption {
-            type = rayxgoModuleType;
-            default = { };
-            description = "Configuration for go.nvim";
-          };
-        };
-      };
-    };
+    enable = mkEnableOption "Enable Go Language Server";
   };
 
   config = mkIf cfg.enable {
-    programs.nixvim = {
-      plugins.lsp.servers = {
-        gopls.enable = true;
+    home.packages = with pkgs; [
+      # authtest benchcmp bisect bundle callgraph compilebench cookieauth
+      # deadcode defers digraph eg fieldalignment file2fuzz findcall fiximports
+      # fuzz-driver fuzz-runner gitauth go-contrib-init godex godoc goimports
+      # gomvpkg gonew gopackages gorename gostacks gotype goyacc html2article
+      # httpmux ifaceassert lostcancel netrcauth nilness nodecount play present
+      # present2md shadow splitdwarf ssadump stress stringer stringintconv
+      # toolstash unmarshal unusedresult
+      gotools
+      goimports-reviser
+    ];
+    programs.nixvim.extraConfigLuaPost = ''
+      vim.filetype.add({
+        extension = {
+          gotmpl = 'gotmpl',
+        },
+        pattern = {
+          [".*/templates/.*%.tpl"] = "helm",
+          [".*/templates/.*%.ya?ml"] = "helm",
+          ["helmfile.*%.ya?ml"] = "helm",
+        },
+      })
+    '';
+    programs.nixvim.plugins = {
+      lsp.servers = {
+        gopls = mkEnabled;
       };
-      extraPlugins = mkIf cfg.use3rdPlugins.rayxgo.enable [
-        (pkgs.vimUtils.buildVimPlugin {
-          pname = "go.nvim";
-          version = "latest";
-          src = pkgs.fetchFromGitHub {
-            owner = "ray-x";
-            repo = "go.nvim";
-            rev = "a9efe436c5294fa24098e81859755ec755a94a60";
-            hash = "sha256-t/pJ1KrVlVC3T9kzHij5O/Yem25vtvHGpYbOK0cRN9Q=";
+      conform-nvim.settings = {
+        # INFO: custom formatter to be used.
+        formatters = {
+          goimports = {
+            command = "${pkgs.gotools}/bin/goimports";
           };
-        })
-      ];
+          goimports-reviser = {
+            command = lib.getExe pkgs.goimports-reviser;
+          };
+        };
+
+        # INFO: use formatter(s).
+        formatters_by_ft = {
+          go = [
+            "goimports"
+            "goimports-reviser"
+          ];
+        };
+      };
     };
   };
 }

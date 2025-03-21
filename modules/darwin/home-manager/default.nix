@@ -1,10 +1,15 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  namespace,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
-  cfg = config.cirius.home-manager;
+  cfg = config.${namespace}.home-manager;
 in
 {
-  options.cirius.home-manager = {
+  options.${namespace}.home-manager = {
     enable = mkEnableOption "home-manager";
   };
 

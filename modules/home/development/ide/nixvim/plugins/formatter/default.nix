@@ -2,13 +2,11 @@
   lib,
   namespace,
   config,
-  pkgs,
   ...
 }:
 let
   inherit (lib) mkIf mkEnableOption;
   cfg = config.${namespace}.development.ide.nixvim.plugins.formatter;
-  langCfg = config.${namespace}.development.ide.nixvim.plugins.languages;
 in
 {
   options.${namespace}.development.ide.nixvim.plugins.formatter = {
@@ -28,13 +26,13 @@ in
                     return
                   end
 
-                  if slow_format_filetypes[vim.bo[bufnr].filetype] then
+                  if _M.slow_format_filetypes[vim.bo[bufnr].filetype] then
                     return
                   end
 
                   local function on_format(err)
                     if err and err:match("timeout$") then
-                      slow_format_filetypes[vim.bo[bufnr].filetype] = true
+                      _M.slow_format_filetypes[vim.bo[bufnr].filetype] = true
                     end
                   end
 
@@ -49,138 +47,64 @@ in
                     return
                   end
 
-                  if not slow_format_filetypes[vim.bo[bufnr].filetype] then
+                  if not _M.slow_format_filetypes[vim.bo[bufnr].filetype] then
                     return
                   end
 
                   return { lsp_fallback = true }
                 end
               '';
-            formatters_by_ft = {
-              go = [
-                "goimports"
-                "goimports-reviser"
-              ];
-              bash = [
-                "shellcheck"
-                "shellharden"
-                "shfmt"
-              ];
-              bicep = [ "bicep" ];
-              c = [ "clang_format" ];
-              cmake = [ "cmake-format" ];
-              css = [ "stylelint" ];
-              fish = [ "fish_indent" ];
-              html = {
-                __unkeyed-2 = "prettier";
-                timeout_ms = 5000;
-                stop_after_first = true;
-              };
-              javascript = {
-                __unkeyed-2 = "prettier";
-                timeout_ms = 2000;
-                stop_after_first = true;
-              };
-              json = [ "jq" ];
-              lua = [ "stylua" ];
-              markdown = [ "deno_fmt" ];
-              nix = [ "nixfmt" ];
-              python = [
-                "isort"
-                "ruff"
-              ];
-              rust = [ "rustfmt" ];
-              sh = [
-                "shellcheck"
-                "shellharden"
-                "shfmt"
-              ];
-              sql = [
-                "sql_formatter"
-              ];
-              terraform = [ "terraform_fmt" ];
-              toml = [ "taplo" ];
-              typescript = mkIf langCfg.typescript.enable {
-                __unkeyed-2 = "prettier";
-                stop_after_first = true;
-                timeout_ms = langCfg.typescript.formatTimeout;
-              };
-              xml = [
-                "xmlformat"
-                "xmllint"
-              ];
-              yaml = [ "yamlfmt" ];
-            };
-
-            formatters = {
-              sql_formatter = {
-                prepend_args = {
-                  __raw = ''
-                    { "-c", vim.fn.expand("~/.config/sql_formatter.json") },
-                  '';
-                };
-              };
-              taplo = {
-                command = lib.getExe pkgs.taplo;
-              };
-              black = {
-                command = lib.getExe pkgs.black;
-              };
-              prettier = mkIf langCfg.typescript.enable {
-                command = lib.getExe pkgs.nodePackages.prettier;
-              };
-              bicep = {
-                command = lib.getExe pkgs.bicep;
-              };
-              cmake-format = {
-                command = lib.getExe pkgs.cmake-format;
-              };
-              deno_fmt = {
-                command = lib.getExe pkgs.deno;
-              };
-              google-java-format = {
-                command = lib.getExe pkgs.google-java-format;
-              };
-              jq = {
-                command = lib.getExe pkgs.jq;
-              };
-              nixfmt = {
-                command = lib.getExe pkgs.nixfmt-rfc-style;
-              };
-              ruff = {
-                command = lib.getExe pkgs.ruff;
-              };
-              rustfmt = {
-                command = lib.getExe pkgs.rustfmt;
-              };
-              shellcheck = {
-                command = lib.getExe pkgs.shellcheck;
-              };
-              shfmt = {
-                command = lib.getExe pkgs.shfmt;
-              };
-              shellharden = {
-                command = lib.getExe pkgs.shellharden;
-              };
-              sqlfluff = {
-                command = lib.getExe pkgs.sqlfluff;
-              };
-              stylelint = {
-                command = lib.getExe pkgs.stylelint;
-              };
-              stylua = {
-                command = lib.getExe pkgs.stylua;
-              };
-              terraform_fmt = {
-                command = lib.getExe pkgs.terraform;
-              };
-              yamlfmt = {
-                command = lib.getExe pkgs.yamlfmt;
-              };
-            };
           };
         };
       };
+      extraConfigLuaPost = ''
+        vim.api.nvim_create_user_command("FormatDisable", function(args)
+          if args.bang then
+            vim.b.disable_autoformat = true
+          else
+            vim.g.disable_autoformat = true
+          end
+        end, {
+          desc = "Disable autoformat-on-save",
+          bang = true,
+        })
+
+        vim.api.nvim_create_user_command("FormatEnable", function()
+          vim.b.disable_autoformat = false
+          vim.g.disable_autoformat = false
+        end, {
+          desc = "Re-enable autoformat-on-save",
+        })
+
+        -- Toggle auto format buffer on save.
+        vim.api.nvim_create_user_command("FormatToggle", function(args)
+          if args.bang then
+            -- Toggle formatting for current buffer
+            vim.b.disable_autoformat = not vim.b.disable_autoformat
+          else
+            -- Toggle formatting globally
+            vim.g.disable_autoformat = not vim.g.disable_autoformat
+          end
+        end, {
+          desc = "Toggle autoformat-on-save",
+          bang = true,
+        })
+
+        -- Turn off paste mode when leaving insert
+        vim.api.nvim_create_autocmd("InsertLeave", {
+          pattern = "*",
+          command = "set nopaste",
+        })
+
+        -- Fix conceallevel for json files
+        vim.api.nvim_create_autocmd("FileType", {
+          pattern = {"json", "jsonc"},
+          callback = function()
+            vim.wo.spell = false
+            vim.wo.conceallevel = 0
+          end,
+        })
+      '';
     };
   };
 }

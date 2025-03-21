@@ -22,22 +22,11 @@ in
         };
       };
       default = { };
-      description = ''
-        Waydroid is a container-based approach to running Android apps on Linux.
-        It is a fork of Anbox, which is no longer maintained.
-      '';
+      description = ''Waydroid is a container-based approach to running Android apps on Linux.'';
     };
   };
 
   config = mkIf cfg.enable {
-    # virtualisation.docker = {
-    #   enable = true;
-    #   storageDriver = "overlay2"; # 'overlay2' for systemd; 'btrfs' for btrfs ; etc.
-    #   rootless = {
-    #     enable = true;
-    #     setSocketVariable = true; # Set DOCKER\_HOST for rootless Docker
-    #   };
-    # };
     virtualisation = {
       podman = {
         enable = true;
@@ -45,13 +34,12 @@ in
         dockerCompat = true;
         defaultNetwork.settings.dns_enabled = true;
       };
-      vmware = {
-        host = {
-          enable = true;
-        };
-      };
       waydroid = {
         inherit (cfg.waydroid) enable;
+      };
+      virtualbox.host = {
+        enable = true;
+        enableExtensionPack = true;
       };
     };
 
@@ -61,6 +49,7 @@ in
       podman-tui
       podman-compose
       docker-client
+      distrobox
     ];
 
     systemd.user.services = mkIf cfg.waydroid.enable {

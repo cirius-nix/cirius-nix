@@ -39,7 +39,6 @@ in
   config = mkIf (deCfg.kind == "hyprland") {
     programs.hyprland = {
       enable = true;
-      withUWSM = true;
     };
     environment = {
       etc."greetd/environments".text = ''"Hyprland"'';
@@ -48,6 +47,8 @@ in
       systemPackages = with pkgs; [
         wayland-utils
         egl-wayland
+        gnome-tweaks
+        dconf-editor
       ];
     };
     services = {

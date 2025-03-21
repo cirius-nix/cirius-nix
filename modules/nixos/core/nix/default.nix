@@ -52,10 +52,14 @@ in
       nix-prefetch-github
     ];
     nix = {
-      settings.experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
+      optimise.automatic = true;
+      settings = {
+        # auto-optimise-store = true; -- useful but slow.
+        experimental-features = [
+          "nix-command"
+          "flakes"
+        ];
+      };
     };
   };
 }

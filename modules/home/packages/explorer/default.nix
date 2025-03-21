@@ -31,15 +31,17 @@ in
     termbased = mkEnableOption "Term-based";
   };
   config = mkIf cfg.enable {
-    ${namespace}.desktop-environment.hyprland = {
-      variables = {
-        "explorer" =
-          if enabledTerm then
-            "$term ${lib.getExe pkgs.yazi}"
-          else
-            lib.getExe' pkgs.kdePackages.dolphin "dolphin";
+    ${namespace} = lib.optionalAttrs pkgs.stdenv.isLinux {
+      desktop-environment.hyprland = {
+        variables = {
+          "explorer" =
+            if enabledTerm then
+              "$term ${lib.getExe pkgs.yazi}"
+            else
+              lib.getExe' pkgs.kdePackages.dolphin "dolphin";
+        };
+        shortcuts = [ "$mainMod, E, exec, $explorer" ];
       };
-      shortcuts = [ "$mainMod, E, exec, $explorer" ];
     };
     home.packages =
       with pkgs;

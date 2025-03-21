@@ -17,7 +17,11 @@ in
 
   config = mkIf cfg.enable {
     home = {
-      packages = with pkgs; [ libreoffice-qt6-fresh ];
+      packages = with pkgs; [
+        libreoffice-qt6
+        obsidian
+        obsidian-export
+      ];
     };
   };
 }

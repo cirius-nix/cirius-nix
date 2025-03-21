@@ -20,16 +20,18 @@ in
   };
 
   config = mkIf cfg.enable {
-    ${namespace}.desktop-environment.hyprland = {
-      events.onEmptyWorkspaces = {
-        "1" = [ "$term" ];
+    ${namespace} = lib.optionalAttrs pkgs.stdenv.isLinux {
+      desktop-environment.hyprland = {
+        events.onEmptyWorkspaces = {
+          "1" = [ "$term" ];
+        };
+        variables = {
+          term = lib.getExe pkgs.kitty;
+        };
+        shortcuts = [
+          "$mainMod, RETURN, exec, $term"
+        ];
       };
-      variables = {
-        term = lib.getExe pkgs.kitty;
-      };
-      shortcuts = [
-        "$mainMod, RETURN, exec, $term"
-      ];
     };
 
     programs = {
@@ -42,7 +44,8 @@ in
       kitty = {
         enable = true;
         shellIntegration.enableFishIntegration = true;
-        themeFile = "GruvboxMaterialDarkHard";
+        # https://github.com/kovidgoyal/kitty-themes/tree/master/themes
+        themeFile = "Catppuccin-Macchiato";
         extraConfig = builtins.readFile ./assets/kitty/extra.conf;
         settings =
           {

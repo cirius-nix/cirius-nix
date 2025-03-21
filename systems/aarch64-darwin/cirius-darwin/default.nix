@@ -1,5 +1,6 @@
+{ namespace, ... }:
 {
-  cirius = {
+  ${namespace} = {
     # define the user
     users = {
       enable = true;
@@ -21,6 +22,8 @@
 
   nix.settings.experimental-features = "nix-command flakes";
 
-  services.nix-daemon.enable = true;
+  # nix-darwin now manages nix-daemon unconditionally when
+  # `nix.enable` is on.
+  nix.enable = true;
   system.stateVersion = 5;
 }

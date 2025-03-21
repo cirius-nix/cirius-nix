@@ -31,6 +31,8 @@ in
       };
     };
     home.packages = with pkgs; [
+      devenv
+
       awscli2
       aws-vault
       chamber
@@ -41,8 +43,8 @@ in
 
       pulumi
       pulumi-esc
-      pulumiPackages.pulumi-language-go
-      pulumiPackages.pulumi-language-nodejs
+      pulumiPackages.pulumi-go
+      pulumiPackages.pulumi-nodejs
     ];
   };
 }

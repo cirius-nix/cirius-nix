@@ -15,7 +15,9 @@ in
         timeout = true;
         autowrite = true;
         clipboard = "unnamedplus";
-        completeopt = "menu,menuone,noselect";
+        background = "dark";
+        # completeopt = "menu,menuone,noselect";
+        completeopt = "menu,noinsert,popup,fuzzy";
         conceallevel = 3;
         confirm = true;
         cursorline = true;
@@ -53,6 +55,17 @@ in
         wildmode = "longest:full,full";
         winminwidth = 5;
         wrap = false;
+        # Users may find that the borders on their hover windows have vanished
+        # after updating. This is because Neovim no longer uses global
+        # callbacks for LSP responses (a necessary breaking change to correctly
+        # support multiple LSP clients in a buffer), so overriding
+        # vim.lsp.handlers['textDocument/hover'] to add borders to the hover
+        # window will no longer work. Fortunately, there is also a new option
+        # in this release called winborder which sets the default border for
+        # all floating windows. For example, use vim.o.winborder = 'rounded' to
+        # use rounded borders on all floating windows.
+        # INFO: currently winborder breaks all ui that implemented custom win border.
+        winborder = "rounded"; # https://gpanders.com/blog/whats-new-in-neovim-0-11/#improved-hover-documentation
       };
     };
   };

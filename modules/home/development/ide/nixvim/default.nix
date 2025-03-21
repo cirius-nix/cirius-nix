@@ -2,7 +2,6 @@
   config,
   lib,
   namespace,
-  pkgs,
   ...
 }:
 let
@@ -29,19 +28,47 @@ in
         "EDITOR" = "nvim";
       };
     };
-    home.packages = with pkgs; [
-      nodejs_22 # dependencies
-    ];
     programs.nixvim = {
       enable = true;
-      colorschemes.vscode = {
-        enable = true;
+      colorschemes = {
+        catppuccin = {
+          enable = true;
+          settings = {
+            background.light = "latte";
+            background.dark = "macchiato";
+          };
+        };
+      };
+      withNodeJs = true;
+      withPerl = true;
+      withRuby = true;
+      extraConfigLuaPre = ''
+        -- Global functions
+        _G.FUNCS = {};
+        _M.slow_format_filetypes = {};
+      '';
+      diagnostics = {
+        float = {
+          border = "rounded";
+        };
+        virtual_lines = {
+          current_line = true;
+        };
+        virtual_text = true;
+        signs = true;
+        underline = true;
+        update_in_insert = false;
+      };
+      autoGroups = {
+        builtin_auto_completion = {
+          clear = true;
+        };
       };
       editorconfig.enable = true;
       clipboard.register = "unnamedplus";
       performance = {
         byteCompileLua = {
-          enable = true;
+          enable = false;
           nvimRuntime = true;
           configs = true;
           plugins = true;

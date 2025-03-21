@@ -29,9 +29,6 @@ in
             languages = {
               go = {
                 enable = true;
-                use3rdPlugins = {
-                  rayxgo.enable = false;
-                };
               };
             };
           };

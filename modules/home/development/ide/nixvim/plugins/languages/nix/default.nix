@@ -10,37 +10,39 @@ let
 in
 {
   options.${namespace}.development.ide.nixvim.plugins.languages.nix = {
-    enable = lib.mkEnableOption "Enable Nix language support";
+    enable = lib.mkEnableOption "Enable Nix Language Server";
   };
 
   config = lib.mkIf (cfg.enable) {
-    programs.nixvim = {
-      plugins = {
-        direnv.enable = true;
-        nix.enable = true;
-        nix-develop = {
+    programs.nixvim.plugins = {
+      direnv.enable = true;
+      nix.enable = true;
+      nix-develop = {
+        enable = true;
+      };
+      lsp.servers = {
+        nixd.enable = true;
+        nil_ls = {
           enable = true;
-        };
-        lsp = {
-          servers = {
-            nixd.enable = true;
-            nil_ls = {
-              enable = true;
-              settings = {
-                formatting = {
-                  command = [ "${lib.getExe pkgs.nixfmt-rfc-style}" ];
-                };
-                nix = {
-                  flake = {
-                    autoArchive = true;
-                  };
-                };
-              };
-            };
+          settings = {
+            formatting.command = [ "${lib.getExe pkgs.nixfmt-rfc-style}" ];
+            nix.flake.autoArchive = true;
           };
         };
       };
+      conform-nvim.settings = {
+        # INFO: custom formatter to be used.
+        formatters = {
+          nixfmt = {
+            command = lib.getExe pkgs.nixfmt-rfc-style;
+          };
+        };
 
+        # INFO: use formatter(s).
+        formatters_by_ft = {
+          nix = [ "nixfmt" ];
+        };
+      };
     };
   };
 }

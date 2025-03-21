@@ -1,12 +1,15 @@
 {
   description = "Cirius Nix";
   inputs = {
-    zen-browser.url = "github:youwen5/zen-browser-flake";
-    # optional, but recommended so it shares system libraries, and improves startup time
-    zen-browser.inputs.nixpkgs.follows = "nixpkgs";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    pre-commit-hooks.url = "github:cachix/git-hooks.nix";
-    nur.url = "github:nix-community/NUR";
+    zen-browser = {
+      url = "github:youwen5/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    pre-commit-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     darwin = {
       url = "github:lnl7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -24,16 +27,27 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixvim = {
+      # stable
+      # url = "github:nix-community/nixvim/nixos-24.11";
+      # unstable
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
+    anyrun = {
+      url = "github:anyrun-org/anyrun";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
-    anyrun.url = "github:anyrun-org/anyrun";
-    anyrun-nixos-options.url = "github:n3oney/anyrun-nixos-options";
+    anyrun-nixos-options = {
+      url = "github:n3oney/anyrun-nixos-options";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-your-shell = {
       url = "github:MercuryTechnologies/nix-your-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # secret manager.
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -56,7 +70,12 @@
           { system, ... }:
           {
             packages = {
+
               inherit (inputs.zen-browser.packages.${system}) default;
+              # in system level configuration:
+              # environment.systemPackages = [
+              #   inputs.zen-browser.packages.${pkgs.system}.default
+              # ];
             };
           };
       };
@@ -65,18 +84,30 @@
       channels-config = {
         allowUnfree = true;
       };
-      overlays = [ inputs.nur.overlays.default ];
-      homes.modules = with inputs; [
-        nixvim.homeManagerModules.nixvim
-        inputs.anyrun.homeManagerModules.default
-        inputs.nur.modules.homeManager.default
-      ];
+      # Add overlays for the `nixpkgs` channel.
+      overlays = [ ];
+      # system defined in systems/{arch}/{host}
+      # systems/x86_84-linux/cirius
+      # systems/aarch64-darwin/cirius
       systems.modules = {
-        nixos = [
-          inputs.sops-nix.nixosModules.sops
+        # add modules to all nixos system.
+        nixos = with inputs; [
+          sops-nix.nixosModules.sops
         ];
-        darwin = [
-          inputs.sops-nix.darwinModules.sops
+        # add modules to all darwin system.
+        darwin = with inputs; [
+          sops-nix.darwinModules.sops
+        ];
+      };
+      # home defined in homes/{arch}/{username}@{host}
+      homes = {
+        # Add modules to all homes.
+        modules = with inputs; [
+          # nixvim editor
+          nixvim.homeManagerModules.nixvim
+          anyrun.homeManagerModules.default
+          # secret management
+          sops-nix.homeManagerModules.sops
         ];
       };
       outputs-builder = channels: { formatter = channels.nixpkgs.nixfmt-rfc-style; };

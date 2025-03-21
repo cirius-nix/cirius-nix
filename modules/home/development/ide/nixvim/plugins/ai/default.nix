@@ -2,108 +2,56 @@
   namespace,
   lib,
   config,
+  pkgs,
   ...
 }:
 let
   cfg = config.${namespace}.development.ide.nixvim.plugins.ai;
   inherit (lib) mkEnableOption mkIf;
+
+  osEnabledAI = config.${namespace}.development.ai.enable;
 in
 {
   options.${namespace}.development.ide.nixvim.plugins.ai = {
     enable = mkEnableOption "Enable AI plugins for NixVim";
-    ollamaModel = lib.mkOption {
-      description = "Model to use";
-      default = "qwen2.5-coder:latest";
-      type = lib.types.str;
-    };
-    ollamaHost =
-      lib.${namespace}.mkStrOption "http://127.0.0.1:11234"
-        "Host address of the Ollama server";
   };
-  config = mkIf cfg.enable {
-    programs.nixvim.plugins = {
-      ollama = {
-        enable = true;
-        model = cfg.ollamaModel;
-        url = cfg.ollamaHost;
-      };
-      codecompanion = {
-        enable = true;
-        settings = {
-          adapters = {
-            ollama = {
-              __raw = ''
-                function()
-                  return require('codecompanion.adapters').extend('ollama', {
-                      env = {
-                          url = cfg.ollamaHost,
-                      },
-                      schema = {
-                          model = {
-                              default = cfg.ollamaModel,
-                          },
-                          num_ctx = {
-                              default = 32768,
-                          },
-                      },
-                  })
-                end
-              '';
-            };
-          };
-          display = {
-            action_palette = {
-              opts = {
-                show_default_prompt_library = true;
+  config = mkIf (cfg.enable && osEnabledAI) {
+    programs = {
+      nixvim = {
+        extraConfigLuaPre = ''
+          vim.g.tabby_agent_start_command = {"${pkgs.tabby-agent}/bin/tabby-agent", "--stdio", "--lsp"}
+          vim.g.tabby_inline_completion_trigger = "auto"
+          vim.g.tabby_inline_completion_keybinding_accept = "<s-cr>"
+        '';
+        extraPlugins = [
+          pkgs.vimPlugins.vim-tabby
+        ];
+        plugins = {
+          avante = {
+            enable = true;
+            settings = {
+              provider = "gemini";
+              auto_suggestions_provider = "gemini";
+              cursor_applying_provider = "groq";
+              behavior = {
+                enable_cursor_planning_mode = true;
+                auto_suggestions = false;
+                auto_set_highlight_group = true;
+                auto_set_keymaps = true;
+                auto_apply_diff_after_generation = false;
+                support_paste_from_clipboard = false;
+                minimize_diff = true;
+                enable_token_counting = true;
+                enable_claude_text_editor_tool_mode = false;
               };
-              provider = "default";
-            };
-            chat = {
-              window = {
-                layout = "vertical";
-                opts = {
-                  breakindent = true;
-                };
+              gemini = {
+                endpoint = "https://generativelanguage.googleapis.com/v1beta/models";
+                model = "gemini-2.5-pro-exp-03-25";
+                timeout = 30000;
+                temperature = 0;
+                max_tokens = 20480;
               };
             };
-          };
-          opts = {
-            log_level = "TRACE";
-            send_code = true;
-            use_default_actions = true;
-            use_default_prompts = true;
-          };
-          strategies = {
-            agent = {
-              adapter = "ollama";
-            };
-            chat = {
-              adapter = "ollama";
-            };
-            inline = {
-              adapter = "ollama";
-            };
-          };
-        };
-      };
-      cmp-ai = {
-        enable = true;
-        settings = {
-          provider = "Ollama";
-          run_on_every_key_stroke = true;
-          provider_options = {
-            __raw = ''
-              {
-                model = "${cfg.ollamaModel}",
-                prompt = function(lines_before, lines_after)
-                  return lines_before
-                end,
-                suffix = function(lines_after)
-                  return lines_after
-                end,
-                auto_unload = false,
-              }
-            '';
           };
         };
       };

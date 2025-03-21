@@ -38,6 +38,13 @@
     ];
   };
 
+  fileSystems."/nix" = {
+    device = "/dev/disk/by-label/nix-store";
+    neededForBoot = true;
+    options = [ "noatime" ];
+    fsType = "ext4";
+  };
+
   swapDevices = [
     { device = "/dev/disk/by-uuid/5a8b673e-56ba-47ea-9e10-126adebc5d12"; }
   ];

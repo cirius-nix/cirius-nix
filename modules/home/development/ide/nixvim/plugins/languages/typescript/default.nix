@@ -2,6 +2,7 @@
   namespace,
   config,
   lib,
+  pkgs,
   ...
 }:
 let
@@ -10,7 +11,7 @@ let
 in
 {
   options.${namespace}.development.ide.nixvim.plugins.languages.typescript = {
-    enable = mkEnableOption "TypeScript support";
+    enable = mkEnableOption "TypeScript Language Server";
     enableAngularls = mkEnableOption {
       default = false;
       description = ''
@@ -26,35 +27,65 @@ in
     };
   };
   config = mkIf cfg.enable {
-    programs.nixvim = {
-      plugins = {
-        typescript-tools = {
+    home.packages = with pkgs; [ nodejs_22 ];
+    programs.nixvim.plugins = {
+      typescript-tools = {
+        enable = true;
+      };
+      lsp.servers = {
+        ts_ls = {
           enable = true;
         };
-        lsp = {
-          servers = {
-            ts_ls = {
-              enable = true;
-            };
-            eslint = {
-              enable = true;
-            };
-            angularls = {
-              enable = cfg.enableAngularls;
-              filetypes = [
-                "html"
-                "typescript"
-              ];
-              rootDir = {
-                __raw = ''
-                  (function()
-                  	local util = require("lspconfig.util")
-                  	root_dir = util.root_pattern("angular.json", "project.json")
-                  	return root_dir
-                  end)()
-                '';
-              };
-            };
+        eslint = {
+          enable = true;
+          filetypes = [
+            "javascript"
+            "javascriptreact"
+            "javascript.jsx"
+            "typescript"
+            "typescriptreact"
+            "typescript.tsx"
+            "vue"
+            "svelte"
+            "astro"
+          ];
+        };
+        angularls = {
+          enable = cfg.enableAngularls;
+          filetypes = [
+            "html"
+            "typescript"
+          ];
+          rootDir = {
+            __raw = ''
+              (function()
+                local util = require("lspconfig.util")
+                root_dir = util.root_pattern("angular.json", "project.json")
+                return root_dir
+              end)()
+            '';
+          };
+        };
+      };
+      conform-nvim.settings = {
+        # INFO: custom formatter to be used.
+        formatters = {
+          prettier = {
+            command = lib.getExe pkgs.nodePackages.prettier;
+          };
+        };
+
+        # INFO: use formatter(s).
+        formatters_by_ft = {
+          javascript = {
+            __unkeyed-2 = "prettier";
+            timeout_ms = 2000;
+            stop_after_first = true;
+          };
+          typescript = {
+            __unkeyed-2 = "prettier";
+            stop_after_first = true;
+            timeout_ms = cfg.formatTimeout;
           };
         };
       };

@@ -17,8 +17,8 @@ in
 
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
-      collabora-online
-      libreoffice-qt6-fresh
+      libreoffice
+      # collabora-online
     ];
   };
 }

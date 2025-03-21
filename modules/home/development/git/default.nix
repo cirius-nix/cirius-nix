@@ -8,15 +8,13 @@
 
 let
   inherit (lib) mkEnableOption mkIf;
-  inherit (lib.cirius) mkStrOption;
 
   cfg = config.${namespace}.development.git;
+  userCfg = config.${namespace}.user;
 in
 {
   options.${namespace}.development.git = {
     enable = mkEnableOption "Git";
-    userName = mkStrOption null "The full name of the user.";
-    userEmail = mkStrOption null "The e-mail address of the user.";
     pager = mkEnableOption "Pager as paging package";
   };
 
@@ -24,6 +22,7 @@ in
     home.packages = with pkgs; [
       gh
       delta
+      diff-so-fancy
     ];
     programs.lazygit = {
       inherit (cfg) enable;
@@ -33,7 +32,9 @@ in
       };
     };
     programs.git = {
-      inherit (cfg) enable userName userEmail;
+      inherit (cfg) enable;
+      userName = userCfg.username;
+      userEmail = userCfg.email;
 
       aliases = {
         undo = "reset HEAD~1 --mixed";

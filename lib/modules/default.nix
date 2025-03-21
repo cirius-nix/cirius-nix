@@ -16,6 +16,9 @@ let
     ;
 in
 rec {
+  mkEnabled = {
+    enable = true;
+  };
   findOrNull =
     list: attribute: value:
     findFirst (x: x.${attribute} == value) null list;
@@ -30,6 +33,11 @@ rec {
     mkOption {
       inherit default description;
       type = nullOr (listOf type);
+    };
+  subModuleType =
+    opts:
+    types.submodule {
+      options = opts;
     };
   mkAttrsOption =
     type: default: description:

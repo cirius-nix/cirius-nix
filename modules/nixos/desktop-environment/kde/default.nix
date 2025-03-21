@@ -13,10 +13,12 @@ in
 {
   config = mkIf (deCfg.kind == "kde") {
     environment.systemPackages = with pkgs; [
-      kdePackages.kconfig
-      kdePackages.filelight
+      kdePackages.full
       wayland-utils
       egl-wayland
+      kdePackages.yakuake
+      crow-translate
+      kdePackages.polkit-kde-agent-1
     ];
 
     services = {

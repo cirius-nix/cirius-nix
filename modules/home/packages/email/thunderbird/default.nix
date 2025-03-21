@@ -19,33 +19,36 @@ in
   };
 
   config = mkIf cfg.enable {
-    ${namespace}.desktop-environment.hyprland = {
-      variables = {
-        mainEmail = cfg.main;
+    ${namespace} = lib.optionalAttrs pkgs.stdenv.isLinux {
+      desktop-environment.hyprland = {
+        variables = {
+          mainEmail = cfg.main;
+        };
+        events.onEmptyWorkspaces = {
+          "6" = [ "$mainEmail" ];
+        };
+        rules.winv2 = {
+          workspace = {
+            "6 silent" = [
+              "class:^(thunderbird)$"
+              "class:^(Mailspring)$"
+            ];
+          };
+          float = {
+            "" = [ "class:^(thunderbird)$,title:.*(Reminders)$" ];
+          };
+          size = {
+            "1100 600" = [ "class:^(thunderbird)$,title:.*(Reminders)$" ];
+          };
+          move = {
+            "78% 6%" = [ "class:^(thunderbird)$,title:.*(Reminders)$" ];
+          };
+          pin = {
+            "" = [ "class:^(thunderbird)$,title:.*(Reminders)$" ];
+          };
+        };
       };
-      events.onEmptyWorkspaces = {
-        "6" = [ "$mainEmail" ];
-      };
-      rules.winv2 = {
-        workspace = {
-          "6 silent" = [
-            "class:^(thunderbird)$"
-            "class:^(Mailspring)$"
-          ];
-        };
-        float = {
-          "" = [ "class:^(thunderbird)$,title:.*(Reminders)$" ];
-        };
-        size = {
-          "1100 600" = [ "class:^(thunderbird)$,title:.*(Reminders)$" ];
-        };
-        move = {
-          "78% 6%" = [ "class:^(thunderbird)$,title:.*(Reminders)$" ];
-        };
-        pin = {
-          "" = [ "class:^(thunderbird)$,title:.*(Reminders)$" ];
-        };
-      };
+
     };
     home.packages = [
       pkgs.${cfg.main}

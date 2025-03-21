@@ -32,8 +32,11 @@ in
       vulkan-extension-layer
     ];
 
+    nixpkgs.config.cudaSupport = pkgs.stdenv.isLinux && cfg.enable;
+
     services.xserver.videoDrivers = [ "nvidia" ];
     boot.blacklistedKernelModules = [ "nouveau" ];
+    programs.nix-required-mounts.presets.nvidia-gpu.enable = true;
     hardware = {
       graphics = {
         enable = true;
