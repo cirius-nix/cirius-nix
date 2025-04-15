@@ -46,6 +46,10 @@ let
       OCO_AI_PROVIDER='deepseek'
       OCO_API_KEY='${config.sops.placeholder."deepseek_auth_token"}'
     '';
+    "groq" = ''
+      OCO_AI_PROVIDER='groq'
+      OCO_API_KEY='${config.sops.placeholder."groq_auth_token"}'
+    '';
   };
 
   opencommitConfig = ''
@@ -63,6 +67,7 @@ in
         "gemini"
         "openai"
         "deepseek"
+        "groq"
       ] "ollama" "Opencommit Preset";
       model = mkStrOption "mistral:7b" "Model";
     };

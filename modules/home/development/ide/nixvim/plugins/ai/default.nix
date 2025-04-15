@@ -69,6 +69,20 @@ let
         };
       };
     };
+    "qwen" = {
+      provider = "qianwen";
+      vendors = {
+        qianwen = {
+          __inherited_from = "openai";
+          api_key_name = "DASHSCOPE_API_KEY";
+          endpoint = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1";
+          model = cfg.avante.reasoningModel;
+          timeout = 30000;
+          temperature = 0;
+          max_tokens = 8192;
+        };
+      };
+    };
     "ollama" = {
       provider = "ollama";
       ollama =
@@ -93,7 +107,7 @@ in
     # Configuration options for the Avante AI plugin.
     avante = {
       # Select a preset for Avante.
-      preset = mkEnumOption [ "gemini" "groq" "deepseek" "ollama" ] "gemini" "Preset";
+      preset = mkEnumOption [ "gemini" "groq" "deepseek" "ollama" "qwen" ] "gemini" "Preset";
       # Specify the reasoning model for Avante.
       reasoningModel = mkStrOption "gemini-2.0-flash" "Reasoning Model";
     };

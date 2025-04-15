@@ -45,17 +45,17 @@ in
             # };
             chat = {
             };
-            # completion = {
-            #   kind = "ollama/completion";
-            #   api_endpoint = "http://localhost:${builtins.toString ollamaPort}";
-            #   model_name = "qwen2.5-coder:3b-base";
-            #   prompt_template = "<|fim_prefix|> {prefix} <|fim_suffix|>{suffix} <|fim_middle|>";
-            # };
             completion = {
-              kind = "deepseek/completion";
-              api_endpoint = "https://api.deepseek.com/beta";
-              model_name = "deepseek-chat";
+              kind = "ollama/completion";
+              api_endpoint = "http://localhost:${builtins.toString ollamaPort}";
+              model_name = "qwen2.5-coder:3b-base";
+              prompt_template = "<|fim_prefix|> {prefix} <|fim_suffix|>{suffix} <|fim_middle|>";
             };
+            # completion = {
+            #   kind = "deepseek/completion";
+            #   api_endpoint = "https://api.deepseek.com/beta";
+            #   model_name = "deepseek-chat";
+            # };
             embedding = {
               kind = "ollama/embedding";
               model_name = "nomic-embed-text:latest";
@@ -71,8 +71,10 @@ in
           # preset = "ollama";
           # model = "cogito:8b-v1-preview-llama-q4_K_M";
           # model = "mistral:7b";
-          preset = "deepseek";
-          model = "deepseek-chat";
+          # preset = "deepseek";
+          # model = "deepseek-chat";
+          preset = "groq";
+          model = "llama3-70b-8192";
         };
       };
       api-client.enable = true;
@@ -115,8 +117,10 @@ in
                 # reasoningModel = "deepseek-chat";
                 # preset = "groq"; -> error
                 # reasoningModel = "llama-3.1-70b-versatile";
-                preset = "gemini";
-                reasoningModel = "gemini-2.0-flash";
+                # preset = "gemini";
+                # reasoningModel = "gemini-2.0-flash";
+                preset = "qwen";
+                reasoningModel = "qwq-plus";
               };
             };
             searching = mkEnabled;
