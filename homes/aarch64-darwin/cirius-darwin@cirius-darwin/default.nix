@@ -45,11 +45,16 @@ in
             # };
             chat = {
             };
+            # completion = {
+            #   kind = "ollama/completion";
+            #   api_endpoint = "http://localhost:${builtins.toString ollamaPort}";
+            #   model_name = "qwen2.5-coder:3b-base";
+            #   prompt_template = "<|fim_prefix|> {prefix} <|fim_suffix|>{suffix} <|fim_middle|>";
+            # };
             completion = {
-              kind = "ollama/completion";
-              api_endpoint = "http://localhost:${builtins.toString ollamaPort}";
-              model_name = "qwen2.5-coder:3b-base";
-              prompt_template = "<|fim_prefix|> {prefix} <|fim_suffix|>{suffix} <|fim_middle|>";
+              kind = "deepseek/completion";
+              api_endpoint = "https://api.deepseek.com/beta";
+              model_name = "deepseek-chat";
             };
             embedding = {
               kind = "ollama/embedding";

@@ -25,7 +25,15 @@ in
   config = mkIf cfg.enable {
     ${namespace}.development.cli-utils.fish = {
       interactiveEnvs = {
-        "EDITOR" = "nvim";
+        "EDITOR" = "nv";
+      };
+
+      interactiveFuncs = {
+        "nv" = ''
+          set -gx GEMINI_API_KEY (cat ${config.sops.secrets."gemini_auth_token".path})
+          set -gx OPENAI_API_KEY (cat ${config.sops.secrets."openai_auth_token".path})
+          nvim
+        '';
       };
     };
     programs.nixvim = {

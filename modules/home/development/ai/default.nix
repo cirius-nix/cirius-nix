@@ -220,7 +220,7 @@ in
       };
       interactiveFuncs = {
         gemini_aider = ''
-          set -fx GEMINI_API_KEY (cat ~/.config/sops-nix/secrets/gemini_auth_token)
+          set -fx GEMINI_API_KEY (cat ${config.sops.secrets."gemini_auth_token".path})
           aider --model gemini-2.5-pro
         '';
       };
