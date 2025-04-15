@@ -46,8 +46,12 @@ in
         };
         spectre = {
           enable = true;
-          replacePackage = pkgs.gnused;
           settings = {
+            find = {
+              # Nixvim will automatically enable `dependencies.sed.enable` (or
+              # `sd` respectively).
+              cmd = "sed";
+            };
             is_block_ui_break = true;
           };
         };

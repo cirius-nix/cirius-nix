@@ -58,11 +58,6 @@ let
       "--device cuda"
     else
       "";
-
-  # %r gets replaced with a runtime directory, use %% to specify a '%'
-  # sign. Runtime dir is $XDG_RUNTIME_DIR on linux and $(getconf
-  # DARWIN_USER_TEMP_DIR) on darwin.
-  # tabbyKeySecret = builtins.fromJSON (builtins.readFile config.sops.secrets."tabby_auth_key".path);
 in
 {
   options.${namespace}.development.ai =
@@ -101,6 +96,9 @@ in
 
   config = lib.mkIf cfg.enable {
     sops = {
+      secrets."openai_auth_token" = { };
+      secrets."deepseek_auth_token" = { };
+      secrets."gemini_auth_token" = { };
       secrets."tabby_auth_token" = { };
       templates."tabby-agent-config" = {
         path = "${userCfg.homeDir}/.tabby-client/agent/config.toml";
@@ -126,6 +124,7 @@ in
             tabby
             tabby-agent
             katana
+            aider-chat-full
           ]
           (lib.optional isLinux [
             lmstudio # INFO: marked as broken in macOS
@@ -219,6 +218,13 @@ in
       interactiveEnvs = {
         OLLAMA_HOST = "127.0.0.1:${builtins.toString osCfg.port}";
       };
+      interactiveFuncs = {
+        gemini_aider = ''
+          set -fx GEMINI_API_KEY (cat ~/.config/sops-nix/secrets/gemini_auth_token)
+          aider --model gemini-2.5-pro
+        '';
+      };
     };
   };
+
 }

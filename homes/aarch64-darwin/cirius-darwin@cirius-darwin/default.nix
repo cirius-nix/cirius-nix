@@ -43,6 +43,8 @@ in
             #   model_name = "qwen2.5-coder:7b-base";
             #   api_endpoint = "http://localhost:${builtins.toString ollamaPort}/v1";
             # };
+            chat = {
+            };
             completion = {
               kind = "ollama/completion";
               api_endpoint = "http://localhost:${builtins.toString ollamaPort}";
@@ -60,6 +62,14 @@ in
       git = {
         enable = true;
         pager = true;
+        opencommit = {
+          # preset = "ollama";
+          # model = "cogito:8b-v1-preview-llama-q4_K_M";
+          # model = "mistral:7b";
+
+          preset = "deepseek";
+          model = "deepseek-chat";
+        };
       };
       api-client.enable = true;
       langs = {
@@ -74,6 +84,7 @@ in
           enable = true;
           customPaths = [ "~/Applications" ];
           aliases = {
+            "cat" = "bat";
             "rbnix" = "sudo darwin-rebuild switch --flake .#${user.username}";
             "tf" = "${pkgs.terraform}/bin/terraform";
             "gco" = "${pkgs.git}/bin/git checkout";

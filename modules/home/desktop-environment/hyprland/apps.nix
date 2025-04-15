@@ -14,7 +14,7 @@ let
 
   deCfg = config.${namespace}.desktop-environment;
 in
-{
+lib.optionals pkgs.stdenv.isLinux {
   config = mkIf (deCfg.kind == "hyprland") {
     home.packages = with pkgs; [
       pavucontrol # sound control

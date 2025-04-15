@@ -105,7 +105,7 @@
         modules = with inputs; [
           # nixvim editor
           nixvim.homeManagerModules.nixvim
-          anyrun.homeManagerModules.default
+          # anyrun.homeManagerModules.default
           # secret management
           sops-nix.homeManagerModules.sops
         ];

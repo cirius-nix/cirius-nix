@@ -94,8 +94,8 @@ in
           enable = true;
           keymaps = {
             diagnostic = {
-              # "]e" = "goto_next";
-              # "[e" = "goto_prev";
+              "]e" = "goto_next";
+              "[e" = "goto_prev";
             };
             # lspBuf = {
             #   gD = "references";
@@ -104,10 +104,10 @@ in
             #   gt = "type_definition";
             # };
             extra = [
-              # {
-              #   action = "<cmd>Lspsaga hover_doc<cr>";
-              #   key = "K";
-              # }
+              {
+                action = "<cmd>Lspsaga hover_doc<cr>";
+                key = "K";
+              }
               {
                 action = "<cmd>lua vim.lsp.buf.format({ async = true })<cr>";
                 key = "<leader>lF";

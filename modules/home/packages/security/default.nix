@@ -26,6 +26,12 @@ in
       ssh-to-age
     ];
 
+    ${namespace}.development.cli-utils.fish = {
+      interactiveEnvs = {
+        "SOPS_AGE_KEY_FILE" = "~/.config/sops/age/keys.txt";
+      };
+    };
+
     sops = {
       defaultSopsFile = cfg.secretFile;
       defaultSopsFormat = "yaml";

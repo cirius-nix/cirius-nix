@@ -3,19 +3,69 @@
   lib,
   pkgs,
   namespace,
+  osConfig,
   ...
 }:
 
 let
   inherit (lib) mkEnableOption mkIf;
+  inherit (lib.${namespace}) mkStrOption mkEnumOption;
 
   cfg = config.${namespace}.development.git;
   userCfg = config.${namespace}.user;
+
+  ollamaPort =
+    let
+      isLinux = pkgs.stdenv.isLinux;
+      osAICfg = osConfig.${namespace}.applications.ai;
+      homeAICfg = config.${namespace}.development.ai;
+    in
+    if isLinux then osAICfg.port else homeAICfg.port;
+
+  opencommitSharedConfig = ''
+    OCO_MODEL='${cfg.opencommit.model}'
+    OCO_PROMPT_MODULE=conventional-commit
+    OCO_ONE_LINE_COMMIT=false
+    OCO_WHY=true
+  '';
+
+  opencommitPresets = {
+    "ollama" = ''
+      OCO_AI_PROVIDER='ollama'
+      OCO_API_URL='http://0.0.0.0:${builtins.toString ollamaPort}/api/chat'
+    '';
+    "gemini" = ''
+      OCO_AI_PROVIDER='gemini'
+      OCO_API_KEY='${config.sops.placeholder."gemini_auth_token"}'
+    '';
+    "openai" = ''
+      OCO_AI_PROVIDER='openai'
+      OCO_API_KEY='${config.sops.placeholder."openai_auth_token"}'
+    '';
+    "deepseek" = ''
+      OCO_AI_PROVIDER='deepseek'
+      OCO_API_KEY='${config.sops.placeholder."deepseek_auth_token"}'
+    '';
+  };
+
+  opencommitConfig = ''
+    ${opencommitPresets.${cfg.opencommit.preset}}
+    ${opencommitSharedConfig}
+  '';
 in
 {
   options.${namespace}.development.git = {
     enable = mkEnableOption "Git";
     pager = mkEnableOption "Pager as paging package";
+    opencommit = {
+      preset = mkEnumOption [
+        "ollama"
+        "gemini"
+        "openai"
+        "deepseek"
+      ] "ollama" "Opencommit Preset";
+      model = mkStrOption "mistral:7b" "Model";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -23,7 +73,23 @@ in
       gh
       delta
       diff-so-fancy
+      opencommit
+      gitmoji-cli
+      commitlint
     ];
+
+    # Ollama doesn't required sops to retrieve secrets.
+    home.file = mkIf (cfg.opencommit.preset == "ollama") {
+      ".opencommit".text = opencommitConfig;
+    };
+
+    sops.templates = mkIf (cfg.opencommit.preset != "ollama") {
+      ".opencommit_provider_${cfg.opencommit.preset}" = {
+        path = "${config.${namespace}.user.homeDir}/.opencommit";
+        content = opencommitConfig;
+      };
+    };
+
     programs.lazygit = {
       inherit (cfg) enable;
 
