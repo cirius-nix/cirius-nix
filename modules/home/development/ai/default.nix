@@ -167,6 +167,7 @@ in
       secrets."openai_auth_token" = { }; # Placeholder for OpenAI API key.
       secrets."deepseek_auth_token" = { }; # Placeholder for DeepSeek API key.
       secrets."gemini_auth_token" = { }; # Placeholder for Google Gemini API key.
+      secrets."groq_auth_token" = { }; # Placeholder for GROQ API key.
       secrets."tabby_auth_token" = { }; # Placeholder for Tabby server auth token (if needed).
 
       # Generate the Tabby Agent configuration file using a template.

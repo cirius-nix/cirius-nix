@@ -71,7 +71,6 @@ in
           # preset = "ollama";
           # model = "cogito:8b-v1-preview-llama-q4_K_M";
           # model = "mistral:7b";
-
           preset = "deepseek";
           model = "deepseek-chat";
         };
@@ -109,7 +108,17 @@ in
         nixvim = {
           enable = true;
           plugins = {
-            ai = mkEnabled;
+            ai = {
+              enable = true;
+              avante = {
+                # preset = "deepseek"; -> slow
+                # reasoningModel = "deepseek-chat";
+                # preset = "groq"; -> error
+                # reasoningModel = "llama-3.1-70b-versatile";
+                preset = "gemini";
+                reasoningModel = "gemini-2.0-flash";
+              };
+            };
             searching = mkEnabled;
             debugging = mkEnabled;
             testing = mkEnabled;

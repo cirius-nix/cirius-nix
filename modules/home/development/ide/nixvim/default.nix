@@ -38,15 +38,20 @@ in
       interactiveEnvs = {
         "EDITOR" = "nvim";
       };
+      interactiveFuncs = {
+        av = ''
+          set -gx GEMINI_API_KEY (cat ${config.sops.secrets."gemini_auth_token".path})
+          set -gx OPENAI_API_KEY (cat ${config.sops.secrets."openai_auth_token".path})
+          set -gx GROQ_API_KEY (cat ${config.sops.secrets."groq_auth_token".path})
+          set -gx DEEPSEEK_API_KEY (cat ${config.sops.secrets."deepseek_auth_token".path})
+          nvim $argv
+        '';
+      };
     };
     # Configure NixVim.
     programs.nixvim = {
       enable = true;
       # Set environment variables for NixVim.
-      env = {
-        "GEMINI_API_KEY" = config.sops.secrets."gemini_auth_token".path;
-        "OPENAI_API_KEY" = config.sops.secrets."gemini_auth_token".path;
-      };
       # Configure colorschemes for NixVim.
       colorschemes = {
         catppuccin = {
