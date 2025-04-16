@@ -44,6 +44,9 @@ in
             #   api_endpoint = "http://localhost:${builtins.toString ollamaPort}/v1";
             # };
             chat = {
+              kind = "deepseek/chat";
+              api_endpoint = "https://api.deepseek.com";
+              model_name = "deepseek-chat";
             };
             completion = {
               kind = "ollama/completion";
@@ -117,10 +120,10 @@ in
                 # reasoningModel = "deepseek-chat";
                 # preset = "groq"; -> error
                 # reasoningModel = "llama-3.1-70b-versatile";
-                # preset = "gemini";
-                # reasoningModel = "gemini-2.0-flash";
-                preset = "qwen";
-                reasoningModel = "qwq-plus";
+                preset = "gemini";
+                reasoningModel = "gemini-2.0-flash";
+                # preset = "qwen";
+                # reasoningModel = "qwq-plus";
               };
             };
             searching = mkEnabled;

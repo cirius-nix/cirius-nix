@@ -27,6 +27,7 @@ let
     OCO_PROMPT_MODULE=conventional-commit
     OCO_ONE_LINE_COMMIT=false
     OCO_WHY=true
+    OCO_EMOJI=GitMoji
   '';
 
   opencommitPresets = {
