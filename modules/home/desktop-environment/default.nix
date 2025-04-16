@@ -22,6 +22,8 @@ in
           ] osConfig.${namespace}.desktop-environment.kind "Desktop Environment";
         }
       else
-        { };
+        {
+          kind = mkEnumOption [ "metal" ] "metal" "MacOS";
+        };
   };
 }

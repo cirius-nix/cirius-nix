@@ -98,6 +98,7 @@ let
     else
       ""; # No specific device argument if neither applies (CPU is default).
 
+  enabledSops = config.${namespace}.packages.security.enable;
 in
 {
   # --- Module Options ---
@@ -106,10 +107,13 @@ in
     let
       # Define a default port for Ollama, used in Tabby's default model endpoints.
       defaultOllamaPort = 11000;
+      user = config.${namespace}.user;
     in
     {
       # Standard enable/disable toggle for all features in this module.
       enable = lib.mkEnableOption "Toggle AI Development Tools (Tabby, Aider, etc.)";
+
+      baseSecretPath = mkStrOption "${user.username}/default.yaml" "Base secret path";
 
       # Port for the Ollama service (primarily relevant if running Ollama via this module on macOS).
       port = mkIntOption defaultOllamaPort "Ollama Service Port (used on macOS if enabled here)";
@@ -237,6 +241,31 @@ in
         };
       };
 
+    # --- Shell Integration ---
+
+    # Configure Fish shell environment variables and functions.
+    # This assumes the 'cli-utils.fish' module exists elsewhere in the configuration.
+    ${namespace}.development.cli-utils.fish = {
+      # Set environment variables available in interactive Fish sessions.
+      interactiveEnvs = {
+        # Make the Ollama host and port easily accessible.
+        OLLAMA_HOST = "127.0.0.1:${builtins.toString osMergedCfg.port}";
+      };
+      # Define custom functions available in interactive Fish sessions.
+      interactiveFuncs = lib.mkIf enabledSops {
+        # Helper function to run 'aider' with the Gemini API key.
+        gemini_aider = ''
+          # Temporarily set the GEMINI_API_KEY environment variable for the aider command.
+          # Reads the key from the path managed by sops-nix.
+          set -lx GEMINI_API_KEY (cat ${config.sops.secrets."gemini_auth_token".path})
+          # Run aider, specifying the Gemini Pro model.
+          aider --model gemini-1.5-pro $argv # Pass any additional arguments ($argv) to aider
+          # Unset the key after the command finishes (optional, but good practice).
+          set -e GEMINI_API_KEY
+        '';
+      };
+    };
+
     # Home Manager specific configurations.
     home = {
       # Install necessary packages into the user's profile.
@@ -285,10 +314,8 @@ in
         # Ensure Ollama service (if managed by systemd, either system or user) starts first.
         # Adjust this if Ollama runs differently (e.g., container, manual start).
         After = [
-          "network-online.target"
           "ollama.service"
         ];
-        Requires = [ "network-online.target" ]; # Requires network to potentially fetch models/configs.
       };
       Service = {
         Type = "simple"; # Process runs in the foreground.
@@ -326,31 +353,6 @@ in
         # Redirect standard output and error to log files for debugging.
         StandardOutPath = "/tmp/tabby-${config.${namespace}.user.name}.log"; # User-specific log
         StandardErrorPath = "/tmp/tabby-${config.${namespace}.user.name}.err"; # User-specific error log
-      };
-    };
-
-    # --- Shell Integration ---
-
-    # Configure Fish shell environment variables and functions.
-    # This assumes the 'cli-utils.fish' module exists elsewhere in the configuration.
-    ${namespace}.development.cli-utils.fish = {
-      # Set environment variables available in interactive Fish sessions.
-      interactiveEnvs = {
-        # Make the Ollama host and port easily accessible.
-        OLLAMA_HOST = "127.0.0.1:${builtins.toString osMergedCfg.port}";
-      };
-      # Define custom functions available in interactive Fish sessions.
-      interactiveFuncs = {
-        # Helper function to run 'aider' with the Gemini API key.
-        gemini_aider = ''
-          # Temporarily set the GEMINI_API_KEY environment variable for the aider command.
-          # Reads the key from the path managed by sops-nix.
-          set -lx GEMINI_API_KEY (cat ${config.sops.secrets."gemini_auth_token".path})
-          # Run aider, specifying the Gemini Pro model.
-          aider --model gemini-1.5-pro $argv # Pass any additional arguments ($argv) to aider
-          # Unset the key after the command finishes (optional, but good practice).
-          set -e GEMINI_API_KEY
-        '';
       };
     };
   };

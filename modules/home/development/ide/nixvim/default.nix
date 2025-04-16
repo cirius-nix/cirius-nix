@@ -16,7 +16,12 @@ let
     ;
 
   # Import necessary functions from the module libraries.
-  inherit (lib.${namespace}) mkOpt;
+  inherit (lib.${namespace}) mkOpt mkStrOption;
+
+  # User information
+  user = config.${namespace}.user;
+
+  enabledSops = config.${namespace}.packages.security.enable;
 in
 {
   # Import non-default Nix files from the current directory.
@@ -28,6 +33,8 @@ in
     enable = mkEnableOption "Enable NixVim or not";
     # The colorscheme to use.
     colorscheme = mkOpt types.str "gruvbox" "The colorscheme to use";
+
+    baseSecretPath = mkStrOption "${user.username}/default.yaml" "Base secret path";
   };
 
   # Configuration for this module.
@@ -38,7 +45,7 @@ in
       interactiveEnvs = {
         "EDITOR" = "nvim";
       };
-      interactiveFuncs = {
+      interactiveFuncs = mkIf enabledSops {
         av = ''
           set -gx GEMINI_API_KEY (cat ${config.sops.secrets."gemini_auth_token".path})
           set -gx OPENAI_API_KEY (cat ${config.sops.secrets."openai_auth_token".path})
@@ -70,11 +77,35 @@ in
       # Enable Ruby support for NixVim.
       withRuby = true;
       # Extra Lua configuration to be added before plugins are loaded.
-      extraConfigLuaPre = ''
-        -- Global functions
-        _G.FUNCS = {};
-        _M.slow_format_filetypes = {};
-      '';
+      extraConfigLuaPre =
+        ''
+          -- Global functions
+          _G.FUNCS = {
+            load_secret = function(name, path)
+              local f = io.open(path, "r")
+              if not f then
+                return nil
+              end
+
+              local data = f:read("*a")
+              f:close()
+
+              local token = data:gsub("%s+$", "")
+              vim.g[name] = token
+              vim.fn.setenv(name, token)
+
+              return token
+            end
+          };
+          _M.slow_format_filetypes = {};
+        ''
+        + (lib.optionals enabledSops) ''
+          _G.FUNCS.load_secret("GEMINI_API_KEY", "${config.sops.secrets."gemini_auth_token".path}")
+          _G.FUNCS.load_secret("OPENAI_API_KEY", "${config.sops.secrets."openai_auth_token".path}")
+          _G.FUNCS.load_secret("GROQ_API_KEY", "${config.sops.secrets."groq_auth_token".path}")
+          _G.FUNCS.load_secret("DEEPSEEK_API_KEY", "${config.sops.secrets."deepseek_auth_token".path}")
+          _G.FUNCS.load_secret("DASHSCOPE_API_KEY", "${config.sops.secrets."qwen_auth_token".path}")
+        '';
       # Configure diagnostics for NixVim.
       diagnostics = {
         float = {
