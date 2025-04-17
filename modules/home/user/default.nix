@@ -28,4 +28,5 @@ in
       name = mkStrOption "" "Pretty name of the user";
     };
   };
+
 }

@@ -47,6 +47,7 @@ in
               kind = "deepseek/chat";
               api_endpoint = "https://api.deepseek.com";
               model_name = "deepseek-chat";
+              api_key = config.sops.placeholder."deepseek_auth_token";
             };
             completion = {
               kind = "ollama/completion";
@@ -58,6 +59,7 @@ in
             #   kind = "deepseek/completion";
             #   api_endpoint = "https://api.deepseek.com/beta";
             #   model_name = "deepseek-chat";
+            #   api_key = config.sops.placeholder."deepseek_auth_token";
             # };
             embedding = {
               kind = "ollama/embedding";
@@ -74,10 +76,12 @@ in
           # preset = "ollama";
           # model = "cogito:8b-v1-preview-llama-q4_K_M";
           # model = "mistral:7b";
-          # preset = "deepseek";
-          # model = "deepseek-chat";
-          preset = "groq";
-          model = "llama3-70b-8192";
+          preset = "deepseek"; # unchecked
+          model = "deepseek-chat";
+          # preset = "groq"; -> not quite good
+          # model = "llama3-70b-8192";
+          # preset = "gemini";
+          # model = "gemini-2.0-flash";
         };
       };
       api-client.enable = true;
@@ -120,8 +124,8 @@ in
                 # reasoningModel = "deepseek-chat";
                 # preset = "groq"; -> error
                 # reasoningModel = "llama-3.1-70b-versatile";
-                preset = "gemini";
-                reasoningModel = "gemini-2.0-flash";
+                preset = "deepseek";
+                reasoningModel = "deepseek-chat";
                 # preset = "qwen";
                 # reasoningModel = "qwq-plus";
               };

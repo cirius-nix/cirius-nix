@@ -171,6 +171,43 @@ in
       secrets."qwen_auth_token" = { }; # Placeholder for QWEN API key.
       secrets."tabby_auth_token" = { }; # Placeholder for Tabby server auth token (if needed).
 
+      templates."tabby-config" = {
+        path = "${userModuleCfg.homeDir}/.tabby/config.toml";
+        content =
+          let
+            # Convert the model configurations from attribute sets to TOML strings.
+            chatModelCfg = attrsToString osMergedCfg.tabby.model.chat;
+            embeddingCfg = attrsToString osMergedCfg.tabby.model.embedding;
+            completionCfg = attrsToString osMergedCfg.tabby.model.completion;
+          in
+          ''
+            # Basic server settings.
+            [server]
+            endpoint = "http://127.0.0.1:${builtins.toString osMergedCfg.tabby.port}"
+            completion_timeout = 15000 # Timeout for code completions in milliseconds.
+
+            # Conditionally include model configurations if they are not empty.
+            # This allows users to potentially disable a model type by setting its config to {}.
+            ${lib.optionalString (chatModelCfg != "") ''
+              [model.chat.http]
+              ${chatModelCfg}
+            ''}
+
+            ${lib.optionalString (embeddingCfg != "") ''
+              [model.embedding.http]
+              ${embeddingCfg}
+            ''}
+
+            ${lib.optionalString (completionCfg != "") ''
+              [model.completion.http]
+              ${completionCfg}
+            ''}
+
+            # Include definitions for local repositories to be indexed.
+            ${mkLocalRepositories osMergedCfg.tabby.localRepos}
+          '';
+      };
+
       # Generate the Tabby Agent configuration file using a template.
       # The agent runs in the background (e.g., for IDE integration).
       templates."tabby-agent-config" = {
@@ -218,42 +255,42 @@ in
         ];
 
       # Create configuration files in the user's home directory.
-      file =
-        let
-          # Convert the model configurations from attribute sets to TOML strings.
-          chatModelCfg = attrsToString osMergedCfg.tabby.model.chat;
-          embeddingCfg = attrsToString osMergedCfg.tabby.model.embedding;
-          completionCfg = attrsToString osMergedCfg.tabby.model.completion;
-        in
-        {
-          # Create/manage the main Tabby server configuration file.
-          ".tabby/config.toml".text = ''
-            # Basic server settings.
-            [server]
-            endpoint = "http://127.0.0.1:${builtins.toString osMergedCfg.tabby.port}"
-            completion_timeout = 15000 # Timeout for code completions in milliseconds.
-
-            # Conditionally include model configurations if they are not empty.
-            # This allows users to potentially disable a model type by setting its config to {}.
-            ${lib.optionalString (chatModelCfg != "") ''
-              [model.chat.http]
-              ${chatModelCfg}
-            ''}
-
-            ${lib.optionalString (embeddingCfg != "") ''
-              [model.embedding.http]
-              ${embeddingCfg}
-            ''}
-
-            ${lib.optionalString (completionCfg != "") ''
-              [model.completion.http]
-              ${completionCfg}
-            ''}
-
-            # Include definitions for local repositories to be indexed.
-            ${mkLocalRepositories osMergedCfg.tabby.localRepos}
-          '';
-        };
+      # file =
+      #   let
+      #     # Convert the model configurations from attribute sets to TOML strings.
+      #     chatModelCfg = attrsToString osMergedCfg.tabby.model.chat;
+      #     embeddingCfg = attrsToString osMergedCfg.tabby.model.embedding;
+      #     completionCfg = attrsToString osMergedCfg.tabby.model.completion;
+      #   in
+      #   {
+      #     # Create/manage the main Tabby server configuration file.
+      #     ".tabby/config.toml".text = ''
+      #       # Basic server settings.
+      #       [server]
+      #       endpoint = "http://127.0.0.1:${builtins.toString osMergedCfg.tabby.port}"
+      #       completion_timeout = 15000 # Timeout for code completions in milliseconds.
+      #
+      #       # Conditionally include model configurations if they are not empty.
+      #       # This allows users to potentially disable a model type by setting its config to {}.
+      #       ${lib.optionalString (chatModelCfg != "") ''
+      #         [model.chat.http]
+      #         ${chatModelCfg}
+      #       ''}
+      #
+      #       ${lib.optionalString (embeddingCfg != "") ''
+      #         [model.embedding.http]
+      #         ${embeddingCfg}
+      #       ''}
+      #
+      #       ${lib.optionalString (completionCfg != "") ''
+      #         [model.completion.http]
+      #         ${completionCfg}
+      #       ''}
+      #
+      #       # Include definitions for local repositories to be indexed.
+      #       ${mkLocalRepositories osMergedCfg.tabby.localRepos}
+      #     '';
+      #   };
     };
 
     # --- OS-Specific Service Management ---
