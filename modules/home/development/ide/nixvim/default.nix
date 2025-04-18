@@ -45,16 +45,6 @@ in
       interactiveEnvs = {
         "EDITOR" = "nvim";
       };
-      interactiveFuncs = mkIf enabledSops {
-        av = ''
-          set -gx GEMINI_API_KEY (cat ${config.sops.secrets."gemini_auth_token".path})
-          set -gx OPENAI_API_KEY (cat ${config.sops.secrets."openai_auth_token".path})
-          set -gx GROQ_API_KEY (cat ${config.sops.secrets."groq_auth_token".path})
-          set -gx DEEPSEEK_API_KEY (cat ${config.sops.secrets."deepseek_auth_token".path})
-          set -gx DASHSCOPE_API_KEY (cat ${config.sops.secrets."qwen_auth_token".path})
-          nvim $argv
-        '';
-      };
     };
     # Configure NixVim.
     programs.nixvim = {

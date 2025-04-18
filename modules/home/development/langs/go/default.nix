@@ -37,6 +37,7 @@ in
     };
 
     home.packages = with pkgs; [
+      wails
       go
       gotools
       goimports-reviser

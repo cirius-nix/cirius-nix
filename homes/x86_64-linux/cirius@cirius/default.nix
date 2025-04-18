@@ -24,11 +24,6 @@ in
           port = 11001;
           localRepos = [ ];
           model = {
-            # chat = {
-            #   kind = "openai/chat";
-            #   model_name = "qwen2.5-coder:7b-base";
-            #   api_endpoint = "http://localhost:${builtins.toString ollamaPort}/v1";
-            # };
             completion = {
               kind = "ollama/completion";
               api_endpoint = "http://localhost:${builtins.toString ollamaPort}";
@@ -46,6 +41,14 @@ in
       git = {
         enable = true;
         pager = true;
+        opencommit = {
+          # preset = "groq";
+          # model = "llama3-70b-8192";
+          # preset = "deepseek";
+          # model = "deepseek-chat";
+          preset = "gemini";
+          model = "gemini-2.0-flash";
+        };
       };
       langs = {
         go.enable = true;
@@ -158,7 +161,7 @@ in
       media.enable = true;
       security = {
         enable = true;
-        secretFile = builtins.toString ../../../secrets/${user.username}/default.yaml;
+        secretFile = ../../../secrets/${user.username}/default.yaml;
       };
       home-manager = {
         enable = true;

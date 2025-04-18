@@ -23,7 +23,7 @@ let
     if isLinux then osAICfg.port else homeAICfg.port;
 
   opencommitSharedConfig = ''
-    OCO_MODEL='${cfg.opencommit.model}'
+    OCO_MODEL=${cfg.opencommit.model}
     OCO_PROMPT_MODULE=conventional-commit
     OCO_ONE_LINE_COMMIT=false
     OCO_WHY=true
@@ -32,31 +32,27 @@ let
 
   opencommitPresets = {
     "ollama" = ''
-      OCO_AI_PROVIDER='ollama'
-      OCO_API_URL='http://0.0.0.0:${builtins.toString ollamaPort}/api/chat'
+      OCO_AI_PROVIDER=ollama
+      OCO_API_URL=http://0.0.0.0:${builtins.toString ollamaPort}/api/chat
     '';
     "gemini" = ''
-      OCO_AI_PROVIDER='gemini'
-      OCO_API_KEY='${config.sops.placeholder."gemini_auth_token"}'
+      OCO_AI_PROVIDER=gemini
+      OCO_API_KEY=${config.sops.placeholder."gemini_auth_token"}
     '';
     "openai" = ''
-      OCO_AI_PROVIDER='openai'
-      OCO_API_KEY='${config.sops.placeholder."openai_auth_token"}'
+      OCO_AI_PROVIDER=openai
+      OCO_API_KEY=${config.sops.placeholder."openai_auth_token"}
     '';
     "deepseek" = ''
-      OCO_AI_PROVIDER='deepseek'
-      OCO_API_KEY='${config.sops.placeholder."deepseek_auth_token"}'
+      OCO_AI_PROVIDER=deepseek
+      OCO_API_KEY=${config.sops.placeholder."deepseek_auth_token"}
     '';
     "groq" = ''
-      OCO_AI_PROVIDER='groq'
-      OCO_API_KEY='${config.sops.placeholder."groq_auth_token"}'
+      OCO_AI_PROVIDER=groq
+      OCO_API_KEY=${config.sops.placeholder."groq_auth_token"}
     '';
   };
 
-  opencommitConfig = ''
-    ${opencommitPresets.${cfg.opencommit.preset}}
-    ${opencommitSharedConfig}
-  '';
 in
 {
   options.${namespace}.development.git = {
@@ -84,15 +80,15 @@ in
       commitlint
     ];
 
-    # Ollama doesn't required sops to retrieve secrets.
-    home.file = mkIf (cfg.opencommit.preset == "ollama") {
-      ".opencommit".text = opencommitConfig;
-    };
-
-    sops.templates = mkIf (cfg.opencommit.preset != "ollama") {
+    sops.templates = {
+      # opencommit allowed to read & write to this file.
       ".opencommit_provider_${cfg.opencommit.preset}" = {
+        mode = "0660";
         path = "${config.${namespace}.user.homeDir}/.opencommit";
-        content = opencommitConfig;
+        content = ''
+          ${opencommitPresets.${cfg.opencommit.preset}}
+          ${opencommitSharedConfig}
+        '';
       };
     };
 

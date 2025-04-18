@@ -34,6 +34,7 @@ rec {
       inherit default description;
       type = nullOr (listOf type);
     };
+
   subModuleType =
     opts:
     types.submodule {
@@ -44,6 +45,12 @@ rec {
     mkOption {
       inherit default description;
       type = nullOr (attrsOf type);
+    };
+  mkPathOption =
+    default: description:
+    mkOption {
+      inherit default description;
+      type = nullOr types.path;
     };
   mkStrOption =
     default: description:

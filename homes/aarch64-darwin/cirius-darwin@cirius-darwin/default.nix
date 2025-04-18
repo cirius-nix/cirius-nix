@@ -144,7 +144,7 @@ in
       };
       security = {
         enable = true;
-        secretFile = builtins.toString ../../../secrets/${user.username}/default.yaml;
+        secretFile = ../../../secrets/${user.username}/default.yaml;
       };
       fonts.enable = true;
     };

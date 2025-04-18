@@ -323,7 +323,7 @@ in
         ExecStart = ''
           ${pkgs.tabby}/bin/tabby serve \
             --port ${builtins.toString osMergedCfg.tabby.port} \
-            ${deviceArg} # Add device argument (--device cuda or empty).
+            ${deviceArg}
         '';
         Restart = "on-failure"; # Restart the service if it fails.
         RestartSec = "5s"; # Wait 5 seconds before restarting.

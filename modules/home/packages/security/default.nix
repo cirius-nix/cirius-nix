@@ -7,14 +7,14 @@
 }:
 let
   inherit (lib) types mkIf mkEnableOption;
-  inherit (lib.${namespace}) mkListOption mkStrOption;
+  inherit (lib.${namespace}) mkListOption mkPathOption;
   cfg = config.${namespace}.packages.security;
 in
 {
   options = {
     ${namespace}.packages.security = {
       enable = mkEnableOption "Enable security options";
-      secretFile = mkStrOption "" "SOPS ENCRYPTED SECRETS FILE";
+      secretFile = mkPathOption null "SOPS ENCRYPTED SECRETS FILE";
       sshKeyPaths = mkListOption types.str [ ] "SSH key paths";
     };
   };
