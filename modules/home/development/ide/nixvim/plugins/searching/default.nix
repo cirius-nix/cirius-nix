@@ -2,7 +2,6 @@
   config,
   namespace,
   lib,
-  pkgs,
   ...
 }:
 let

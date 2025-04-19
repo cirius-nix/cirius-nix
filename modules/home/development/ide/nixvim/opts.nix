@@ -54,7 +54,7 @@ in
         virtualedit = "block";
         wildmode = "longest:full,full";
         winminwidth = 5;
-        wrap = false;
+        wrap = true;
         # Users may find that the borders on their hover windows have vanished
         # after updating. This is because Neovim no longer uses global
         # callbacks for LSP responses (a necessary breaking change to correctly

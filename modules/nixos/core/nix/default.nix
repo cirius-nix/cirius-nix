@@ -13,25 +13,18 @@ in
 {
   options.${namespace}.core.nix = {
     enable = mkEnableOption "Nix";
-    nixLd = mkOption {
-      type = lib.types.submodule {
-        options = {
-          enable = mkEnableOption "Enable nix-ld";
-          libraries = mkOption {
-            type = lib.types.listOf lib.types.package;
-            default = [ ];
-            description = "Additional libraries to link against.";
-          };
-        };
+    nixLd = {
+      libraries = mkOption {
+        type = lib.types.listOf lib.types.package;
+        default = [ ];
+        description = "Additional libraries to link against.";
       };
-      default = { };
-      description = "Nix-LD is a library for loading Nix expressions at runtime.";
     };
   };
 
   config = mkIf cfg.enable {
     programs.nix-ld = {
-      inherit (cfg.nixLd) enable;
+      enable = true;
       libraries =
         with pkgs;
         [

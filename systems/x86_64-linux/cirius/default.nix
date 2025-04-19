@@ -24,12 +24,7 @@ in
       enable = true;
     };
     core = {
-      nix = {
-        enable = true;
-        nixLd = {
-          enable = true;
-        };
-      };
+      nix.enable = true;
       clipboard.enable = true;
       input-method.enable = true;
       bluetooth.enable = true;

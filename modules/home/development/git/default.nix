@@ -25,7 +25,7 @@ let
   opencommitSharedConfig = ''
     OCO_MODEL=${cfg.opencommit.model}
     OCO_PROMPT_MODULE=conventional-commit
-    OCO_ONE_LINE_COMMIT=false
+    OCO_ONE_LINE_COMMIT=true
     OCO_WHY=true
     OCO_EMOJI=GitMoji
   '';

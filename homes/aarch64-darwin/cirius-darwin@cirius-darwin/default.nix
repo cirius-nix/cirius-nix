@@ -113,10 +113,12 @@ in
                 reasoningModel = "qwq-plus";
               };
             };
+            git = mkEnabled;
             searching = mkEnabled;
             debugging = mkEnabled;
             testing = mkEnabled;
             formatter = mkEnabled;
+            term = mkEnabled;
             languages = {
               dataPresentation = mkEnabled;
               go = mkEnabled;

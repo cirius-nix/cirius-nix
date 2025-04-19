@@ -32,8 +32,7 @@ in
     # Enable NixVim or not.
     enable = mkEnableOption "Enable NixVim or not";
     # The colorscheme to use.
-    colorscheme = mkOpt types.str "gruvbox" "The colorscheme to use";
-
+    colorscheme = mkOpt types.str "catppuccin-frappe" "The colorscheme to use";
     baseSecretPath = mkStrOption "${user.username}/default.yaml" "Base secret path";
   };
 
@@ -49,17 +48,6 @@ in
     # Configure NixVim.
     programs.nixvim = {
       enable = true;
-      # Set environment variables for NixVim.
-      # Configure colorschemes for NixVim.
-      colorschemes = {
-        catppuccin = {
-          enable = true;
-          settings = {
-            background.light = "latte";
-            background.dark = "macchiato";
-          };
-        };
-      };
       # Enable NodeJS support for NixVim.
       withNodeJs = true;
       # Enable Perl support for NixVim.

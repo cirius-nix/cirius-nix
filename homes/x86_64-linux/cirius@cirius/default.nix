@@ -42,10 +42,6 @@ in
         enable = true;
         pager = true;
         opencommit = {
-          # preset = "groq";
-          # model = "llama3-70b-8192";
-          # preset = "deepseek";
-          # model = "deepseek-chat";
           preset = "gemini";
           model = "gemini-2.0-flash";
         };
@@ -57,12 +53,21 @@ in
       ide = {
         nixvim = {
           enable = true;
+          colorscheme = "github_dark_dimmed";
           plugins = {
-            ai = mkEnabled;
+            ai = {
+              enable = true;
+              avante = {
+                preset = "qwen";
+                reasoningModel = "qwq-plus";
+              };
+            };
             searching = mkEnabled;
             debugging = mkEnabled;
             testing = mkEnabled;
             formatter = mkEnabled;
+            git = mkEnabled;
+            term = mkEnabled;
             languages = {
               dataPresentation = mkEnabled;
               go = mkEnabled;

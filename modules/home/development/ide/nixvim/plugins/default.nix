@@ -2,7 +2,6 @@
   lib,
   namespace,
   config,
-  pkgs,
   ...
 }:
 let
@@ -12,9 +11,6 @@ in
 {
   config = mkIf cfg.enable {
     programs.nixvim = {
-      extraPlugins = [
-        pkgs.vimPlugins.cyberdream-nvim
-      ];
       plugins = {
         nui.enable = true;
         # Editor
@@ -42,22 +38,6 @@ in
           modules = {
             comment = { };
             pairs = { };
-          };
-        };
-
-        lazygit = {
-          enable = true;
-        };
-        git-worktree = {
-          enable = true;
-          enableTelescope = true;
-        };
-        gitsigns = {
-          enable = true;
-          settings = {
-            current_line_blame = true;
-            current_line_blame_formatter = "   <author>, <committer_time:%R> • <summary>";
-            trouble = true;
           };
         };
         typescript-tools = {

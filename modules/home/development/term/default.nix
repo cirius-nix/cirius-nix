@@ -7,6 +7,7 @@
 }:
 let
   inherit (lib) mkEnableOption mkIf;
+  inherit (lib.${namespace}) mkStrOption;
   fishCfg = config.${namespace}.development.cli-utils.fish;
   cfg = config.${namespace}.development.term;
 in
@@ -17,6 +18,7 @@ in
       "kitty"
       "weztem"
     ] "kitty" "Main terminal for internal used";
+    theme = mkStrOption "GitHub_Dark_Dimmed" "Theme";
   };
 
   config = mkIf cfg.enable {
@@ -45,7 +47,7 @@ in
         enable = true;
         shellIntegration.enableFishIntegration = true;
         # https://github.com/kovidgoyal/kitty-themes/tree/master/themes
-        themeFile = "Catppuccin-Macchiato";
+        themeFile = "GitHub_Dark_Dimmed";
         extraConfig = builtins.readFile ./assets/kitty/extra.conf;
         settings =
           {
