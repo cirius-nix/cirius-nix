@@ -10,6 +10,11 @@ let
   ollamaPort = osConfig.${namespace}.applications.ai.port;
   user = config.${namespace}.user;
   inherit (lib.cirius) mkEnabled;
+  # 1. Qwen2.5 32B
+  # 2. GPT-4.1 Mini
+  # 3. Deepseek V3
+  # Evaluates an LLM's ability to answer questions based on provided context, extracted from files.
+  # https://www.prollm.ai/leaderboard/open-book-qa?ctx_size=Large,Medium,Small&level=Easy,Hard,Medium,Unanswerable&method=Full+Context,Map+Reduce
 in
 {
   ${namespace} = {
@@ -20,6 +25,18 @@ in
     development = {
       ai = {
         enable = true;
+        mistral = {
+          enable = true;
+          local = false;
+        };
+        qwen = {
+          enable = true;
+          local = false;
+          nixvimIntegration = {
+            enable = true;
+            model = "qwen2.5-72b-instruct";
+          };
+        };
         tabby = {
           port = 11001;
           localRepos = [ ];
@@ -27,8 +44,8 @@ in
             completion = {
               kind = "ollama/completion";
               api_endpoint = "http://localhost:${builtins.toString ollamaPort}";
-              model_name = "qwen2.5-coder:3b-base";
-              prompt_template = "<|fim_prefix|> {prefix} <|fim_suffix|>{suffix} <|fim_middle|>";
+              model_name = "codegemma:2b-code-q4_K_M";
+              prompt_template = "<|fim_prefix|>{prefix}<|fim_suffix|>{suffix}<|fim_middle|>";
             };
             embedding = {
               kind = "ollama/embedding";
@@ -58,10 +75,11 @@ in
             ai = {
               enable = true;
               avante = {
-                preset = "qwen";
-                reasoningModel = "qwq-plus";
+                preset = "deepseek";
+                reasoningModel = "deepseek-chat";
               };
             };
+            session = mkEnabled;
             searching = mkEnabled;
             debugging = mkEnabled;
             testing = mkEnabled;
@@ -164,10 +182,6 @@ in
 
     packages = {
       media.enable = true;
-      security = {
-        enable = true;
-        secretFile = ../../../secrets/${user.username}/default.yaml;
-      };
       home-manager = {
         enable = true;
         inherit (user) username;

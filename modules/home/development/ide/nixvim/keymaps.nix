@@ -15,7 +15,7 @@ let
       mode = "n";
       options = {
         silent = true;
-        desc = "Move To Left";
+        desc = " Move To Left";
       };
     }
     {
@@ -24,7 +24,7 @@ let
       mode = "n";
       options = {
         silent = true;
-        desc = "Move To Down";
+        desc = " Move To Down";
       };
     }
     {
@@ -33,7 +33,7 @@ let
       mode = "n";
       options = {
         silent = true;
-        desc = "Move to Up";
+        desc = " Move to Up";
       };
     }
     {
@@ -42,7 +42,7 @@ let
       mode = "n";
       options = {
         silent = true;
-        desc = "Move To Right";
+        desc = " Move To Right";
       };
     }
   ];
@@ -50,7 +50,28 @@ in
 {
   config = mkIf cfg.enable {
     programs.nixvim = {
+      extraConfigLuaPre = ''
+        vim.api.nvim_create_autocmd("FileType", {
+          pattern = {"neotest-output-panel"},
+          callback = function()
+            vim.schedule(function()
+              -- set keymap q in normal mode to close the panel
+              vim.api.nvim_buf_set_keymap(0, "n", "q", "<cmd>close<cr>", {noremap = true, silent = true})
+            end)
+          end
+        })
+      '';
       keymaps = [
+        {
+          action = "<cmd>xa<cr>";
+          key = "<leader>q";
+          mode = "n";
+          options = {
+            silent = true;
+            nowait = true;
+            desc = "󰸧 Save and close";
+          };
+        }
         {
           action = "<cmd>nohlsearch<cr>";
           key = "<esc>";
@@ -58,15 +79,6 @@ in
           options = {
             silent = true;
             nowait = true;
-          };
-        }
-        {
-          mode = "n";
-          key = "<leader>fu";
-          action = "<cmd>UndotreeToggle<CR>";
-          options = {
-            silent = true;
-            desc = "Open Undo Tree";
           };
         }
         {

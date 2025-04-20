@@ -119,6 +119,7 @@ in
             testing = mkEnabled;
             formatter = mkEnabled;
             term = mkEnabled;
+            session = mkEnabled;
             languages = {
               dataPresentation = mkEnabled;
               go = mkEnabled;

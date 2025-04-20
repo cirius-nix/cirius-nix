@@ -10,6 +10,14 @@ let
   inherit (lib.${namespace}) mkStrOption;
   fishCfg = config.${namespace}.development.cli-utils.fish;
   cfg = config.${namespace}.development.term;
+
+  # nix-prefetch-github trygveaa kitty-kitten-search
+  kittyKittenSearch = pkgs.fetchFromGitHub {
+    owner = "trygveaa";
+    repo = "kitty-kitten-search";
+    rev = "0760138fad617c5e4159403cbfce8421ccdfe571";
+    sha256 = "sha256-egisza7V5dWplRYHIYt4bEQdqXa4E7UhibyWJAup8as=";
+  };
 in
 {
   options.${namespace}.development.term = {
@@ -36,6 +44,8 @@ in
       };
     };
 
+    xdg.configFile."kitty/kitty-kitten-search".source = kittyKittenSearch;
+
     programs = {
       starship = {
         inherit (cfg) enable;
@@ -48,7 +58,6 @@ in
         shellIntegration.enableFishIntegration = true;
         # https://github.com/kovidgoyal/kitty-themes/tree/master/themes
         themeFile = "GitHub_Dark_Dimmed";
-        extraConfig = builtins.readFile ./assets/kitty/extra.conf;
         settings =
           {
             font_family = "Cascadia Mono NF";
@@ -110,6 +119,8 @@ in
             "ctrl+shift+minus" = "change_font_size all -2.0";
             "ctrl+shift+kp_subtract" = "change_font_size all -2.0";
             "ctrl+shift+backspace" = "change_font_size all 0";
+            "ctrl+shift+f" =
+              "launch --allow-remote-control --location=hsplit kitty +kitten ${config.xdg.configHome}/kitty/kitty-kitten-search/search.py @active-kitty-window-id";
           }
           // lib.optionalAttrs pkgs.stdenv.isLinux {
             "alt+1" = "goto_tab 1";

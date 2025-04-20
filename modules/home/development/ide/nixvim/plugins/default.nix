@@ -119,10 +119,6 @@ in
                 action = "<cmd>Telescope lsp_document_symbols<cr>";
                 key = "<leader>lo";
               }
-              {
-                action = "<cmd>Telescope lsp_workspace_symbols<cr>";
-                key = "<leader>lO";
-              }
               # grn in Normal mode maps to vim.lsp.buf.rename()
               {
                 action = "<cmd>Lspsaga rename mode=n<cr>";
@@ -131,14 +127,6 @@ in
               {
                 action = "<cmd>Lspsaga rename mode=n<cr>";
                 key = "grn";
-              }
-              {
-                action = "<cmd>TroubleToggle document_diagnostics<cr>";
-                key = "<leader>lx";
-              }
-              {
-                action = "<cmd>TroubleToggle workspace_diagnostics<cr>";
-                key = "<leader>lx";
               }
             ];
           };
@@ -201,36 +189,107 @@ in
         which-key = {
           enable = true;
           settings = {
-            preset = "helix";
+            icons.mappings = false;
+            icons.separator = " ";
+            icons.group = " ";
+            preset = "modern";
             delay = 0;
             spec = [
               {
                 __unkeyed = "<leader>f";
-                group = "Find";
+                group = " Find";
+              }
+              {
+                __unkeyed = "<leader>d";
+                group = " Debugging";
               }
               {
                 __unkeyed = "<leader>l";
-                group = "LSP";
+                group = " LSP";
               }
               {
                 __unkeyed = "<leader>t";
-                group = "Testing";
+                group = " Testing";
               }
               {
                 __unkeyed = "<leader>e";
-                group = "File Explorer";
+                group = "󰙅 File Explorer";
               }
               {
                 __unkeyed = "<leader>g";
-                group = "Git";
+                group = " Git";
               }
               {
                 __unkeyed = "<leader>a";
-                group = "AI";
+                group = " AI";
               }
               {
                 __unkeyed = "<leader>w";
-                group = "Moving Around";
+                group = " Window";
+              }
+              {
+                __unkeyed = "<leader>aa";
+                desc = "󰺴 Ask";
+              }
+              {
+                __unkeyed = "<leader>ad";
+                desc = " Toggle Debug";
+              }
+              {
+                __unkeyed = "<leader>af";
+                desc = "󰽎 Focus";
+              }
+              {
+                __unkeyed = "<leader>ah";
+                desc = " Hint";
+              }
+              {
+                __unkeyed = "<leader>ar";
+                desc = " Refresh";
+              }
+              {
+                __unkeyed = "<leader>aR";
+                desc = "󰳏 Repo";
+              }
+              {
+                __unkeyed = "<leader>as";
+                desc = " Toggle Suggestions";
+              }
+              {
+                __unkeyed = "<leader>at";
+                desc = " Toggle";
+              }
+              {
+                __unkeyed = "<leader>a?";
+                desc = "󰳇 Models";
+              }
+              {
+                __unkeyed = "<leader>la";
+                desc = " Code actions";
+              }
+              {
+                __unkeyed = "<leader>ld";
+                desc = " Go to definition";
+              }
+              {
+                __unkeyed = "<leader>lD";
+                desc = " Go to type definition";
+              }
+              {
+                __unkeyed = "<leader>lf";
+                desc = "󰮗 Find";
+              }
+              {
+                __unkeyed = "<leader>lF";
+                desc = "󰴑 Format file";
+              }
+              {
+                __unkeyed = "<leader>lo";
+                desc = "󰧮 Outline";
+              }
+              {
+                __unkeyed = "<leader>lr";
+                desc = "󰑕 Rename";
               }
             ];
           };

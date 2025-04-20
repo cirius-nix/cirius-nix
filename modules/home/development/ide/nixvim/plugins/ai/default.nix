@@ -13,7 +13,7 @@ let
   # Import necessary functions from the Nix libraries.
   inherit (lib) mkEnableOption mkIf;
   # Import necessary functions from the module libraries.
-  inherit (lib.${namespace}) mkEnumOption mkStrOption;
+  inherit (lib.${namespace}) mkEnumOption mkStrOption mkAttrsOption;
 
   # Check if AI is enabled at the OS level.
   osEnabledAI = config.${namespace}.development.ai.enable;
@@ -110,6 +110,7 @@ in
       preset = mkEnumOption [ "gemini" "groq" "deepseek" "ollama" "qwen" ] "gemini" "Preset";
       # Specify the reasoning model for Avante.
       reasoningModel = mkStrOption "gemini-2.0-flash" "Reasoning Model";
+      customConfig = mkAttrsOption lib.types.anything { } "Custom vendors";
     };
   };
   # Configuration for this module.
@@ -128,24 +129,29 @@ in
         extraPlugins = [
           pkgs.vimPlugins.vim-tabby
         ];
+        keymaps = [ ];
         # Configure plugins.
         plugins = {
           # Configure Avante AI plugin.
           avante = {
             enable = true;
-            settings = {
-              behavior = {
-                enable_cursor_planning_mode = true;
-                auto_suggestions = false;
-                auto_set_highlight_group = true;
-                auto_set_keymaps = true;
-                auto_apply_diff_after_generation = false;
-                support_paste_from_clipboard = false;
-                minimize_diff = true;
-                enable_token_counting = true;
-                enable_claude_text_editor_tool_mode = false;
-              };
-            } // avantePresets.${cfg.avante.preset};
+            settings = lib.foldl' lib.recursiveUpdate { } [
+              {
+                behavior = {
+                  enable_cursor_planning_mode = true;
+                  auto_suggestions = false;
+                  auto_set_highlight_group = true;
+                  auto_set_keymaps = true;
+                  auto_apply_diff_after_generation = false;
+                  support_paste_from_clipboard = false;
+                  minimize_diff = true;
+                  enable_token_counting = true;
+                  enable_claude_text_editor_tool_mode = false;
+                };
+              }
+              avantePresets.${cfg.avante.preset}
+              cfg.avante.customConfig
+            ];
           };
         };
       };

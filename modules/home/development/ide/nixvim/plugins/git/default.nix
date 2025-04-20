@@ -33,12 +33,12 @@ in
       };
     };
     programs.nixvim.keymaps = [
-      (mkKeymap "<leader>gd" "<cmd>Gitsigns diffthis<cr>" "Git Diff")
-      (mkKeymap "[g" "<cmd>Gitsigns prev_hunk<cr>" "Prev Hunk")
-      (mkKeymap "]g" "<cmd>Gitsigns next_hunk<cr>" "Next Hunk")
-      (mkKeymap "<leader>ga" "<cmd>Gitsigns stage_hunk<cr>" "Stage Hunk")
-      (mkKeymap "<leader>gA" "<cmd>Gitsigns undo_stage_hunk<cr>" "Undo Stage Hunk")
-      (mkKeymap "<leader>gg" "<cmd>Lazygit<cr>" "Lazygit")
+      (mkKeymap "<leader>gd" "<cmd>Gitsigns diffthis<cr>" "  Git Diff")
+      (mkKeymap "[g" "<cmd>Gitsigns prev_hunk<cr>" " Prev Hunk")
+      (mkKeymap "]g" "<cmd>Gitsigns next_hunk<cr>" "  Next Hunk")
+      (mkKeymap "<leader>ga" "<cmd>Gitsigns stage_hunk<cr>" " Stage Hunk")
+      (mkKeymap "<leader>gA" "<cmd>Gitsigns undo_stage_hunk<cr>" " Undo Stage Hunk")
+      (mkKeymap "<leader>gg" "<cmd>LazyGit<cr>" " LazyGit")
     ];
   };
 }

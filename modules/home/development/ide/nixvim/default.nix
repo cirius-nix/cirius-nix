@@ -21,7 +21,6 @@ let
   # User information
   user = config.${namespace}.user;
 
-  enabledSops = config.${namespace}.packages.security.enable;
 in
 {
   # Import non-default Nix files from the current directory.
@@ -55,35 +54,33 @@ in
       # Enable Ruby support for NixVim.
       withRuby = true;
       # Extra Lua configuration to be added before plugins are loaded.
-      extraConfigLuaPre =
-        ''
-          -- Global functions
-          _G.FUNCS = {
-            load_secret = function(name, path)
-              local f = io.open(path, "r")
-              if not f then
-                return nil
-              end
-
-              local data = f:read("*a")
-              f:close()
-
-              local token = data:gsub("%s+$", "")
-              vim.g[name] = token
-              vim.fn.setenv(name, token)
-
-              return token
+      extraConfigLuaPre = ''
+        -- Global functions
+        _G.FUNCS = {
+          load_secret = function(name, path)
+            local f = io.open(path, "r")
+            if not f then
+              return nil
             end
-          };
-          _M.slow_format_filetypes = {};
-        ''
-        + (lib.optionals enabledSops) ''
-          _G.FUNCS.load_secret("GEMINI_API_KEY", "${config.sops.secrets."gemini_auth_token".path}")
-          _G.FUNCS.load_secret("OPENAI_API_KEY", "${config.sops.secrets."openai_auth_token".path}")
-          _G.FUNCS.load_secret("GROQ_API_KEY", "${config.sops.secrets."groq_auth_token".path}")
-          _G.FUNCS.load_secret("DEEPSEEK_API_KEY", "${config.sops.secrets."deepseek_auth_token".path}")
-          _G.FUNCS.load_secret("DASHSCOPE_API_KEY", "${config.sops.secrets."qwen_auth_token".path}")
-        '';
+
+            local data = f:read("*a")
+            f:close()
+
+            local token = data:gsub("%s+$", "")
+            vim.g[name] = token
+            vim.fn.setenv(name, token)
+
+            return token
+          end
+        };
+        _M.slow_format_filetypes = {};
+        -- TODO: integration with ...
+        _G.FUNCS.load_secret("GEMINI_API_KEY", "${config.sops.secrets."gemini_auth_token".path}")
+        _G.FUNCS.load_secret("OPENAI_API_KEY", "${config.sops.secrets."openai_auth_token".path}")
+        _G.FUNCS.load_secret("GROQ_API_KEY", "${config.sops.secrets."groq_auth_token".path}")
+        _G.FUNCS.load_secret("DEEPSEEK_API_KEY", "${config.sops.secrets."deepseek_auth_token".path}")
+        _G.FUNCS.load_secret("DASHSCOPE_API_KEY", "${config.sops.secrets."qwen_auth_token".path}")
+      '';
       # Configure diagnostics for NixVim.
       diagnostics = {
         float = {

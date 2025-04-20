@@ -2,6 +2,7 @@
   config,
   namespace,
   lib,
+  pkgs,
   ...
 }:
 let
@@ -12,22 +13,49 @@ in
 {
   options.${namespace}.development.ide.nixvim.plugins.searching = {
     enable = mkEnableOption "Enable Searching Plugins";
-
   };
   config = mkIf cfg.enable {
     programs.nixvim = {
+      extraPlugins = with pkgs; [ vimPlugins.nvim-window-picker ];
       plugins = mkIf cfg.enable {
-        nvim-tree = {
+        nerdy = {
           enable = true;
-          syncRootWithCwd = true;
-          respectBufCwd = true;
-          updateFocusedFile = {
-            enable = true;
-            updateRoot = false;
-          };
-          renderer.icons.gitPlacement = "after";
-          diagnostics.enable = true;
+          enableTelescope = true;
         };
+        neo-tree = {
+          enable = true;
+          filesystem = {
+            useLibuvFileWatcher = true;
+            followCurrentFile = {
+              enabled = true;
+            };
+          };
+          window.mappings = {
+            "<c-v>" = "vsplit_with_window_picker";
+            "<c-x>" = "split_with_window_picker";
+            "x" = "cut_to_clipboard";
+            "c" = "copy_to_clipboard";
+            "<cr>" = "open_with_window_picker";
+            "o" = "toggle_node";
+            "e" = {
+              command = "toggle_preview";
+              config = {
+                use_float = true;
+              };
+            };
+          };
+        };
+        # nvim-tree = {
+        #   enable = true;
+        #   syncRootWithCwd = true;
+        #   respectBufCwd = true;
+        #   updateFocusedFile = {
+        #     enable = true;
+        #     updateRoot = false;
+        #   };
+        #   renderer.icons.gitPlacement = "after";
+        #   diagnostics.enable = true;
+        # };
         telescope = {
           enable = true;
           settings = {
@@ -55,14 +83,27 @@ in
           };
         };
       };
+      extraConfigLuaPre = ''
+        require 'window-picker'.setup {
+          filter_rules = {
+            bo = {
+              filetype = { 'NvimTree', 'neo-tree', 'notify', 'snacks_notif', 'dapui_scopes', 'dapui_breakpoints', 'dapui_stacks', 'dapui_watches', 'dap-repl', 'dapui_console' },
+            },
+          },
+        }
+      '';
       extraConfigLuaPost = ''
-        _G.FUNCS.nvimtree_focus_or_close = function()
+        _G.FUNCS.neotree_focus_or_close = function()
           local win = vim.api.nvim_get_current_win()
-          if vim.bo.filetype == "NvimTree" then
+          if vim.bo.filetype == "neo-tree" then
             vim.api.nvim_win_close(win, true)
           else
-            vim.cmd("NvimTreeRefresh")
-            vim.cmd("NvimTreeFocus")
+            if _G.FUNCS.check_dapui_visible() then
+              vim.cmd("Neotree focus position=float")
+              return
+            end
+          --   vim.cmd("NvimTreeRefresh")
+            vim.cmd("Neotree focus position=left")
           end
         end
 
@@ -86,24 +127,22 @@ in
       '';
       keymaps = [
         # NvimTree
-        (mkKeymap "<leader>e" "<cmd>lua _G.FUNCS.nvimtree_focus_or_close()<cr>" "ToggleNvimTree")
+        (mkKeymap "<leader>e" "<cmd>lua _G.FUNCS.neotree_focus_or_close()<cr>" "󰙅 Toggle Explorer")
         # Spectre
-        (mkKeymap "<leader>s" "<cmd>lua require('spectre').toggle()<cr>" "SearchReplace")
+        (mkKeymap "<leader>s" "<cmd>lua require('spectre').toggle()<cr>" " Search & Replace")
         (mkKeymap "<leader>s" "<cmd>lua require('spectre').open_visual()<cr>" {
           mode = [ "v" ];
           options = {
             silent = true;
             noremap = true;
             nowait = true;
-            desc = "SearchReplace";
+            desc = " Search & Replace";
           };
         })
         # Telescope
-        (mkKeymap "<leader>ff" "<cmd>Telescope find_files<cr>" "FindFiles")
-        # file browser fF
-        (mkKeymap "<leader>fF" "<cmd>Telescope file_browser<cr>" "FileBrowser")
+        (mkKeymap "<leader>ff" "<cmd>Telescope find_files<cr>" " Find File")
         # live grep fs
-        (mkKeymap "<leader>fs" "<cmd>Telescope live_grep<cr>" "LiveGrep")
+        (mkKeymap "<leader>fs" "<cmd>Telescope live_grep<cr>" "󱄽 Search String")
         # live grep fs in visual mode
         (mkKeymap "<leader>fs" "<cmd>lua _G.FUNCS.search_selected_text_in_visual_mode()<cr>" {
           mode = [ "v" ];
@@ -111,17 +150,18 @@ in
             silent = true;
             noremap = true;
             nowait = true;
-            desc = "LiveGrep";
+            desc = "󱄽 Search String";
           };
         })
         # buffers fb
-        (mkKeymap "<leader>fb" "<cmd>Telescope buffers<cr>" "Buffers")
+        (mkKeymap "<leader>fb" "<cmd>Telescope buffers<cr>" " Buffers")
         # resume fr
-        (mkKeymap "<leader>fr" "<cmd>Telescope resume<cr>" "Resume")
+        (mkKeymap "<leader>fr" "<cmd>Telescope resume<cr>" " Resume")
         # help help
-        (mkKeymap "<leader>fh" "<cmd>Telescope help_tags<cr>" "Help")
+        (mkKeymap "<leader>fh" "<cmd>Telescope help_tags<cr>" "󰘥 Help")
         # TodoTrouble ft
-        (mkKeymap "<leader>ft" "<cmd>TodoTrouble<cr>" "TodoTrouble")
+        (mkKeymap "<leader>ft" "<cmd>TodoTrouble<cr>" " TODO")
+        (mkKeymap "<leader>fi" "<cmd>Telescope nerdy<cr>" "󰲍 Icon picker")
       ];
     };
   };

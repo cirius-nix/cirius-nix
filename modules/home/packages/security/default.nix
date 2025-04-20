@@ -6,20 +6,19 @@
   ...
 }:
 let
-  inherit (lib) types mkIf mkEnableOption;
+  inherit (lib) types;
   inherit (lib.${namespace}) mkListOption mkPathOption;
   cfg = config.${namespace}.packages.security;
 in
 {
   options = {
     ${namespace}.packages.security = {
-      enable = mkEnableOption "Enable security options";
-      secretFile = mkPathOption null "SOPS ENCRYPTED SECRETS FILE";
+      secretFile = mkPathOption ../../../../secrets/${namespace}/default.yaml "SOPS ENCRYPTED SECRETS FILE";
       sshKeyPaths = mkListOption types.str [ ] "SSH key paths";
     };
   };
 
-  config = mkIf cfg.enable {
+  config = {
     home.packages = with pkgs; [
       sops
       age
@@ -40,6 +39,7 @@ in
         keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
         sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/id_ed25519" ] ++ cfg.sshKeyPaths;
       };
+      secrets = { };
     };
   };
 }
