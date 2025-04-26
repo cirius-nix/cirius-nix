@@ -26,9 +26,7 @@ let
     name = mkStrOption "" "Unique name for the repository in Tabby";
     repo = mkStrOption "" "Absolute path to the local Git repository";
   };
-
   defaultOllamaPort = 11000;
-
   mkSimpleTOMLKeyPairs =
     attrs:
     let
@@ -82,6 +80,9 @@ in
 
   config = mkIf cfg.enable {
     sops = {
+      secrets."tabby_auth_token" = {
+        mode = "0440";
+      };
       templates."tabby-config" = {
         path = "${userCfg.homeDir}/.tabby/config.toml";
         content =

@@ -7,8 +7,6 @@
 let
   namespace = "cirius";
   user = config.${namespace}.user;
-  ollamaPort = 11000;
-  tabbyPort = 11001;
   inherit (lib.${namespace}) mkEnabled;
 in
 {
@@ -21,57 +19,61 @@ in
     development = {
       ai = {
         enable = true;
-        tabby = {
-          port = tabbyPort;
-          localRepos = [
-            {
-              name = "cirius-nix";
-              repo = "${user.homeDir}/Workspace/github/personal/cirius-nix/cirius-nix";
-            }
-            {
-              name = "wbs";
-              repo = "${user.homeDir}/Workspace/github/personal/wbs";
-            }
-            {
-              name = "wbs-frontend";
-              repo = "${user.homeDir}/Workspace/github/personal/wbs-frontend";
-            }
-          ];
-          model = {
-            chat = {
-              kind = "openai/chat";
-              api_endpoint = "https://api.deepseek.com";
-              model_name = "deepseek-chat";
-              api_key = config.sops.placeholder."deepseek_auth_token";
-            };
-            completion = {
-              kind = "deepseek/completion";
-              api_endpoint = "https://api.deepseek.com/beta";
-              model_name = "deepseek-chat";
-              api_key = config.sops.placeholder."deepseek_auth_token";
-            };
-            embedding = {
-              kind = "ollama/embedding";
-              model_name = "nomic-embed-text:latest";
-              api_endpoint = "http://localhost:${builtins.toString ollamaPort}";
+        mistral = {
+          enable = true;
+        };
+        groq = {
+          enable = true;
+          nixvimIntegration.enable = true;
+        };
+        openai = {
+          enable = true;
+          nixvimIntegration.enable = true;
+        };
+        ollama = {
+          enable = true;
+          nixvimIntegration.enable = true;
+          tabbyIntegration = {
+            enable = false;
+            completionFIMTemplate = "<|fim_prefix|>{prefix}<|fim_suffix|>{suffix}<|fim_middle|>";
+            model = {
+              completion = "codegemma:3b-code-q4_K_M";
+              embedding = "nomic-embed-text:latest";
             };
           };
+        };
+        gemini = {
+          enable = true;
+          nixvimIntegration.enable = true;
+          opencommitIntegration.enable = true;
+        };
+        deepseek = {
+          enable = true;
+          nixvimIntegration.enable = true;
+          tabbyIntegration = {
+            enable = true;
+            model = {
+              chat = "deepseek-chat";
+              completion = "deepseek-chat";
+            };
+          };
+        };
+        qwen = {
+          enable = true;
+          nixvimIntegration = {
+            enable = true;
+            model = "qwen2.5-72b-instruct";
+          };
+        };
+        tabby = {
+          enable = true;
+          port = 11001;
+          localRepos = [ ];
         };
       };
       git = {
         enable = true;
         pager = true;
-        opencommit = {
-          # preset = "ollama";
-          # model = "cogito:8b-v1-preview-llama-q4_K_M";
-          # model = "mistral:7b";
-          # preset = "deepseek"; # unchecked
-          # model = "deepseek-chat";
-          # preset = "groq"; -> not quite good
-          # model = "llama3-70b-8192";
-          preset = "gemini";
-          model = "gemini-2.0-flash";
-        };
       };
       api-client.enable = true;
       langs = {
@@ -108,10 +110,7 @@ in
           plugins = {
             ai = {
               enable = true;
-              avante = {
-                preset = "qwen";
-                reasoningModel = "qwq-plus";
-              };
+              avante.provider = "deepseek";
             };
             git = mkEnabled;
             searching = mkEnabled;
@@ -144,10 +143,6 @@ in
       home-manager = {
         enable = true;
         inherit (user) username name email;
-      };
-      security = {
-        enable = true;
-        secretFile = ../../../secrets/${user.username}/default.yaml;
       };
       fonts.enable = true;
     };

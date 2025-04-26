@@ -16,9 +16,16 @@ in
     local = mkEnableOption "Enable local model support";
     model = mkStrOption "codestral-latest" "Model name";
     secretName = mkStrOption "mistral_auth_token" "SOPS secrets name";
-    # TODO: integrate with tabby
-    tabbyIntegration = mkEnableOption "Enable Tabby integration";
-    nixvimIntegration = mkEnableOption "Enable Nixvim integration";
+    tabbyIntegration = {
+      enable = mkEnableOption "Enable tabby integration";
+      model = {
+        chat = mkStrOption "codestral-latest" "Chat model";
+        completion = mkStrOption "codestral-latest" "Completion model";
+      };
+    };
+    nixvimIntegration = {
+      enable = mkEnableOption "Enable Nixvim integration";
+    };
   };
   config = mkIf cfg.enable {
     sops = mkIf (cfg.secretName != "") {
@@ -26,10 +33,26 @@ in
         mode = "0440";
       };
     };
-    programs.nixvim = mkIf (nixvimCfg.enable) {
+    programs.nixvim = mkIf (nixvimCfg.enable && cfg.nixvimIntegration.enable) {
       extraConfigLua = ''
         _G.FUNCS.load_secret("MISTRAL_API_KEY", "${config.sops.secrets."mistral_auth_token".path}")
       '';
+    };
+    ${namespace}.development.ai.tabby = mkIf (cfg.tabbyIntegration.enable) {
+      model = {
+        chat = {
+          kind = "mistral/chat";
+          model_name = cfg.tabbyIntegration.model.chat;
+          api_endpoint = "https://api.mistral.ai/v1";
+          api_key = config.sops.placeholder.${cfg.secretName};
+        };
+        completion = {
+          kind = "mistral/completion";
+          model_name = cfg.tabbyIntegration.model.completion;
+          api_endpoint = "https://api.mistral.ai";
+          api_key = config.sops.placeholder.${cfg.secretName};
+        };
+      };
     };
   };
 }

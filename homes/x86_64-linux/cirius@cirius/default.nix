@@ -44,7 +44,7 @@ in
             completion = {
               kind = "ollama/completion";
               api_endpoint = "http://localhost:${builtins.toString ollamaPort}";
-              model_name = "codegemma:2b-code-q4_K_M";
+              model_name = "qwen2.5-coder:3b-base";
               prompt_template = "<|fim_prefix|>{prefix}<|fim_suffix|>{suffix}<|fim_middle|>";
             };
             embedding = {

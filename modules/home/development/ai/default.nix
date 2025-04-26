@@ -26,27 +26,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    sops =
-      let
-        commonSecretConfig = {
-          mode = "0440";
-        };
-      in
-      {
-        secrets."openai_auth_token" = commonSecretConfig;
-        secrets."deepseek_auth_token" = commonSecretConfig;
-        secrets."gemini_auth_token" = commonSecretConfig;
-        secrets."groq_auth_token" = commonSecretConfig;
-        secrets."qwen_auth_token" = commonSecretConfig;
-        secrets."tabby_auth_token" = commonSecretConfig;
-      };
-
-    ${namespace}.development.cli-utils.fish = {
-      interactiveEnvs = {
-        OLLAMA_HOST = "127.0.0.1:${builtins.toString port}";
-      };
-    };
-
     home = {
       packages =
         with pkgs;
@@ -64,7 +43,6 @@ in
             python313Packages.bitsandbytes
           ])
         ];
-
     };
 
     services = lib.mkIf isDarwin {
