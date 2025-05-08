@@ -11,7 +11,6 @@ let
 in
 {
   ${namespace} = {
-    # TODO: implement user.
     user = {
       email = "hieu.tran21198@gmail.com";
       name = "Minh Hieu Tran";
@@ -142,6 +141,12 @@ in
       ide = {
         db = {
           enable = true;
+        };
+        vscode = {
+          enable = true;
+          enableVimExt = true;
+          enableDockerExts = true;
+          enableExtendedExts = true;
         };
         nixvim = {
           enable = true;

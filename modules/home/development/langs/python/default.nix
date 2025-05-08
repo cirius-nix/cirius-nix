@@ -17,29 +17,27 @@ in
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
+      python311Packages.black
     ];
 
     programs.nixvim = {
       plugins = {
         lsp.servers = {
-
+          pylsp.enable = true;
         };
 
         conform-nvim.settings = {
           formatters = {
-            # pythonimports = {
-            #   command = "${pkgs.pythontools}/bin/goimports";
-            # };
-            # pythonimports-reviser = {
-            #   command = lib.getExe pkgs.pythonimports-reviser;
-            # };
+            pythonblack = {
+              command = "${pkgs.python311Packages.black}/bin/black";
+            };
+
           };
 
           formatters_by_ft = {
-            # python = [
-            #   "pythonimports"
-            #   "pythonimports-reviser"
-            # ];
+            python = [
+              "pythonblack"
+            ];
           };
         };
       };
@@ -48,6 +46,7 @@ in
     ${namespace}.development.ide.vscode.addPlugins = with pkgs.vscode-extensions; [
       ms-python.python
       ms-python.debugpy
+      ms-python.vscode-pylance
     ];
   };
 }
