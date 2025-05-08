@@ -98,7 +98,7 @@ in
         nix.enable = true;
         datatype.enable = true;
         markup.enable = true;
-        shell.enable = true;
+        shells.enable = true;
         terraform.enable = true;
         typescript.enable = true;
         java.enable = true;

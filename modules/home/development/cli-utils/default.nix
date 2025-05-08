@@ -18,10 +18,17 @@ in
   };
 
   config = mkIf cfg.enable {
-    ${namespace}.development.cli-utils.fish = {
-      interactiveCommands = [
+    ${namespace}.development = {
+      ide.vscode.addPlugins = with pkgs.vscode-extensions; [
+        mikestead.dotenv
+        mkhl.direnv
       ];
+      cli-utils.fish = {
+        interactiveCommands = [
+        ];
+      };
     };
+
     home = {
       packages = with pkgs; [
         jq
@@ -102,9 +109,5 @@ in
       };
     };
 
-    ${namespace}.development.ide.vscode.addPlugins = with pkgs.vscode-extensions; [
-      mikestead.dotenv
-      mkhl.direnv
-    ];
   };
 }
