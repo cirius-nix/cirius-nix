@@ -138,7 +138,12 @@ in
         };
         db.enable = true;
         helix.enable = true;
-        vscode.enable = true;
+        vscode = {
+          enable = true;
+          enableVimExt = true;
+          enableDockerExts = true;
+          enableExtendedExts = true;
+        };
       };
       api-client.enable = true;
       kdev.enable = true;

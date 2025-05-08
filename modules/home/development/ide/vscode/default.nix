@@ -16,6 +16,7 @@ in
     addPlugins = mkListOption lib.types.package [ ] "Additional packages";
     enableDockerExts = mkEnableOption "Enable Docker extensions";
     enableExtendedExts = mkEnableOption "Enable extended extensions";
+    # TODO: integrate with nixvim
     enableVimExt = mkEnableOption "Enable Vim extensions";
   };
   config = mkIf cfg.enable {
