@@ -7,7 +7,6 @@
   ...
 }:
 let
-
   isLinux = pkgs.stdenv.isLinux;
   isDarwin = pkgs.stdenv.isDarwin;
 
@@ -15,7 +14,6 @@ let
   osCfg = osConfig.${namespace}.applications.ai;
 
   inherit (lib.${namespace}) mkIntOption;
-
   port = if isLinux then osCfg.port else cfg.port;
   defaultOllamaPort = 11000;
 in
@@ -54,5 +52,11 @@ in
         acceleration = null;
       };
     };
+
+    ${namespace}.development.ide.vscode.addPlugins = with pkgs.vscode-extensions; [
+      github.copilot
+      github.copilot-chat
+      # tabbyml.vscode-tabby
+    ];
   };
 }

@@ -19,6 +19,10 @@ in
   };
 
   config = mkIf cfg.enable {
+    ${namespace}.development.ide.vscode.addPlugins = with pkgs.vscode-extensions; [
+      bradlc.vscode-tailwindcss
+      redhat.vscode-yaml
+    ];
     home.packages = with pkgs; [
       stylelint
       deno

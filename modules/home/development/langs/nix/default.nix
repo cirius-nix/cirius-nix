@@ -49,5 +49,11 @@ in
         };
       };
     };
+
+    ${namespace}.development.ide.vscode.addPlugins = with pkgs.vscode-extensions; [
+      bbenoist.nix
+      arrterian.nix-env-selector
+      jnoortheen.nix-ide
+    ];
   };
 }

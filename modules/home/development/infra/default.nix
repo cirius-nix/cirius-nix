@@ -17,6 +17,10 @@ in
   };
 
   config = mkIf cfg.enable {
+    ${namespace}.development.ide.vscode.addPlugins = with pkgs.vscode-extensions; [
+      # serverless
+      hashicorp.terraform
+    ];
     ${namespace}.development.cli-utils.fish = {
       interactiveFuncs = {
         aws_profile = ''

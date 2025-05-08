@@ -88,5 +88,11 @@ in
         };
       };
     };
+
+    ${namespace}.development.ide.vscode.addPlugins = with pkgs.vscode-extensions; [
+      esbenp.prettier-vscode
+      dbaeumer.vscode-eslint
+      # vitest; playwright; prettier-eslint
+    ];
   };
 }

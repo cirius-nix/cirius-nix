@@ -77,6 +77,9 @@ in
 
     ${namespace} = {
       development = {
+        ide.vscode.addPlugins = with pkgs.vscode-extensions; [
+          golang.go
+        ];
         cli-utils.fish = mkIf cfg.enableFishIntegration {
           interactiveEnvs = {
             GOBIN = "$HOME/go/bin";

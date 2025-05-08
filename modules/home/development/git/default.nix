@@ -109,5 +109,9 @@ in
         url."ssh://git@github.com/".insteadOf = "https://github.com/";
       };
     };
+    ${namespace}.development.ide.vscode.addPlugins = with pkgs.vscode-extensions; [
+      waderyan.gitblame
+      eamodio.gitlens
+    ];
   };
 }
