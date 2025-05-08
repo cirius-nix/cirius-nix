@@ -39,6 +39,7 @@ in
           ]
           (lib.optional isLinux [
             lmstudio
+            python313
             python313Packages.peft
             python313Packages.transformers
             python313Packages.bitsandbytes

@@ -11,12 +11,10 @@ let
     mkEnableOption
     ;
 
-  inherit (lib.${namespace}.nixvim) mkEnabled;
-
-  cfg = config.${namespace}.development.ide.nixvim.plugins.languages.shells;
+  cfg = config.${namespace}.development.langs.shells;
 in
 {
-  options.${namespace}.development.ide.nixvim.plugins.languages.shells = {
+  options.${namespace}.development.langs.shells = {
     enable = mkEnableOption "Enable Shells (Fish,Sh,Bash,Zsh,Dotenv) Language Server";
   };
 
@@ -28,8 +26,8 @@ in
     ];
     programs.nixvim.plugins = {
       lsp.servers = {
-        fish_lsp = mkEnabled;
-        bashls = mkEnabled;
+        fish_lsp.enable = true;
+        bashls.enable = true;
       };
       conform-nvim.settings = {
         # INFO: custom formatter to be used.

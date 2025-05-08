@@ -11,12 +11,10 @@ let
     mkEnableOption
     ;
 
-  inherit (lib.${namespace}.nixvim) mkEnabled;
-
-  cfg = config.${namespace}.development.ide.nixvim.plugins.languages.lua;
+  cfg = config.${namespace}.development.langs.lua;
 in
 {
-  options.${namespace}.development.ide.nixvim.plugins.languages.lua = {
+  options.${namespace}.development.langs.lua = {
     enable = mkEnableOption "Enable Lua Language Server";
   };
 
@@ -27,7 +25,7 @@ in
     ];
     programs.nixvim.plugins = {
       lsp.servers = {
-        lua_ls = mkEnabled;
+        lua_ls.enable = true;
       };
       conform-nvim.settings = {
         # INFO: custom formatter to be used.

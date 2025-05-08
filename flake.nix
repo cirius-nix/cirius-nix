@@ -70,7 +70,6 @@
           { system, ... }:
           {
             packages = {
-
               inherit (inputs.zen-browser.packages.${system}) default;
               # in system level configuration:
               # environment.systemPackages = [

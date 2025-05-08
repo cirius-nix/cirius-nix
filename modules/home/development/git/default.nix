@@ -8,7 +8,7 @@
 
 let
   inherit (lib) mkEnableOption mkIf;
-  inherit (lib.${namespace}) mkStrOption;
+  inherit (lib.${namespace}) mkStrOption mkListOption;
 
   cfg = config.${namespace}.development.git;
   userCfg = config.${namespace}.user;
@@ -27,6 +27,7 @@ in
     opencommit = {
       customConfig = mkStrOption "" "Custom config";
     };
+    includeConfigs = mkListOption lib.types.attrs [ ] "Extra configuration of git";
   };
 
   config = mkIf cfg.enable {
@@ -75,15 +76,8 @@ in
         co = "checkout";
       };
 
-      includes = [
-        {
-          condition = "gitdir:~/Workspace/github/personal/";
-          path = "~/.gitconfig.personal";
-        }
-        {
-          condition = "gitdir:~/Workspace/github/work/";
-          path = "~/.gitconfig.work";
-        }
+      includes = lib.concatLists [
+        cfg.includeConfigs
       ];
 
       extraConfig = {

@@ -77,13 +77,48 @@ in
       git = {
         enable = true;
         pager = true;
+        includeConfigs = [
+          {
+            condition = "gitdir:~/Workspace/github/personal/";
+            path = "~/.gitconfig.personal";
+          }
+          {
+            condition = "gitdir:~/Workspace/github/work/";
+            path = "~/.gitconfig.work";
+          }
+        ];
       };
       api-client.enable = true;
       langs = {
-        go.enable = true;
-        java.enable = true;
-        node.enable = true;
+        lua.enable = true;
+        go = {
+          enable = true;
+          enableFishIntegration = true;
+        };
         nix.enable = true;
+        datatype.enable = true;
+        markup.enable = true;
+        shell.enable = true;
+        terraform.enable = true;
+        typescript.enable = true;
+        java.enable = true;
+        sql = {
+          enable = true;
+          sqlFormatter = {
+            settings = {
+              # https://github.com/sql-formatter-org/sql-formatter/blob/master/docs/language.md
+              # The default "sql" dialect is meant for cases where you don't
+              # know which dialect of SQL you're about to format. It's not an
+              # auto-detection, it just supports a subset of features common
+              # enough in many SQL implementations. This might or might not
+              # work for your specific dialect. Better to always pick something
+              # more specific if possible.
+              # https://en.wikipedia.org/wiki/SQL:2011
+              language = "sql";
+            };
+          };
+
+        };
       };
       cli-utils = {
         enable = true;
@@ -122,17 +157,6 @@ in
             formatter = mkEnabled;
             term = mkEnabled;
             session = mkEnabled;
-            languages = {
-              dataPresentation = mkEnabled;
-              go = mkEnabled;
-              lua = mkEnabled;
-              markup = mkEnabled;
-              nix = mkEnabled;
-              shells = mkEnabled;
-              sql = mkEnabled;
-              terraform = mkEnabled;
-              typescript = mkEnabled;
-            };
           };
         };
         helix = {

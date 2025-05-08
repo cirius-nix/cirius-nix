@@ -8,10 +8,10 @@
 let
   inherit (lib) mkIf mkEnableOption;
   inherit (lib.${namespace}.nixvim) mkEnabled;
-  cfg = config.${namespace}.development.ide.nixvim.plugins.languages.terraform;
+  cfg = config.${namespace}.development.langs.terraform;
 in
 {
-  options.${namespace}.development.ide.nixvim.plugins.languages.terraform = {
+  options.${namespace}.development.langs.terraform = {
     enable = mkEnableOption "Terraform Language Server";
   };
   config = mkIf cfg.enable {

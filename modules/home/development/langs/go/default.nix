@@ -13,38 +13,77 @@ in
 {
   options.${namespace}.development.langs.go = {
     enable = mkEnableOption "Golang";
+    enableFishIntegration = mkEnableOption "enable fish integration";
   };
 
   config = mkIf cfg.enable {
-    ${namespace} = {
-      development = {
-        cli-utils.fish = {
-          interactiveEnvs = {
-            GOBIN = "$HOME/go/bin";
+    home.packages = with pkgs; [
+      go
+
+      # tools
+      gotools
+      goimports-reviser
+      gomodifytags
+      impl
+
+      air
+      wails
+
+      # OpenAPI tools
+      go-swagger
+      go-swag
+    ];
+
+    programs.nixvim = {
+      extraConfigLuaPost = ''
+        vim.filetype.add({
+          extension = {
+            gotmpl = 'gotmpl',
+          },
+          pattern = {
+            [".*/templates/.*%.tpl"] = "helm",
+            [".*/templates/.*%.ya?ml"] = "helm",
+            ["helmfile.*%.ya?ml"] = "helm",
+          },
+        })
+      '';
+      plugins = {
+
+        lsp.servers = {
+          gopls = {
+            enable = true;
           };
-          customPaths = [ "$GOBIN" ];
         };
-        ide.nixvim = {
-          plugins = {
-            languages = {
-              go = {
-                enable = true;
-              };
+
+        conform-nvim.settings = {
+          formatters = {
+            goimports = {
+              command = "${pkgs.gotools}/bin/goimports";
             };
+            goimports-reviser = {
+              command = lib.getExe pkgs.goimports-reviser;
+            };
+          };
+
+          formatters_by_ft = {
+            go = [
+              "goimports"
+              "goimports-reviser"
+            ];
           };
         };
       };
     };
 
-    home.packages = with pkgs; [
-      wails
-      go
-      gotools
-      goimports-reviser
-      gomodifytags
-      go-swagger
-      impl
-      air
-    ];
+    ${namespace} = {
+      development = {
+        cli-utils.fish = mkIf cfg.enableFishIntegration {
+          interactiveEnvs = {
+            GOBIN = "$HOME/go/bin";
+          };
+          customPaths = [ "$GOBIN" ];
+        };
+      };
+    };
   };
 }

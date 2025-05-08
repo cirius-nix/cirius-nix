@@ -20,7 +20,6 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       looking-glass-client
-      obs-studio-plugins.looking-glass-obs
     ];
 
     environment.etc."looking-glass-client.ini" = {

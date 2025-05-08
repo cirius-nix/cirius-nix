@@ -43,13 +43,13 @@ in
         chat = {
           kind = "mistral/chat";
           model_name = cfg.tabbyIntegration.model.chat;
-          api_endpoint = "https://api.mistral.ai/v1";
+          api_endpoint = "https://codestral.mistral.ai/v1/chat/completions";
           api_key = config.sops.placeholder.${cfg.secretName};
         };
         completion = {
           kind = "mistral/completion";
           model_name = cfg.tabbyIntegration.model.completion;
-          api_endpoint = "https://api.mistral.ai";
+          api_endpoint = "https://codestral.mistral.ai/v1/fim/completions";
           api_key = config.sops.placeholder.${cfg.secretName};
         };
       };

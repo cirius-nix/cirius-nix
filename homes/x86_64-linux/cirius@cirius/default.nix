@@ -1,20 +1,13 @@
 {
   lib,
   config,
-  osConfig,
   pkgs,
   ...
 }:
 let
   namespace = "cirius";
-  ollamaPort = osConfig.${namespace}.applications.ai.port;
   user = config.${namespace}.user;
   inherit (lib.cirius) mkEnabled;
-  # 1. Qwen2.5 32B
-  # 2. GPT-4.1 Mini
-  # 3. Deepseek V3
-  # Evaluates an LLM's ability to answer questions based on provided context, extracted from files.
-  # https://www.prollm.ai/leaderboard/open-book-qa?ctx_size=Large,Medium,Small&level=Easy,Hard,Medium,Unanswerable&method=Full+Context,Map+Reduce
 in
 {
   ${namespace} = {
@@ -25,47 +18,103 @@ in
     development = {
       ai = {
         enable = true;
+        tabby = {
+          enable = true;
+          port = 11001;
+          localRepos = [ ];
+        };
         mistral = {
           enable = true;
-          local = false;
+        };
+        groq = {
+          enable = true;
+          nixvimIntegration.enable = true;
+        };
+        openai = {
+          enable = true;
+          nixvimIntegration.enable = true;
+        };
+        ollama = {
+          enable = true;
+          nixvimIntegration.enable = true;
+          tabbyIntegration = {
+            enable = true;
+            completionFIMTemplate = "<|fim_prefix|>{prefix}<|fim_suffix|>{suffix}<|fim_middle|>"; # common
+            model = {
+              chat = "llama3.1:8b";
+              completion = "qwen2.5-coder:3b-base";
+              embedding = "nomic-embed-text:latest";
+            };
+          };
+        };
+        gemini = {
+          enable = true;
+          nixvimIntegration.enable = true;
+          opencommitIntegration.enable = true;
+        };
+        deepseek = {
+          enable = true;
+          nixvimIntegration.enable = true;
+          tabbyIntegration = {
+            model = {
+              chat = "deepseek-chat";
+              completion = "deepseek-chat";
+            };
+          };
         };
         qwen = {
           enable = true;
-          local = false;
           nixvimIntegration = {
             enable = true;
             model = "qwen2.5-72b-instruct";
           };
         };
-        tabby = {
-          port = 11001;
-          localRepos = [ ];
-          model = {
-            completion = {
-              kind = "ollama/completion";
-              api_endpoint = "http://localhost:${builtins.toString ollamaPort}";
-              model_name = "qwen2.5-coder:3b-base";
-              prompt_template = "<|fim_prefix|>{prefix}<|fim_suffix|>{suffix}<|fim_middle|>";
-            };
-            embedding = {
-              kind = "ollama/embedding";
-              model_name = "nomic-embed-text:latest";
-              api_endpoint = "http://localhost:${builtins.toString ollamaPort}";
-            };
-          };
-        };
+
       };
       git = {
         enable = true;
         pager = true;
-        opencommit = {
-          preset = "gemini";
-          model = "gemini-2.0-flash";
-        };
+        includeConfigs = [
+          {
+            condition = "gitdir:~/Workspace/github/personal/";
+            path = "~/.gitconfig.personal";
+          }
+          {
+            condition = "gitdir:~/Workspace/github/work/";
+            path = "~/.gitconfig.work";
+          }
+        ];
       };
       langs = {
-        go.enable = true;
+        lua.enable = true;
+        go = {
+          enable = true;
+          enableFishIntegration = true;
+        };
         nix.enable = true;
+        datatype.enable = true;
+        markup.enable = true;
+        shells.enable = true;
+        terraform.enable = true;
+        typescript.enable = true;
+        java.enable = true;
+        sql = {
+          enable = true;
+          sqlFormatter = {
+            settings = {
+              # https://github.com/sql-formatter-org/sql-formatter/blob/master/docs/language.md
+              # The default "sql" dialect is meant for cases where you don't
+              # know which dialect of SQL you're about to format. It's not an
+              # auto-detection, it just supports a subset of features common
+              # enough in many SQL implementations. This might or might not
+              # work for your specific dialect. Better to always pick something
+              # more specific if possible.
+              # https://en.wikipedia.org/wiki/SQL:2011
+              language = "sql";
+            };
+          };
+
+        };
       };
       ide = {
         nixvim = {
@@ -75,8 +124,7 @@ in
             ai = {
               enable = true;
               avante = {
-                preset = "deepseek";
-                reasoningModel = "deepseek-chat";
+                provider = "deepseek";
               };
             };
             session = mkEnabled;
@@ -86,22 +134,11 @@ in
             formatter = mkEnabled;
             git = mkEnabled;
             term = mkEnabled;
-            languages = {
-              dataPresentation = mkEnabled;
-              go = mkEnabled;
-              lua = mkEnabled;
-              markup = mkEnabled;
-              nix = mkEnabled;
-              shells = mkEnabled;
-              sql = mkEnabled;
-              terraform = mkEnabled;
-              typescript = mkEnabled;
-            };
           };
         };
-        db = mkEnabled;
-        helix = mkEnabled;
-        useJetbrainsNC = true;
+        db.enable = true;
+        helix.enable = true;
+        vscode.enable = true;
       };
       api-client.enable = true;
       kdev.enable = true;
@@ -131,6 +168,12 @@ in
 
       infra = {
         enable = true;
+        kafka = {
+          enable = true;
+        };
+        langchain = {
+          enable = true;
+        };
       };
       term.enable = true;
     };

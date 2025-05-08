@@ -7,10 +7,10 @@
 }:
 let
   inherit (lib) mkIf mkEnableOption mkOption;
-  cfg = config.${namespace}.development.ide.nixvim.plugins.languages.typescript;
+  cfg = config.${namespace}.development.langs.typescript;
 in
 {
-  options.${namespace}.development.ide.nixvim.plugins.languages.typescript = {
+  options.${namespace}.development.langs.typescript = {
     enable = mkEnableOption "TypeScript Language Server";
     enableAngularls = mkEnableOption {
       default = false;
@@ -27,7 +27,10 @@ in
     };
   };
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [ nodejs_22 ];
+    home.packages = with pkgs; [
+      nodejs_22
+      corepack_22
+    ];
     programs.nixvim.plugins = {
       typescript-tools = {
         enable = true;
@@ -60,15 +63,6 @@ in
             "angular.json"
             "project.json"
           ];
-          # rootDir = {
-          #   __raw = ''
-          #     (function()
-          #       local util = require("lspconfig.util")
-          #       root_dir = util.root_pattern("angular.json", "project.json")
-          #       return root_dir
-          #     end)()
-          #   '';
-          # };
         };
       };
       conform-nvim.settings = {

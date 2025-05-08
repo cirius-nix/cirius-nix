@@ -103,7 +103,12 @@ in
     efi.canTouchEfiVariables = true;
   };
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+      allowBroken = false;
+    };
+  };
 
   # state version
   system.stateVersion = "24.05";

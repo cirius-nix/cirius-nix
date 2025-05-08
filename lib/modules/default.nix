@@ -93,4 +93,6 @@ rec {
   force-attrs = mapAttrs (_key: lib.mkForce);
   nested-default-attrs = mapAttrs (_key: default-attrs);
   nested-force-attrs = mapAttrs (_key: force-attrs);
+  # example: mergeL' { a = 1; b = 2; } [{ a = 2; b = 3; c = 4; }] => { a = 2; b = 3; c = 4; }
+  mergeL' = default: attrSets: lib.foldl' lib.recursiveUpdate default attrSets;
 }

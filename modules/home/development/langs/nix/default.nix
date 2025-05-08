@@ -2,6 +2,7 @@
   config,
   lib,
   namespace,
+  pkgs,
   ...
 }:
 
@@ -15,10 +16,36 @@ in
   };
 
   config = mkIf cfg.enable {
-    ${namespace} = {
-      development.ide.nixvim.plugins = {
-        languages.nix = {
+    home.packages = with pkgs; [
+      nixfmt-rfc-style
+    ];
+    programs.nixvim.plugins = {
+      direnv.enable = true;
+      nix.enable = true;
+      nix-develop = {
+        enable = true;
+      };
+      lsp.servers = {
+        nixd.enable = true;
+        nil_ls = {
           enable = true;
+          settings = {
+            formatting.command = [ "${lib.getExe pkgs.nixfmt-rfc-style}" ];
+            nix.flake.autoArchive = true;
+          };
+        };
+      };
+      conform-nvim.settings = {
+        # INFO: custom formatter to be used.
+        formatters = {
+          nixfmt = {
+            command = lib.getExe pkgs.nixfmt-rfc-style;
+          };
+        };
+
+        # INFO: use formatter(s).
+        formatters_by_ft = {
+          nix = [ "nixfmt" ];
         };
       };
     };

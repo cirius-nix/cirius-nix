@@ -11,21 +11,25 @@ let
     mkEnableOption
     ;
 
-  inherit (lib.${namespace}.nixvim) mkEnabled;
-
-  cfg = config.${namespace}.development.ide.nixvim.plugins.languages.markup;
+  cfg = config.${namespace}.development.langs.markup;
 in
 {
-  options.${namespace}.development.ide.nixvim.plugins.languages.markup = {
+  options.${namespace}.development.langs.markup = {
     enable = mkEnableOption "Enable Markup Language Server";
   };
 
   config = mkIf cfg.enable {
+    home.packages = with pkgs; [
+      stylelint
+      deno
+      prettierd
+      nodePackages.prettier
+    ];
     programs.nixvim.plugins = {
       lsp.servers = {
-        cssls = mkEnabled;
-        html = mkEnabled;
-        markdown_oxide = mkEnabled;
+        cssls.enable = true;
+        html.enable = true;
+        markdown_oxide.enable = true;
         tailwindcss.enable = true;
         eslint = {
           enable = true;
