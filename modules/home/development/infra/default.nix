@@ -31,8 +31,6 @@ in
       };
     };
     home.packages = with pkgs; [
-      devenv
-
       awscli2
       aws-vault
       chamber

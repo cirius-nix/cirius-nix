@@ -56,15 +56,19 @@ in
             "html"
             "typescript"
           ];
-          rootDir = {
-            __raw = ''
-              (function()
-                local util = require("lspconfig.util")
-                root_dir = util.root_pattern("angular.json", "project.json")
-                return root_dir
-              end)()
-            '';
-          };
+          rootMarkers = [
+            "angular.json"
+            "project.json"
+          ];
+          # rootDir = {
+          #   __raw = ''
+          #     (function()
+          #       local util = require("lspconfig.util")
+          #       root_dir = util.root_pattern("angular.json", "project.json")
+          #       return root_dir
+          #     end)()
+          #   '';
+          # };
         };
       };
       conform-nvim.settings = {

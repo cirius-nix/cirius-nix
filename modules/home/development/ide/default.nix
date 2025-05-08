@@ -17,6 +17,7 @@ in
   config = {
     home.packages =
       with pkgs;
+
       lib.flatten [
         (lib.optional pkgs.stdenv.isLinux [
           vscode-fhs

@@ -82,7 +82,8 @@ in
         _G.FUNCS.load_secret("DASHSCOPE_API_KEY", "${config.sops.secrets."qwen_auth_token".path}")
       '';
       # Configure diagnostics for NixVim.
-      diagnostics = {
+      # diagnostics renamed to diagnostic.settings
+      diagnostic.settings = {
         float = {
           border = "rounded";
         };

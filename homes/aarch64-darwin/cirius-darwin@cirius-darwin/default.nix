@@ -32,12 +32,15 @@ in
         };
         ollama = {
           enable = true;
-          nixvimIntegration.enable = true;
+          nixvimIntegration = {
+            enable = true;
+            model = "smallthinker";
+          };
           tabbyIntegration = {
-            enable = false;
+            enable = true;
             completionFIMTemplate = "<|fim_prefix|>{prefix}<|fim_suffix|>{suffix}<|fim_middle|>";
             model = {
-              completion = "codegemma:3b-code-q4_K_M";
+              completion = "qwen2.5-coder:3b-base";
               embedding = "nomic-embed-text:latest";
             };
           };
@@ -51,7 +54,7 @@ in
           enable = true;
           nixvimIntegration.enable = true;
           tabbyIntegration = {
-            enable = true;
+            enable = false;
             model = {
               chat = "deepseek-chat";
               completion = "deepseek-chat";
@@ -110,7 +113,7 @@ in
           plugins = {
             ai = {
               enable = true;
-              avante.provider = "deepseek";
+              avante.provider = "gemini";
             };
             git = mkEnabled;
             searching = mkEnabled;
@@ -137,6 +140,7 @@ in
         };
       };
       term.enable = true;
+      term.warp.enable = true;
     };
 
     packages = {

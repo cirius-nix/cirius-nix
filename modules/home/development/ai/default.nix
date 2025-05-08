@@ -34,7 +34,8 @@ in
             tabby
             tabby-agent
             katana
-            aider-chat-full
+            # FIXME: broken app because of using spacy 3.8.5
+            # aider-chat-full
           ]
           (lib.optional isLinux [
             lmstudio

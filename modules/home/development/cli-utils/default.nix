@@ -38,7 +38,6 @@ in
         gnused
         zip
         unzip
-        devenv
       ];
       shellAliases = {
         la = lib.mkForce "${lib.getExe config.programs.eza.package} -lah --tree";
