@@ -28,7 +28,7 @@ are managed as symbolic links with restricted permissions (read-only for regular
 users). This design prevents accidental modifications while ensuring consistent,
 version-controlled configurations across all environments.
 
-## Considerations
+### Considerations
 
 While Nix offers powerful features, there are some trade-offs:
 
@@ -38,9 +38,9 @@ While Nix offers powerful features, there are some trade-offs:
 - **Performance Overhead**: Nix operations can be slower than traditional tools.
 - **Debugging Challenges**: Tracing issues in Nix expressions can be complex.
 
-### 🧩 Core Components & Features
+## Core Components & Features
 
-#### 🖥️ Cross-Platform Support
+### Cross-Platform Support
 
 - **NixOS**: Full system configuration
 - **Linux**: x86_64/aarch64
@@ -49,7 +49,7 @@ While Nix offers powerful features, there are some trade-offs:
   - KDE Plasma (Wayland) - fully configured
   - Hyprland - in development
 
-#### 🤖 AI Development Stack
+### AI Development Stack
 
 ![VSCode with Continue plugin, which configured with multiple AI Providers](./docs/showcases/vscode-continue-ai-providers.png)
 
@@ -64,7 +64,7 @@ While Nix offers powerful features, there are some trade-offs:
   - Enable via `development.ai.<provider>.enable = true`
   - API keys managed via SOPS in `secrets/${username}/default.yaml`
 
-#### 🔐 Security & Reproducibility
+### Security & Reproducibility
 
 - **Secrets Management**:
   - SOPS encryption (age/GPG) for API keys/tokens
@@ -74,7 +74,7 @@ While Nix offers powerful features, there are some trade-offs:
   - Version-controlled with Git
   - No plaintext secrets in source control
 
-#### 🛠️ Development Environment
+### Development Environment
 
 - **Language Support**:
   - Golang, TypeScript/JS, Nix, Python, SQL, Java, Terraform, ...
@@ -86,7 +86,7 @@ While Nix offers powerful features, there are some trade-offs:
     autosuggestions, powerline-style prompt by **starship**
   - Custom aliases, functions for Nix/AI workflows
 
-#### 📦 Modular Package Management
+### Modular Package Management
 
 - **Design**:
   - System/user-level separation
