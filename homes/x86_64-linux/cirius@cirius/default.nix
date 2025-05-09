@@ -140,7 +140,7 @@ in
         helix.enable = true;
         vscode = {
           enable = true;
-          enableVimExt = true;
+          enableVimExt = false;
           enableDockerExts = true;
           enableExtendedExts = true;
         };

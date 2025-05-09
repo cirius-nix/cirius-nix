@@ -53,7 +53,7 @@ in
       };
     };
 
-    ${namespace}.development.ide.vscode.addPlugins = with pkgs.vscode-extensions; [
+    programs.vscode.profiles.default.extensions = with pkgs.vscode-extensions; [
       github.copilot
       github.copilot-chat
       # tabbyml.vscode-tabby

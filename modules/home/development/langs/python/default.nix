@@ -43,7 +43,7 @@ in
       };
     };
 
-    ${namespace}.development.ide.vscode.addPlugins = with pkgs.vscode-extensions; [
+    programs.vscode.profiles.default.extensions = with pkgs.vscode-extensions; [
       ms-python.python
       ms-python.debugpy
       ms-python.vscode-pylance

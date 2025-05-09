@@ -19,15 +19,16 @@ in
 
   config = mkIf cfg.enable {
     ${namespace}.development = {
-      ide.vscode.addPlugins = with pkgs.vscode-extensions; [
-        mikestead.dotenv
-        mkhl.direnv
-      ];
       cli-utils.fish = {
         interactiveCommands = [
         ];
       };
     };
+
+    programs.vscode.profiles.default.extensions = with pkgs.vscode-extensions; [
+      mikestead.dotenv
+      mkhl.direnv
+    ];
 
     home = {
       packages = with pkgs; [

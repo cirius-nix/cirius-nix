@@ -17,10 +17,12 @@ in
   };
 
   config = mkIf cfg.enable {
-    ${namespace}.development = {
-      ide.vscode.addPlugins = with pkgs.vscode-extensions; [
+    programs.vscode.profiles.default = {
+      extensions = with pkgs.vscode-extensions; [
         hashicorp.terraform
       ];
+    };
+    ${namespace}.development = {
       cli-utils.fish = {
         interactiveFuncs = {
           aws_profile = ''

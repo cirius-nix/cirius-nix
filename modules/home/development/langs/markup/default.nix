@@ -19,7 +19,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    ${namespace}.development.ide.vscode.addPlugins = with pkgs.vscode-extensions; [
+    programs.vscode.profiles.default.extensions = with pkgs.vscode-extensions; [
       bradlc.vscode-tailwindcss
       redhat.vscode-yaml
     ];
