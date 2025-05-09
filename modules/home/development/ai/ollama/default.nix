@@ -50,7 +50,7 @@ in
 
   config = {
     ${namespace}.development = {
-      ai.tabby = mkIf (cfg.tabbyIntegration.enable) {
+      ai.tabby = mkIf cfg.tabbyIntegration.enable {
         model = {
           chat = {
             kind = "openai/chat";

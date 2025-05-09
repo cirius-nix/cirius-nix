@@ -5,32 +5,33 @@
   ...
 }:
 let
-  cfg = config.${namespace}.development.ai.deepseek;
+  cfg = config.${namespace}.development.ai.deepinfra;
   nixvimCfg = config.${namespace}.development.ide.nixvim;
   inherit (lib) mkIf mkEnableOption;
   inherit (lib.${namespace}) mkStrOption;
 in
 {
-  options.${namespace}.development.ai.deepseek = {
-    enable = mkEnableOption "Enable deepseek AI";
+  options.${namespace}.development.ai.deepinfra = {
+    enable = mkEnableOption "Enable deepinfra AI";
     local = mkEnableOption "Enable local model support";
-    model = mkStrOption "deepseek-chat" "Model name";
-    secretName = mkStrOption "deepseek_auth_token" "SOPS secrets name";
+    model = mkStrOption "Qwen/Qwen3-32B" "Model name";
+    secretName = mkStrOption "deepinfra_auth_token" "SOPS secrets name";
     tabbyIntegration = {
       enable = mkEnableOption "Enable tabby integration";
-      completionFIMTemplate = mkStrOption "<|fim_prefix|>{prefix}<|fim_suffix|>{suffix}<|fim_middle|>" "FIM template";
+      completionFIMTemplate = mkStrOption "" "FIM template";
       model = {
-        chat = mkStrOption "deepseek-chat" "Chat model";
-        completion = mkStrOption "deepseek-chat" "Completion model";
+        chat = mkStrOption "Qwen/Qwen3-32B" "Chat model";
+        completion = mkStrOption "Qwen/Qwen2.5-Coder-32B-Instruct" "Completion model";
+        embedding = mkStrOption "BAAI/bge-base-en-v1.5" "Embedding model";
       };
     };
     nixvimIntegration = {
       enable = mkEnableOption "Enable Nixvim integration";
-      model = mkStrOption "deepseek-chat" "Nixvim model name";
+      model = mkStrOption "Qwen/Qwen3-32B" "Nixvim model name";
     };
     opencommitIntegration = {
       enable = mkEnableOption "Enable opencommit integration";
-      model = mkStrOption "deepseek-chat" "Opencommit integration";
+      model = mkStrOption "Qwen/Qwen3-32B" "Opencommit integration";
     };
   };
 
@@ -42,7 +43,7 @@ in
     };
     programs.nixvim = mkIf (nixvimCfg.enable && cfg.nixvimIntegration.enable) {
       extraConfigLua = ''
-        _G.FUNCS.load_secret("DEEPSEEK_API_KEY", "${config.sops.secrets."deepseek_auth_token".path}")
+        _G.FUNCS.load_secret("deepinfra_API_KEY", "${config.sops.secrets."deepinfra_auth_token".path}")
       '';
     };
     ${namespace}.development = {
@@ -51,13 +52,19 @@ in
           chat = {
             kind = "openai/chat";
             model_name = cfg.tabbyIntegration.model.chat;
-            api_endpoint = "https://api.deepseek.com/v1";
+            api_endpoint = "https://api.deepinfra.com/v1/openai";
             api_key = config.sops.placeholder.${cfg.secretName};
           };
           completion = {
-            kind = "deepseek/completion";
+            kind = "openai/completion";
             model_name = cfg.tabbyIntegration.model.completion;
-            api_endpoint = "https://api.deepseek.com/beta";
+            api_endpoint = "https://api.deepinfra.com/v1/openai";
+            api_key = config.sops.placeholder.${cfg.secretName};
+          };
+          embedding = {
+            kind = "openai/embedding";
+            model_name = cfg.tabbyIntegration.model.completion;
+            api_endpoint = "https://api.deepinfra.com/v1/openai";
             api_key = config.sops.placeholder.${cfg.secretName};
           };
         };
@@ -65,7 +72,8 @@ in
       git = mkIf cfg.opencommitIntegration.enable {
         opencommit = {
           customConfig = ''
-            OCO_AI_PROVIDER=deepseek
+            OCO_AI_PROVIDER=openai
+            OCO_API_URL="https://api.deepinfra.com/v1/openai"
             OCO_MODEL=${cfg.opencommitIntegration.model}
             OCO_API_KEY=${config.sops.placeholder.${cfg.secretName}}
           '';
@@ -74,10 +82,10 @@ in
       ide.nixvim.plugins.ai.avante = mkIf (nixvimCfg.enable && cfg.nixvimIntegration.enable) {
         customConfig = {
           vendors = {
-            deepseek = {
+            deepinfra = {
               __inherited_from = "openai";
-              api_key_name = "DEEPSEEK_API_KEY";
-              endpoint = "https://api.deepseek.com";
+              api_key_name = "deepinfra_API_KEY";
+              endpoint = "https://api.deepinfra.com";
               model = cfg.nixvimIntegration.model;
               timeout = 30000;
               temperature = 0;

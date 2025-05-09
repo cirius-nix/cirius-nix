@@ -29,20 +29,35 @@ in
           enable = true;
           nixvimIntegration.enable = true;
         };
+        deepinfra = {
+          enable = true;
+          nixvimIntegration = {
+            enable = true;
+            model = "Qwen/Qwen3-32B";
+          };
+          tabbyIntegration = {
+            enable = true;
+            model = {
+              chat = "Qwen/Qwen3-32B";
+              completion = "Qwen/Qwen2.5-Coder-32B-Instruct";
+              embedding = "BAAI/bge-base-en-v1.5";
+            };
+          };
+        };
         ollama = {
           enable = true;
           nixvimIntegration = {
             enable = true;
             model = "smallthinker";
           };
-          tabbyIntegration = {
-            enable = true;
-            completionFIMTemplate = "<|fim_prefix|>{prefix}<|fim_suffix|>{suffix}<|fim_middle|>";
-            model = {
-              completion = "qwen2.5-coder:3b-base";
-              embedding = "nomic-embed-text:latest";
-            };
-          };
+          # tabbyIntegration = {
+          #   enable = false;
+          #   completionFIMTemplate = "<|fim_prefix|>{prefix}<|fim_suffix|>{suffix}<|fim_middle|>";
+          #   model = {
+          #     completion = "qwen2.5-coder:3b-base";
+          #     embedding = "nomic-embed-text:latest";
+          #   };
+          # };
         };
         gemini = {
           enable = true;
@@ -52,13 +67,6 @@ in
         deepseek = {
           enable = true;
           nixvimIntegration.enable = true;
-          tabbyIntegration = {
-            enable = false;
-            model = {
-              chat = "deepseek-chat";
-              completion = "deepseek-chat";
-            };
-          };
         };
         qwen = {
           enable = true;
