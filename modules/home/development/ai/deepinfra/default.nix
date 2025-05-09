@@ -63,7 +63,7 @@ in
           };
           embedding = {
             kind = "openai/embedding";
-            model_name = cfg.tabbyIntegration.model.completion;
+            model_name = cfg.tabbyIntegration.model.embedding;
             api_endpoint = "https://api.deepinfra.com/v1/openai";
             api_key = config.sops.placeholder.${cfg.secretName};
           };
