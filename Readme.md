@@ -10,10 +10,6 @@ best user experiment.
 
 ## Roadmap
 
-<b>IMPORTANT!!! Line with `(Beta Feature)` will be removed when closing the beta
-version and merging to stable branch. New feature will be developed in beta
-branch from 2024-11-19 10:00AM VNT</b>
-
 My configuration is still in development state. Here is the roadmap of my
 progress:
 
@@ -30,16 +26,6 @@ progress:
   - [x] Intergrate with LSPs
   - [x] Added some tinker plugins
 - [x] Update structure & usage for this project.
-
-## Tasks of current branch
-
-- [x] System: Upgrade version from 24.05 to 24.11
-- [x] NixVim: Remove `none-ls` by another plugins to handle `code-action`,
-      `diagnostics`, `formatting` and `hover`.
-- [x] NixVim: Build testing, debugging adapters.
-- [x] NixVim: Update layout to adapt with `Snowfall` structure.
-- [x] NixVim: Migrate keybinding declarations to new `which-key` behavior.
-- [x] NixVim: Use `Avante` as AI helper.
 
 ## Intro
 
@@ -58,27 +44,3 @@ My nix configuration offers:<br>
 
 The structure is followed
 [Snowfall Lib](https://github.com/snowfallorg/lib).<br>
-
-### Useful snippets
-
-- Check current env is `linux`:
-
-```nix
-pkgs.stdenv.isLinux
-```
-
-### NixOS / Linux based
-
-Updating...
-
-### MacOS based
-
-Updating...
-
-### Building script + aliases
-
-Updating...
-
-### Templates & Devshells
-
-Updating...
