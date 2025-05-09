@@ -16,6 +16,7 @@ in
     enableExtendedExts = mkEnableOption "Enable extended extensions";
     # TODO: integrate with nixvim
     enableVimExt = mkEnableOption "Enable Vim extensions";
+    projectRoots = lib.${namespace}.mkListOption lib.types.string [ ] "List of project roots";
   };
   config = mkIf cfg.enable {
     programs.vscode = {
@@ -43,6 +44,7 @@ in
             "markdown" = false;
             "scminput" = false;
           };
+          "projectManager.git.baseFolders" = cfg.projectRoots;
         };
         enableExtensionUpdateCheck = false;
         enableUpdateCheck = false;
@@ -66,6 +68,7 @@ in
               catppuccin.catppuccin-vsc-icons
               shd101wyy.markdown-preview-enhanced
               yzhang.markdown-all-in-one
+              alefragnani.project-manager
             ]
           ))
 

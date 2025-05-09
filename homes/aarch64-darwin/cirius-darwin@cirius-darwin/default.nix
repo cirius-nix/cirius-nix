@@ -39,9 +39,33 @@ in
             enable = true;
             model.chat = "Qwen/Qwen3-32B";
           };
+          continueIntegration = {
+            enable = true;
+            models = {
+              chat = [
+                "Qwen/Qwen3-32B"
+                "Qwen/Qwen2.5-72B-Instruct"
+                "Qwen/Qwen2.5-Coder-32B-Instruct"
+                "mistralai/Mistral-Small-24B-Instruct-2501"
+                "deepseek-ai/DeepSeek-R1-Turbo"
+              ];
+            };
+          };
         };
         ollama = {
           enable = true;
+          continueIntegration = {
+            enable = true;
+            models = {
+              chat = [
+                "qwen3:4b"
+                "smallthinker:latest"
+                "cogito:8b-v1-preview-llama-q4_K_M"
+              ];
+              completion = "qwen2.5-coder:3b-base";
+              embedding = "nomic-embed-text:latest";
+            };
+          };
           nixvimIntegration = {
             enable = true;
             model = "smallthinker";
@@ -154,6 +178,10 @@ in
           continue = {
             enable = true;
           };
+          projectRoots = [
+            "~/Workspace/github/personal"
+            "~/Workspace/github/work"
+          ];
         };
         nixvim = {
           enable = true;

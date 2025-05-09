@@ -22,11 +22,10 @@ in
     continueIntegration = {
       enable = mkEnableOption "Enable continue plugin integration";
       models = {
-        completion = mkStrOption "qwen2.5-coder:3b-base" "Auto complete model";
-        embedding = mkStrOption "nomic-embed-text:latest" "Embedding model";
+        completion = mkStrOption "" "Auto complete model";
+        embedding = mkStrOption "" "Embedding model";
         chat = mkListOption lib.types.str [ ] "List of model";
       };
-
     };
     nixvimIntegration = {
       enable = mkEnableOption "Enable Nixvim integration";
@@ -83,45 +82,45 @@ in
           '';
         };
       };
-
-      ide.vscode.continue = mkIf cfg.continueIntegration.enable (
-        let
-          apiBase = "http://localhost:${builtins.toString port}";
-        in
-        {
-          autoCompleteModel = {
-            provider = "ollama";
-            title = cfg.continueIntegration.models.completion;
-            model = cfg.continueIntegration.models.completion;
-            apiBase = apiBase;
-          };
-          embeddingModel = {
-            provider = "ollama";
-            model = cfg.continueIntegration.models.embedding;
-            apiBase = apiBase;
-          };
-          chatModels = builtins.map (modelName: {
-            provider = "ollama";
-            title = modelName;
-            model = modelName;
-            apiBase = apiBase;
-          }) cfg.continueIntegration.models.chat;
-        }
-      );
-
-      ide.nixvim.plugins.ai.avante = mkIf (nixvimCfg.enable && cfg.nixvimIntegration.enable) {
-        customConfig = {
-          ollama =
-            let
-              endpoint = "http://localhost:${builtins.toString port}";
-            in
-            {
-              endpoint = endpoint;
-              model = cfg.nixvimIntegration.model;
-              timeout = 30000;
-              temperature = 0;
-              max_tokens = 20480;
+      ide = {
+        vscode.continue = mkIf cfg.continueIntegration.enable (
+          let
+            apiBase = "http://localhost:${builtins.toString port}";
+          in
+          {
+            autoCompleteModel = mkIf (cfg.continueIntegration.models.completion != "") {
+              provider = "ollama";
+              title = "ollama/" + cfg.continueIntegration.models.completion;
+              model = cfg.continueIntegration.models.completion;
+              apiBase = apiBase;
             };
+            embeddingModel = mkIf (cfg.continueIntegration.models.embedding != "") {
+              provider = "ollama";
+              model = cfg.continueIntegration.models.embedding;
+              apiBase = apiBase;
+            };
+            chatModels = builtins.map (modelName: {
+              provider = "ollama";
+              title = "ollama/" + modelName;
+              model = modelName;
+              apiBase = apiBase;
+            }) cfg.continueIntegration.models.chat;
+          }
+        );
+        nixvim.plugins.ai.avante = mkIf (nixvimCfg.enable && cfg.nixvimIntegration.enable) {
+          customConfig = {
+            ollama =
+              let
+                endpoint = "http://localhost:${builtins.toString port}";
+              in
+              {
+                endpoint = endpoint;
+                model = cfg.nixvimIntegration.model;
+                timeout = 30000;
+                temperature = 0;
+                max_tokens = 20480;
+              };
+          };
         };
       };
     };

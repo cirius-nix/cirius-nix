@@ -8,13 +8,21 @@ let
   cfg = config.${namespace}.development.ai.deepinfra;
   nixvimCfg = config.${namespace}.development.ide.nixvim;
   inherit (lib) mkIf mkEnableOption;
-  inherit (lib.${namespace}) mkStrOption;
+  inherit (lib.${namespace}) mkStrOption mkListOption;
 in
 {
   options.${namespace}.development.ai.deepinfra = {
     enable = mkEnableOption "Enable deepinfra AI";
     local = mkEnableOption "Enable local model support";
     secretName = mkStrOption "deepinfra_auth_token" "SOPS secrets name";
+    continueIntegration = {
+      enable = mkEnableOption "Enable continue plugin integration";
+      models = {
+        completion = mkStrOption "" "Auto complete model";
+        embedding = mkStrOption "" "Embedding model";
+        chat = mkListOption lib.types.str [ ] "List of model";
+      };
+    };
     tabbyIntegration = {
       enable = mkEnableOption "Enable tabby integration";
       completionFIMTemplate = mkStrOption "" "FIM template";
@@ -78,6 +86,30 @@ in
           '';
         };
       };
+      ide.vscode.continue = mkIf cfg.continueIntegration.enable (
+        let
+          apiBase = "https://api.deepinfra.com/v1/openai";
+        in
+        {
+          autoCompleteModel = mkIf (cfg.continueIntegration.models.completion != "") {
+            provider = "openai";
+            title = "deepinfra/" + cfg.continueIntegration.models.completion;
+            model = cfg.continueIntegration.models.completion;
+            apiBase = apiBase;
+          };
+          embeddingModel = mkIf (cfg.continueIntegration.models.embedding != "") {
+            provider = "openai";
+            model = cfg.continueIntegration.models.embedding;
+            apiBase = apiBase;
+          };
+          chatModels = builtins.map (modelName: {
+            provider = "openai";
+            title = "deepinfra/" + modelName;
+            model = modelName;
+            apiBase = apiBase;
+          }) cfg.continueIntegration.models.chat;
+        }
+      );
       ide.nixvim.plugins.ai.avante = mkIf (nixvimCfg.enable && cfg.nixvimIntegration.enable) {
         customConfig = {
           vendors = {

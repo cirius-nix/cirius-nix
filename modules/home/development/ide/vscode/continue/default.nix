@@ -14,6 +14,7 @@ let
     options = {
       title = mkStrOption "" "Title of model";
       provider = mkEnumOption [
+        "openai" # deepinfra also use openai as provider.
         "ollama"
       ] "ollama" "Provider";
       model = mkStrOption "" "Model";
