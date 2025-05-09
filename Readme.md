@@ -77,7 +77,7 @@ While Nix offers powerful features, there are some trade-offs:
 - **Language Support**:
   - Golang, TypeScript/JS, Nix, Python, SQL, Java, Terraform, ...
 - **Editor Configurations**:
-  - Nixvim, VSCode: LSP, formatter, debugging/testing and AI integration plugins
+  - **Nixvim**, **VSCode**: LSP, formatter, debugging/testing and AI integration plugins
 - **Terminal**:
   - Kitty terminal with Fish shell, configured syntax highlighting,
     autosuggestions, powerline-style prompt by **starship**
