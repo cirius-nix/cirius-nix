@@ -19,7 +19,6 @@ in
 {
   options.${namespace}.development.ai.ollama = {
     enable = mkEnableOption "Enable ollama AI";
-    model = mkStrOption "cogito:8b-v1-preview-llama-q4_K_M" "Model name";
     continueIntegration = {
       enable = mkEnableOption "Enable continue plugin integration";
       models = {
@@ -31,19 +30,19 @@ in
     };
     nixvimIntegration = {
       enable = mkEnableOption "Enable Nixvim integration";
-      model = mkStrOption "cogito:8b-v1-preview-llama-q4_K_M" "Nixvim model name";
+      model = mkStrOption "smallthinker" "Nixvim model name";
     };
     opencommitIntegration = {
       enable = mkEnableOption "Enable opencommit integration";
-      model = mkStrOption "cogito:8b-v1-preview-llama-q4_K_M" "Opencommit integration";
+      model = mkStrOption "smallthinker" "Opencommit integration";
     };
     tabbyIntegration = {
       enable = mkEnableOption "Enable tabby integration";
-      completionFIMTemplate = mkStrOption "<|fim_prefix|>{prefix}<|fim_suffix|>{suffix}<|fim_middle|>" "FIM template";
+      completionFIMTemplate = mkStrOption "" "FIM template";
       model = {
-        chat = mkStrOption "cogito:8b-v1-preview-llama-q4_K_M" "Chat model";
-        completion = mkStrOption "codegemma:3b-code-q4_K_M" "Completion model";
-        embedding = mkStrOption "nomic-embed-text:latest" "Embedding model";
+        chat = mkStrOption "" "Chat model";
+        completion = mkStrOption "" "Completion model";
+        embedding = mkStrOption "" "Embedding model";
       };
     };
   };
@@ -52,18 +51,18 @@ in
     ${namespace}.development = {
       ai.tabby = mkIf cfg.tabbyIntegration.enable {
         model = {
-          chat = {
+          chat = mkIf (cfg.tabbyIntegration.model.chat != "") {
             kind = "openai/chat";
             model_name = cfg.tabbyIntegration.model.chat;
             api_endpoint = "http://localhost:${builtins.toString port}";
           };
-          completion = {
+          completion = mkIf (cfg.tabbyIntegration.model.completion != "") {
             kind = "ollama/completion";
             api_endpoint = "http://localhost:${builtins.toString port}";
             model_name = cfg.tabbyIntegration.model.completion;
             prompt_template = cfg.tabbyIntegration.completionFIMTemplate;
           };
-          embedding = {
+          embedding = mkIf (cfg.tabbyIntegration.model.completion != "") {
             kind = "ollama/embedding";
             model_name = cfg.tabbyIntegration.model.embedding;
             api_endpoint = "http://localhost:${builtins.toString port}";
@@ -72,7 +71,7 @@ in
       };
       cli-utils.fish = {
         interactiveEnvs = {
-          OLLAMA_HOST = "127.0.0.1:${builtins.toString port}";
+          OLLAMA_HOST = "localhost:${builtins.toString port}";
         };
       };
       git = mkIf cfg.opencommitIntegration.enable {

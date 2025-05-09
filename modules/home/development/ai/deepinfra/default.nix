@@ -14,24 +14,23 @@ in
   options.${namespace}.development.ai.deepinfra = {
     enable = mkEnableOption "Enable deepinfra AI";
     local = mkEnableOption "Enable local model support";
-    model = mkStrOption "Qwen/Qwen3-32B" "Model name";
     secretName = mkStrOption "deepinfra_auth_token" "SOPS secrets name";
     tabbyIntegration = {
       enable = mkEnableOption "Enable tabby integration";
       completionFIMTemplate = mkStrOption "" "FIM template";
       model = {
-        chat = mkStrOption "Qwen/Qwen3-32B" "Chat model";
-        completion = mkStrOption "Qwen/Qwen2.5-Coder-32B-Instruct" "Completion model";
-        embedding = mkStrOption "BAAI/bge-base-en-v1.5" "Embedding model";
+        chat = mkStrOption "" "Chat model";
+        completion = mkStrOption "" "Completion model";
+        embedding = mkStrOption "" "Embedding model";
       };
     };
     nixvimIntegration = {
       enable = mkEnableOption "Enable Nixvim integration";
-      model = mkStrOption "Qwen/Qwen3-32B" "Nixvim model name";
+      model = mkStrOption "" "Nixvim model name";
     };
     opencommitIntegration = {
       enable = mkEnableOption "Enable opencommit integration";
-      model = mkStrOption "Qwen/Qwen3-32B" "Opencommit integration";
+      model = mkStrOption "" "Opencommit integration";
     };
   };
 
@@ -49,19 +48,19 @@ in
     ${namespace}.development = {
       ai.tabby = mkIf cfg.tabbyIntegration.enable {
         model = {
-          chat = {
+          chat = mkIf (cfg.tabbyIntegration.model.chat != "") {
             kind = "openai/chat";
             model_name = cfg.tabbyIntegration.model.chat;
             api_endpoint = "https://api.deepinfra.com/v1/openai";
             api_key = config.sops.placeholder.${cfg.secretName};
           };
-          completion = {
+          completion = mkIf (cfg.tabbyIntegration.model.completion != "") {
             kind = "openai/completion";
             model_name = cfg.tabbyIntegration.model.completion;
             api_endpoint = "https://api.deepinfra.com/v1/openai";
             api_key = config.sops.placeholder.${cfg.secretName};
           };
-          embedding = {
+          embedding = mkIf (cfg.tabbyIntegration.model.embedding != "") {
             kind = "openai/embedding";
             model_name = cfg.tabbyIntegration.model.embedding;
             api_endpoint = "https://api.deepinfra.com/v1/openai";
@@ -85,7 +84,7 @@ in
             deepinfra = {
               __inherited_from = "openai";
               api_key_name = "deepinfra_API_KEY";
-              endpoint = "https://api.deepinfra.com";
+              endpoint = "https://api.deepinfra.com/v1/openai";
               model = cfg.nixvimIntegration.model;
               timeout = 30000;
               temperature = 0;

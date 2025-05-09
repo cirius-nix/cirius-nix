@@ -19,8 +19,8 @@ in
     tabbyIntegration = {
       enable = mkEnableOption "Enable tabby integration";
       model = {
-        chat = mkStrOption "codestral-latest" "Chat model";
-        completion = mkStrOption "codestral-latest" "Completion model";
+        chat = mkStrOption "" "Chat model";
+        completion = mkStrOption "" "Completion model";
       };
     };
     nixvimIntegration = {
@@ -40,13 +40,13 @@ in
     };
     ${namespace}.development.ai.tabby = mkIf (cfg.tabbyIntegration.enable) {
       model = {
-        chat = {
+        chat = mkIf (cfg.tabbyIntegration.model.chat != "") {
           kind = "mistral/chat";
           model_name = cfg.tabbyIntegration.model.chat;
           api_endpoint = "https://codestral.mistral.ai/v1/chat/completions";
           api_key = config.sops.placeholder.${cfg.secretName};
         };
-        completion = {
+        completion = mkIf (cfg.tabbyIntegration.model.completion != "") {
           kind = "mistral/completion";
           model_name = cfg.tabbyIntegration.model.completion;
           api_endpoint = "https://codestral.mistral.ai/v1/fim/completions";

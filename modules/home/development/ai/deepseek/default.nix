@@ -14,23 +14,22 @@ in
   options.${namespace}.development.ai.deepseek = {
     enable = mkEnableOption "Enable deepseek AI";
     local = mkEnableOption "Enable local model support";
-    model = mkStrOption "deepseek-chat" "Model name";
     secretName = mkStrOption "deepseek_auth_token" "SOPS secrets name";
     tabbyIntegration = {
       enable = mkEnableOption "Enable tabby integration";
-      completionFIMTemplate = mkStrOption "<|fim_prefix|>{prefix}<|fim_suffix|>{suffix}<|fim_middle|>" "FIM template";
+      completionFIMTemplate = mkStrOption "" "FIM template";
       model = {
-        chat = mkStrOption "deepseek-chat" "Chat model";
-        completion = mkStrOption "deepseek-chat" "Completion model";
+        chat = mkStrOption "" "Chat model";
+        completion = mkStrOption "" "Completion model";
       };
     };
     nixvimIntegration = {
       enable = mkEnableOption "Enable Nixvim integration";
-      model = mkStrOption "deepseek-chat" "Nixvim model name";
+      model = mkStrOption "" "Nixvim model name";
     };
     opencommitIntegration = {
       enable = mkEnableOption "Enable opencommit integration";
-      model = mkStrOption "deepseek-chat" "Opencommit integration";
+      model = mkStrOption "" "Opencommit integration";
     };
   };
 
@@ -48,13 +47,13 @@ in
     ${namespace}.development = {
       ai.tabby = mkIf cfg.tabbyIntegration.enable {
         model = {
-          chat = {
+          chat = mkIf (cfg.tabbyIntegration.model.chat != "") {
             kind = "openai/chat";
             model_name = cfg.tabbyIntegration.model.chat;
             api_endpoint = "https://api.deepseek.com/v1";
             api_key = config.sops.placeholder.${cfg.secretName};
           };
-          completion = {
+          completion = mkIf (cfg.tabbyIntegration.model.completion != "") {
             kind = "deepseek/completion";
             model_name = cfg.tabbyIntegration.model.completion;
             api_endpoint = "https://api.deepseek.com/beta";
