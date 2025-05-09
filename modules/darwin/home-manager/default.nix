@@ -15,7 +15,7 @@ in
 
   config = mkIf cfg.enable {
     home-manager = {
-      backupFileExtension = "./hm-backup";
+      backupFileExtension = "hm-backup";
       useUserPackages = true;
       useGlobalPkgs = true;
     };

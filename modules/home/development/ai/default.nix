@@ -32,14 +32,12 @@ in
             tabby
             tabby-agent
             katana
-            # FIXME: broken app because of using spacy 3.8.5
-            # aider-chat-full
           ]
           (lib.optional isLinux [
             lmstudio
             python313
             python313Packages.peft
-            python313Packages.transformers
+            python314Packages.transformers
             python313Packages.bitsandbytes
           ])
         ];
@@ -55,7 +53,6 @@ in
 
     programs.vscode.profiles.default.extensions = with pkgs.vscode-extensions; [
       github.copilot
-      github.copilot-chat
     ];
   };
 }

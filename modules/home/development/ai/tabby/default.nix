@@ -84,6 +84,7 @@ in
         mode = "0440";
       };
       templates."tabby-config" = {
+        mode = "0440";
         path = "${userCfg.homeDir}/.tabby/config.toml";
         content =
           let
@@ -93,7 +94,7 @@ in
           in
           ''
             [server]
-            endpoint = "http://127.0.0.1:${builtins.toString cfg.port}"
+            endpoint = "http://localhost:${builtins.toString cfg.port}"
             completion_timeout = 15000
 
             ${lib.optionalString (chatModelCfg != "") ''

@@ -51,19 +51,21 @@ in
     };
 
     programs.vscode = {
-      profiles.default.extensions = with pkgs.vscode-extensions; [
-        bbenoist.nix
-        arrterian.nix-env-selector
-        jnoortheen.nix-ide
-      ];
-      userSettings = {
-        "nix.enableLanguageServer" = true;
-        "nix.serverPath" = "nixd";
-        "nix.formatterPath" = "nixpkgs-fmt";
-        "nix.serverSettings" = {
-          "nixd" = {
-            "formatting" = {
-              "command" = [ "nixpkgs-fmt" ];
+      profiles.default = {
+        extensions = with pkgs.vscode-extensions; [
+          bbenoist.nix
+          arrterian.nix-env-selector
+          jnoortheen.nix-ide
+        ];
+        userSettings = {
+          "nix.enableLanguageServer" = true;
+          "nix.serverPath" = "nixd";
+          "nix.formatterPath" = "nixpkgs-fmt";
+          "nix.serverSettings" = {
+            "nixd" = {
+              "formatting" = {
+                "command" = [ "nixpkgs-fmt" ];
+              };
             };
           };
         };

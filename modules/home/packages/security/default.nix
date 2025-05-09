@@ -9,11 +9,12 @@ let
   inherit (lib) types;
   inherit (lib.${namespace}) mkListOption mkPathOption;
   cfg = config.${namespace}.packages.security;
+  userCfg = config.${namespace}.user;
 in
 {
   options = {
     ${namespace}.packages.security = {
-      secretFile = mkPathOption ../../../../secrets/${namespace}/default.yaml "SOPS ENCRYPTED SECRETS FILE";
+      secretFile = mkPathOption ../../../../secrets/${userCfg.username}/default.yaml "SOPS ENCRYPTED SECRETS FILE";
       sshKeyPaths = mkListOption types.str [ ] "SSH key paths";
     };
   };

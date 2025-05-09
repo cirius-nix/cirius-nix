@@ -21,29 +21,29 @@ in
     programs.vscode = {
       enable = true;
       mutableExtensionsDir = false;
-      userSettings = {
-        "workbench.iconTheme" = "catppuccin-mocha";
-        "workbench.colorTheme" = "Catppuccin Mocha";
-        "editor.fontLigatures" = true;
-        "git.enableCommitSigning" = false;
-        "git.confirmSync" = false;
-        "files.autoSave" = "afterDelay";
-        "files.autoSaveDelay" = 100;
-        "editor.wordWrap" = "bounded";
-        "editor.wordWrapColumn" = 100;
-        "[markdown]" = {
-          "editor.wordWrap" = "bounded";
-        };
-        # TODO: switch between copilot completion or continue best way is using
-        # up free tier copilot, then revert back to continue
-        "github.copilot.enable" = {
-          "*" = false;
-          "plaintext" = false;
-          "markdown" = false;
-          "scminput" = false;
-        };
-      };
       profiles.default = {
+        userSettings = {
+          "workbench.iconTheme" = "catppuccin-mocha";
+          "workbench.colorTheme" = "Catppuccin Mocha";
+          "editor.fontLigatures" = true;
+          "git.enableCommitSigning" = false;
+          "git.confirmSync" = false;
+          "files.autoSave" = "afterDelay";
+          "files.autoSaveDelay" = 100;
+          "editor.wordWrap" = "bounded";
+          "editor.wordWrapColumn" = 100;
+          "[markdown]" = {
+            "editor.wordWrap" = "bounded";
+          };
+          # TODO: switch between copilot completion or continue best way is using
+          # up free tier copilot, then revert back to continue
+          "github.copilot.enable" = {
+            "*" = false;
+            "plaintext" = false;
+            "markdown" = false;
+            "scminput" = false;
+          };
+        };
         enableExtensionUpdateCheck = false;
         enableUpdateCheck = false;
         extensions = lib.concatLists [
