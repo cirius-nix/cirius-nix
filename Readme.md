@@ -51,6 +51,8 @@ While Nix offers powerful features, there are some trade-offs:
 
 #### 🤖 AI Development Stack
 
+![VSCode with Continue plugin, which configured with multiple AI Providers](./docs/showcases/vscode-continue-ai-providers.png)
+
 - **Providers**:
   - OpenAI, Alibaba, Deepseek, Gemini, Mistral, Groq, Deepinfra, GitHub Copilot
   - Pre-configured models (Qwen3 32B, Deepseek V3, Codestral)
@@ -77,7 +79,8 @@ While Nix offers powerful features, there are some trade-offs:
 - **Language Support**:
   - Golang, TypeScript/JS, Nix, Python, SQL, Java, Terraform, ...
 - **Editor Configurations**:
-  - **Nixvim**, **VSCode**: LSP, formatter, debugging/testing and AI integration plugins
+  - **Nixvim**, **VSCode**: LSP, formatter, debugging/testing and AI integration
+    plugins
 - **Terminal**:
   - Kitty terminal with Fish shell, configured syntax highlighting,
     autosuggestions, powerline-style prompt by **starship**
