@@ -10,7 +10,7 @@ let
   cfg = config.${namespace}.development.ai.ollama;
   nixvimCfg = config.${namespace}.development.ide.nixvim;
   inherit (lib) mkIf mkEnableOption;
-  inherit (lib.${namespace}) mkStrOption;
+  inherit (lib.${namespace}) mkStrOption mkListOption;
   inherit (pkgs.stdenv) isLinux;
   aiModuleCfg = config.${namespace}.development.ai;
   osAiModuleCfg = osConfig.${namespace}.applications.ai;
@@ -20,6 +20,15 @@ in
   options.${namespace}.development.ai.ollama = {
     enable = mkEnableOption "Enable ollama AI";
     model = mkStrOption "cogito:8b-v1-preview-llama-q4_K_M" "Model name";
+    continueIntegration = {
+      enable = mkEnableOption "Enable continue plugin integration";
+      models = {
+        completion = mkStrOption "qwen2.5-coder:3b-base" "Auto complete model";
+        embedding = mkStrOption "nomic-embed-text:latest" "Embedding model";
+        chat = mkListOption lib.types.str [ ] "List of model";
+      };
+
+    };
     nixvimIntegration = {
       enable = mkEnableOption "Enable Nixvim integration";
       model = mkStrOption "cogito:8b-v1-preview-llama-q4_K_M" "Nixvim model name";
@@ -71,15 +80,41 @@ in
           customConfig = ''
             OCO_AI_PROVIDER=ollama
             OCO_MODEL=${cfg.opencommitIntegration.model}
-            OCO_API_URL=http://0.0.0.0:${builtins.toString port}/api/chat
+            OCO_API_URL=http://localhost:${builtins.toString port}/api/chat
           '';
         };
       };
+
+      ide.vscode.continue = mkIf cfg.continueIntegration.enable (
+        let
+          apiBase = "http://localhost:${builtins.toString port}";
+        in
+        {
+          autoCompleteModel = {
+            provider = "ollama";
+            title = cfg.continueIntegration.models.completion;
+            model = cfg.continueIntegration.models.completion;
+            apiBase = apiBase;
+          };
+          embeddingModel = {
+            provider = "ollama";
+            model = cfg.continueIntegration.models.embedding;
+            apiBase = apiBase;
+          };
+          chatModels = builtins.map (modelName: {
+            provider = "ollama";
+            title = modelName;
+            model = modelName;
+            apiBase = apiBase;
+          }) cfg.continueIntegration.models.chat;
+        }
+      );
+
       ide.nixvim.plugins.ai.avante = mkIf (nixvimCfg.enable && cfg.nixvimIntegration.enable) {
         customConfig = {
           ollama =
             let
-              endpoint = "http://127.0.0.1:${builtins.toString port}";
+              endpoint = "http://localhost:${builtins.toString port}";
             in
             {
               endpoint = endpoint;

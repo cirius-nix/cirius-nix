@@ -34,6 +34,14 @@ in
         "[markdown]" = {
           "editor.wordWrap" = "bounded";
         };
+        # TODO: switch between copilot completion or continue best way is using
+        # up free tier copilot, then revert back to continue
+        "github.copilot.enable" = {
+          "*" = false;
+          "plaintext" = false;
+          "markdown" = false;
+          "scminput" = false;
+        };
       };
       profiles.default = {
         enableExtensionUpdateCheck = false;

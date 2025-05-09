@@ -37,6 +37,14 @@ in
         ollama = {
           enable = true;
           nixvimIntegration.enable = true;
+          continueIntegration = {
+            enable = true;
+            models = {
+              chat = [ "qwen3:4b" ];
+              completion = "qwen2.5-coder:3b-base";
+              embedding = "nomic-embed-text:latest";
+            };
+          };
           tabbyIntegration = {
             enable = true;
             completionFIMTemplate = "<|fim_prefix|>{prefix}<|fim_suffix|>{suffix}<|fim_middle|>"; # common
@@ -143,6 +151,9 @@ in
           enableVimExt = false;
           enableDockerExts = true;
           enableExtendedExts = true;
+          continue = {
+            enable = true;
+          };
         };
       };
       api-client.enable = true;
