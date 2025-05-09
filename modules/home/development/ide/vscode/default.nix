@@ -26,6 +26,7 @@ in
         "workbench.colorTheme" = "Catppuccin Mocha";
         "editor.fontLigatures" = true;
         "git.enableCommitSigning" = false;
+        "git.confirmSync" = false;
         "files.autoSave" = "afterDelay";
         "files.autoSaveDelay" = 100;
         "editor.wordWrap" = "bounded";
