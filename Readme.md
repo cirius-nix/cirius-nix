@@ -48,6 +48,10 @@ While Nix offers powerful features, there are some trade-offs:
 - **Desktop Environments**:
   - KDE Plasma (Wayland) - fully configured
   - Hyprland - in development
+- Unique colorscheme across all applications & DE.
+
+![Home config home](./docs/showcases/home-config-theme.png)
+![Nvim with colorscheme](./docs/showcases/nvim-synced-colorscheme.png)
 
 ### AI Development Stack
 

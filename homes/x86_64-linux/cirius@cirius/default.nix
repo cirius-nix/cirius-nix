@@ -273,6 +273,7 @@ in
             blur = 20;
           };
           nixvim = {
+            dark = "frappe"; # override colorscheme
             transparent = false;
           };
         };
