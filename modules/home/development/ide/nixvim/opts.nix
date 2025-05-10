@@ -15,8 +15,6 @@ in
         timeout = true;
         autowrite = true;
         clipboard = "unnamedplus";
-        background = "dark";
-        # completeopt = "menu,menuone,noselect";
         completeopt = "menu,noinsert,popup,fuzzy";
         conceallevel = 3;
         confirm = true;

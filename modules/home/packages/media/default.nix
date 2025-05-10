@@ -44,6 +44,7 @@ in
       packages = with pkgs; [
         vlc
         spotify
+        spotify-player
       ];
     };
   };

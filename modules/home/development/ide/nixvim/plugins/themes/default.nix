@@ -1,3 +1,4 @@
+# @Deprecated
 {
   pkgs,
   config,
@@ -12,9 +13,7 @@ in
 {
   config = mkIf cfg.enable {
     programs.nixvim = {
-      extraConfigLuaPost = ''
-        vim.cmd[[ colorscheme ${cfg.colorscheme} ]]
-      '';
+
       extraPlugins = [
         pkgs.vimPlugins.fleet-theme-nvim
         pkgs.vimPlugins.cyberdream-nvim

@@ -2,3 +2,4 @@ result
 .direnv/*
 *.avanterules
 .aider*
+.DS_Store

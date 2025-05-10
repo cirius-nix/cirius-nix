@@ -24,8 +24,6 @@ in
       mutableExtensionsDir = false;
       profiles.default = {
         userSettings = {
-          "workbench.iconTheme" = "catppuccin-mocha";
-          "workbench.colorTheme" = "Catppuccin Mocha";
           "editor.fontLigatures" = true;
           "git.enableCommitSigning" = false;
           "git.confirmSync" = false;

@@ -57,15 +57,12 @@ in
         enable = true;
         shellIntegration.enableFishIntegration = true;
         # https://github.com/kovidgoyal/kitty-themes/tree/master/themes
-        themeFile = "GitHub_Dark_Dimmed";
         settings =
           {
             font_family = "Cascadia Mono NF";
             tab_bar_edge = "top";
             tab_bar_style = "slant";
             tab_bar_align = "center";
-            background_opacity = 0.9;
-            background_blur = 20;
             enabled_layouts = "splits:split_axis=horizontal,stack";
           }
           // lib.optionalAttrs pkgs.stdenv.isDarwin {

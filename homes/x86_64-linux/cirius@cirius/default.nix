@@ -262,6 +262,21 @@ in
 
     system = {
       xdg.enable = true;
+      themes = {
+        preset = "catppuccin";
+        isDark = true;
+        catppuccin = {
+          light = "latte";
+          dark = "mocha";
+          kitty = {
+            opacity = 0.95;
+            blur = 20;
+          };
+          nixvim = {
+            transparent = false;
+          };
+        };
+      };
     };
   };
 }
