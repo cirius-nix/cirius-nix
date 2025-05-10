@@ -30,6 +30,8 @@ in
       telegram-desktop
       caprine
       discord
+      # broken
+      # element
     ];
   };
 }

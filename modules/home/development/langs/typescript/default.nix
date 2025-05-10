@@ -12,6 +12,11 @@ in
 {
   options.${namespace}.development.langs.typescript = {
     enable = mkEnableOption "TypeScript Language Server";
+    framework = {
+      angular = {
+        enable = mkEnableOption "Enable Angular Language Framework";
+      };
+    };
     enableAngularls = mkEnableOption {
       default = false;
       description = ''
@@ -89,10 +94,16 @@ in
       };
     };
 
-    programs.vscode.profiles.default.extensions = with pkgs.vscode-extensions; [
-      esbenp.prettier-vscode
-      dbaeumer.vscode-eslint
-      # vitest; playwright; prettier-eslint
-    ];
+    programs.vscode.profiles.default.extensions =
+      with pkgs.vscode-extensions;
+      [
+        esbenp.prettier-vscode
+        dbaeumer.vscode-eslint
+      ]
+      # TODO: include plugins for angular, react, etc.
+      ++ (lib.optionals cfg.framework.angular.enable [
+        # "nrwl.angular-console",
+        # "ms-playwright.playwright"
+      ]);
   };
 }

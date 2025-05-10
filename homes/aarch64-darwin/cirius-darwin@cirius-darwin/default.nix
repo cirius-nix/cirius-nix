@@ -212,6 +212,7 @@ in
         enable = true;
         inherit (user) username name email;
       };
+      chat.enable = true;
       fonts.enable = true;
     };
   };
