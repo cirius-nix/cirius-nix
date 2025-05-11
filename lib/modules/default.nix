@@ -94,11 +94,63 @@ rec {
   nested-force-attrs = mapAttrs (_key: force-attrs);
   # example: mergeL' { a = 1; b = 2; } [{ a = 2; b = 3; c = 4; }] => { a = 2; b = 3; c = 4; }
   mergeL' = default: attrSets: lib.foldl' lib.recursiveUpdate default attrSets;
+
   optionalGet =
-    path: set:
+    set: path:
     let
       step = acc: key: if acc == null then null else acc.${key} or null;
     in
     builtins.foldl' step set path;
+
   ifNullThen = set: def: if set == null then def else set;
+
+  ifAllZero =
+    values:
+    let
+      isDefault =
+        val:
+        if val == null then
+          true
+        else if val == false then
+          true
+        else if builtins.isInt val && val == 0 then
+          true
+        else if builtins.isFloat val && val == 0.0 then
+          true
+        else if builtins.isString val && val == "" then
+          true
+        else if builtins.isList val && val == [ ] then
+          true
+        else if builtins.isAttrs val && val == { } then
+          true
+        else
+          false;
+    in
+    builtins.all isDefault values;
+
+  ifAnyZero =
+    values:
+    let
+      isDefault =
+        val:
+        if val == null then
+          true
+        else if val == false then
+          true
+        else if builtins.isInt val && val == 0 then
+          true
+        else if builtins.isFloat val && val == 0.0 then
+          true
+        else if builtins.isString val && val == "" then
+          true
+        else if builtins.isList val && val == [ ] then
+          true
+        else if builtins.isAttrs val && val == { } then
+          true
+        else
+          false;
+    in
+    builtins.any isDefault values;
+
+  ifAllNotZero = values: !(ifAnyZero values);
 }

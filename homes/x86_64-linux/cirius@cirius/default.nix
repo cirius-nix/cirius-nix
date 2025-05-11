@@ -141,7 +141,10 @@ in
             testing = mkEnabled;
             formatter = mkEnabled;
             git = mkEnabled;
-            term = mkEnabled;
+            term = {
+              enable = true;
+
+            };
           };
         };
         db.enable = true;
@@ -191,7 +194,12 @@ in
           enable = true;
         };
       };
-      term.enable = true;
+      term = {
+        enable = true;
+        kitty.enable = true;
+        wezterm.enable = true;
+        konsole.enable = true;
+      };
     };
 
     desktop-environment = {
@@ -258,6 +266,14 @@ in
         enable = true;
         termbased = false;
       };
+      sync = {
+        rclone = {
+          enable = true;
+          ggdrive = {
+            enable = false;
+          };
+        };
+      };
     };
 
     system = {
@@ -269,11 +285,14 @@ in
           light = "latte";
           dark = "mocha";
           kitty = {
-            opacity = 0.95;
-            blur = 20;
+            opacity = 1.0;
+            blur = 0;
+          };
+          konsole = {
+            opacity = 5;
+            blur = true;
           };
           nixvim = {
-            dark = "frappe"; # override colorscheme
             transparent = false;
           };
         };

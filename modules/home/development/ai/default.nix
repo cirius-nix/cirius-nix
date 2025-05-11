@@ -37,7 +37,8 @@ in
             lmstudio
             python313
             python313Packages.peft
-            python314Packages.transformers
+            # broken build
+            python313Packages.transformers
             python313Packages.bitsandbytes
           ])
         ];

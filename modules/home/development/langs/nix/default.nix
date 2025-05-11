@@ -19,6 +19,9 @@ in
     home.packages = with pkgs; [
       nixfmt-rfc-style
     ];
+    services.lorri = {
+      enable = true;
+    };
     programs.nixvim.plugins = {
       direnv.enable = true;
       nix.enable = true;

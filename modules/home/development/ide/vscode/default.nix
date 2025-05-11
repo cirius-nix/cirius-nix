@@ -16,7 +16,7 @@ in
     enableExtendedExts = mkEnableOption "Enable extended extensions";
     # TODO: integrate with nixvim
     enableVimExt = mkEnableOption "Enable Vim extensions";
-    projectRoots = lib.${namespace}.mkListOption lib.types.string [ ] "List of project roots";
+    projectRoots = lib.${namespace}.mkListOption lib.types.str [ ] "List of project roots";
   };
   config = mkIf cfg.enable {
     programs.vscode = {
