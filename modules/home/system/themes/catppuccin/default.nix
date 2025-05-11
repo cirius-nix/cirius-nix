@@ -106,8 +106,8 @@ in
               iniContent = lib.generators.toINI { } modified;
             in
             {
-              name = ".local/share/konsole/${lib.removeSuffix ".json" name}.colorscheme";
-              value.source = pkgs.writeText "${lib.removeSuffix ".json" name}.colorscheme" iniContent;
+              name = ".local/share/konsole/${name}";
+              value.source = pkgs.writeText name iniContent;
             }
           ) themeFiles;
         in

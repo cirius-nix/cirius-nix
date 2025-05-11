@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
   installPhase = ''
     mkdir -p $out/json-themes
     for ini in themes/*.colorscheme; do
-      json_name=$(basename "$ini" .colorscheme).json
+      json_name=$(basename "$ini")
       python3 -c "import configparser, json; \
         c = configparser.ConfigParser(); \
         c.optionxform = lambda option: option; \
