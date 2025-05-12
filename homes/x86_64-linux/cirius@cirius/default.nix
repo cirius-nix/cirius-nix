@@ -163,7 +163,14 @@ in
       kdev.enable = true;
       cli-utils = {
         enable = true;
+        btop.enable = true;
+        starship = {
+          enable = true;
+        };
         fastfetch = {
+          enable = true;
+        };
+        atuin = {
           enable = true;
         };
         fish = {
@@ -201,8 +208,8 @@ in
         konsole.enable = true;
       };
     };
-
     desktop-environment = {
+      shared.plugins.kvantum.enable = true;
       hyprland =
         let
           monitorID = "DP-2";
@@ -284,17 +291,21 @@ in
         catppuccin = {
           light = "latte";
           dark = "mocha";
+          atuin = {
+            dark = {
+              accent = "sapphire";
+            };
+          };
           kitty = {
-            opacity = 1.0;
-            blur = 0;
+            opacity = 0.95;
+            blur = 20;
           };
           konsole = {
             opacity = 5;
             blur = true;
           };
-          nixvim = {
-            transparent = false;
-          };
+          nixvim.transparent = true;
+          btop.transparent = true;
         };
       };
     };

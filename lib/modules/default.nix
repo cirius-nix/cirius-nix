@@ -28,6 +28,12 @@ rec {
       inherit default description;
       type = nullOr (enum values);
     };
+  mkEnumOption' =
+    values: default: description:
+    mkOption {
+      inherit default description;
+      type = enum values;
+    };
   mkListOption =
     type: default: description:
     mkOption {
@@ -102,7 +108,7 @@ rec {
     in
     builtins.foldl' step set path;
 
-  ifNullThen = set: def: if set == null then def else set;
+  ifNotNull = set: def: if set == null then def else set;
 
   ifAllZero =
     values:

@@ -7,7 +7,6 @@
 }:
 let
   inherit (lib) mkEnableOption mkIf;
-  fishCfg = config.${namespace}.development.cli-utils.fish;
   cfg = config.${namespace}.development.term.kitty;
 
   # nix-prefetch-github trygveaa kitty-kitten-search
@@ -27,12 +26,6 @@ in
     xdg.configFile."kitty/kitty-kitten-search".source = kittyKittenSearch;
 
     programs = {
-      starship = {
-        inherit (cfg) enable;
-        enableFishIntegration = fishCfg.enable;
-        settings = { };
-      };
-
       kitty = {
         enable = true;
         shellIntegration.enableFishIntegration = true;
