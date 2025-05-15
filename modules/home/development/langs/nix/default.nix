@@ -19,7 +19,7 @@ in
     home.packages = with pkgs; [
       nixfmt-rfc-style
     ];
-    services.lorri = {
+    services.lorri = mkIf pkgs.stdenv.isLinux {
       enable = true;
     };
     programs.nixvim.plugins = {

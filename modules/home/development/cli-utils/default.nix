@@ -31,21 +31,24 @@ in
     ];
 
     home = {
-      packages = with pkgs; [
-        jq
-        fzf
-        ripgrep
-        tree-sitter
-        gcc
-        gnumake
-        go-task
-        wget
-        curl
-        libglvnd
-        gnused
-        zip
-        unzip
-      ];
+      packages =
+        with pkgs;
+        [
+          jq
+          fzf
+          ripgrep
+          tree-sitter
+          gcc
+          gnumake
+          go-task
+          wget
+          curl
+          libglvnd
+          gnused
+          zip
+          unzip
+        ]
+        ++ (lib.optionals pkgs.stdenv.isLinux [ amazon-q-cli ]);
       shellAliases = {
         la = lib.mkForce "${lib.getExe config.programs.eza.package} -lah --tree";
         tree = lib.mkForce "${lib.getExe config.programs.eza.package} --tree --icons=always";

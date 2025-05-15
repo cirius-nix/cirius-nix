@@ -149,6 +149,15 @@ in
       };
       cli-utils = {
         enable = true;
+        starship = {
+          enable = true;
+        };
+        fastfetch = {
+          enable = true;
+        };
+        atuin = {
+          enable = true;
+        };
         fish = {
           enable = true;
           customPaths = [ "~/Applications" ];
@@ -214,6 +223,34 @@ in
       };
       chat.enable = true;
       fonts.enable = true;
+    };
+
+    system = {
+      xdg.enable = true;
+      themes = {
+        preset = "catppuccin";
+        isDark = true;
+        catppuccin = {
+          light = "latte";
+          dark = "mocha";
+          kde.style = "classic";
+          atuin = {
+            dark = {
+              accent = "sapphire";
+            };
+          };
+          kitty = {
+            opacity = 0.95;
+            blur = 20;
+          };
+          konsole = {
+            opacity = 5;
+            blur = true;
+          };
+          nixvim.transparent = true;
+          btop.transparent = true;
+        };
+      };
     };
   };
 }
