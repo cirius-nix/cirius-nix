@@ -14,7 +14,8 @@ in
     enable = mkEnableOption "Enable Kvantum theme engine";
     settings = lib.mkOption {
       type = lib.types.attrs;
-      default = { };
+      default = {
+      };
       description = ''
         Settings for Kvantum theme engine.
       '';

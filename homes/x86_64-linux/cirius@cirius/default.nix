@@ -291,6 +291,7 @@ in
         catppuccin = {
           light = "latte";
           dark = "mocha";
+          kde.style = "classic";
           atuin = {
             dark = {
               accent = "sapphire";

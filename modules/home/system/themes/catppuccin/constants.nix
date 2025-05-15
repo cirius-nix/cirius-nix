@@ -21,4 +21,8 @@
     "teal"
     "yellow"
   ];
+  styles = [
+    "modern"
+    "classic"
+  ];
 }
