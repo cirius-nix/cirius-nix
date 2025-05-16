@@ -30,9 +30,11 @@ in
 {
   options.${namespace}.development.ide.vscode = {
     enable = mkEnableOption "VSCode development environment";
-    enableDockerExts = mkEnableOption "Enable Docker extensions";
-    enableExtendedExts = mkEnableOption "Enable extended extensions";
-    enableVimExt = mkEnableOption "Enable Vim extensions";
+    exts = {
+      docker = mkEnableOption "Enable Docker extensions";
+      extended = mkEnableOption "Enable extended extensions";
+      vim = mkEnableOption "Enable Vim extensions";
+    };
     enableFishIntegration = mkEnableOption "Enable fish shell integration";
     projectRoots = lib.${namespace}.mkListOption lib.types.str [ ] "List of project roots";
   };
@@ -53,19 +55,23 @@ in
             "[markdown]" = {
               "editor.wordWrap" = "bounded";
             };
+            # TODO: move this to development AI.
             "github.copilot.enable" = {
               "*" = false;
               "plaintext" = false;
               "markdown" = false;
               "scminput" = false;
             };
-            "projectManager.git.baseFolders" = cfg.projectRoots;
           }
           // (lib.optionals cfg.enableFishIntegration {
             "terminal.integrated.defaultProfile.osx" = "fish";
+            "terminal.integrated.defaultProfile.linux" = "fish";
+          })
+          // (lib.optionals cfg.exts.extended {
+            "projectManager.git.baseFolders" = cfg.projectRoots;
           })
           // (
-            lib.optionals cfg.enableVimExt {
+            lib.optionals cfg.exts.vim {
               "vim.enableNeovim" = true;
               "vim.neovimPath" = "${pkgs.neovim}/bin/nvim";
               "vim.neovimUseConfigFile" = true;
@@ -77,12 +83,12 @@ in
             // vimModeKeyBindings
           );
         keybindings = lib.concatLists [
-          (lib.optionals cfg.enableVimExt vimModeExternalKeyBindings)
+          (lib.optionals cfg.exts.vim vimModeExternalKeyBindings)
         ];
         enableExtensionUpdateCheck = false;
         enableUpdateCheck = false;
         extensions = lib.concatLists [
-          (lib.optionals cfg.enableDockerExts (
+          (lib.optionals cfg.exts.docker (
             with pkgs.vscode-extensions;
             [
               ms-azuretools.vscode-docker
@@ -90,7 +96,7 @@ in
             ]
           ))
 
-          (lib.optionals cfg.enableExtendedExts (
+          (lib.optionals cfg.exts.extended (
             with pkgs.vscode-extensions;
             [
               aaron-bond.better-comments
@@ -105,7 +111,7 @@ in
             ]
           ))
 
-          (lib.optionals cfg.enableVimExt (
+          (lib.optionals cfg.exts.vim (
             with pkgs.vscode-extensions;
             [
               vscodevim.vim

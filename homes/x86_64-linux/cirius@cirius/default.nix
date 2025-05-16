@@ -151,13 +151,16 @@ in
         helix.enable = true;
         vscode = {
           enable = true;
-          enableVimExt = false;
-          enableDockerExts = true;
-          enableExtendedExts = true;
-          enableFishIntegration = true;
+          exts = {
+            vim = true;
+            docker = true;
+            extended = true;
+          };
           continue = {
             enable = true;
           };
+          enableFishIntegration = true;
+
         };
       };
       api-client.enable = true;
