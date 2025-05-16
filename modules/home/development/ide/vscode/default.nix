@@ -7,7 +7,7 @@
 }:
 let
   inherit (lib) mkIf mkEnableOption;
-  inherit (lib.${namespace}) mergeL';
+  inherit (lib.${namespace}) mergeL' mkStrOption;
 
   cfg = config.${namespace}.development.ide.vscode;
 
@@ -34,6 +34,9 @@ in
       docker = mkEnableOption "Enable Docker extensions";
       extended = mkEnableOption "Enable extended extensions";
       vim = mkEnableOption "Enable Vim extensions";
+    };
+    commit = {
+      instructionPrompt = mkStrOption "Follow the Conventional Commits format strictly for commit messages. Use the structure below:\n\n```\n<type>[optional scope]: <gitmoji> <description>\n\n[optional body]\n```\n\nGuidelines:\n\n1. **Type and Scope**: Choose an appropriate type (e.g., `feat`, `fix`) and optional scope to describe the affected module or feature.\n\n2. **Gitmoji**: Include a relevant `gitmoji` that best represents the nature of the change.\n\n3. **Description**: Write a concise, informative description in the header; use backticks if referencing code or specific terms.\n\n4. **Body**: For additional details, use a well-structured body section:\n   - Use bullet points (`*`) for clarity.\n   - Clearly describe the motivation, context, or technical details behind the change, if applicable.\n\nCommit messages should be clear, informative, and professional, aiding readability and project tracking." "Instruction prompt to generate AI commit message. Thanks: https://gist.github.com/okineadev/8a3f392a93ae50e8d523e4ba7f9f9ac3";
     };
     enableFishIntegration = mkEnableOption "Enable fish shell integration";
     projectRoots = lib.${namespace}.mkListOption lib.types.str [ ] "List of project roots";
@@ -62,6 +65,11 @@ in
               "markdown" = false;
               "scminput" = false;
             };
+            "github.copilot.chat.commitMessageGeneration.instructions" = [
+              {
+                "text" = cfg.commit.instructionPrompt;
+              }
+            ];
           }
           // (lib.optionals cfg.enableFishIntegration {
             "terminal.integrated.defaultProfile.osx" = "fish";
