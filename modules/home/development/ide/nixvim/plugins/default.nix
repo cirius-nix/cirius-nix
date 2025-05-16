@@ -194,6 +194,7 @@ in
             icons.group = " ";
             preset = "modern";
             delay = 0;
+            show_help = false;
             spec = [
               {
                 __unkeyed = "<leader>f";

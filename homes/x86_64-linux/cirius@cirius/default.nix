@@ -154,6 +154,7 @@ in
           enableVimExt = false;
           enableDockerExts = true;
           enableExtendedExts = true;
+          enableFishIntegration = true;
           continue = {
             enable = true;
           };

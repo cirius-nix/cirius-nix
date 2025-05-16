@@ -6,16 +6,34 @@
   ...
 }:
 let
-  cfg = config.${namespace}.development.ide.vscode;
   inherit (lib) mkIf mkEnableOption;
+  inherit (lib.${namespace}) mergeL';
+
+  cfg = config.${namespace}.development.ide.vscode;
+
+  inherit
+    (import ../keybindings.nix {
+      inherit lib namespace;
+    })
+    common
+    searching
+    ;
+
+  vimModeKeyBindings = mergeL' { } [
+    common.vscode
+    searching.vscode
+  ];
+  vimModeExternalKeyBindings = lib.concatLists [
+    searching.vscodeExternal
+  ];
 in
 {
   options.${namespace}.development.ide.vscode = {
     enable = mkEnableOption "VSCode development environment";
     enableDockerExts = mkEnableOption "Enable Docker extensions";
     enableExtendedExts = mkEnableOption "Enable extended extensions";
-    # TODO: integrate with nixvim
     enableVimExt = mkEnableOption "Enable Vim extensions";
+    enableFishIntegration = mkEnableOption "Enable fish shell integration";
     projectRoots = lib.${namespace}.mkListOption lib.types.str [ ] "List of project roots";
   };
   config = mkIf cfg.enable {
@@ -23,27 +41,44 @@ in
       enable = true;
       mutableExtensionsDir = false;
       profiles.default = {
-        userSettings = {
-          "editor.fontLigatures" = true;
-          "git.enableCommitSigning" = false;
-          "git.confirmSync" = false;
-          "files.autoSave" = "afterDelay";
-          "files.autoSaveDelay" = 100;
-          "editor.wordWrap" = "bounded";
-          "editor.wordWrapColumn" = 100;
-          "[markdown]" = {
+        userSettings =
+          {
+            "editor.fontLigatures" = true;
+            "git.enableCommitSigning" = false;
+            "git.confirmSync" = false;
+            "files.autoSave" = "afterDelay";
+            "files.autoSaveDelay" = 100;
             "editor.wordWrap" = "bounded";
-          };
-          # TODO: switch between copilot completion or continue best way is using
-          # up free tier copilot, then revert back to continue
-          "github.copilot.enable" = {
-            "*" = false;
-            "plaintext" = false;
-            "markdown" = false;
-            "scminput" = false;
-          };
-          "projectManager.git.baseFolders" = cfg.projectRoots;
-        };
+            "editor.wordWrapColumn" = 100;
+            "[markdown]" = {
+              "editor.wordWrap" = "bounded";
+            };
+            "github.copilot.enable" = {
+              "*" = false;
+              "plaintext" = false;
+              "markdown" = false;
+              "scminput" = false;
+            };
+            "projectManager.git.baseFolders" = cfg.projectRoots;
+          }
+          // (lib.optionals cfg.enableFishIntegration {
+            "terminal.integrated.defaultProfile.osx" = "fish";
+          })
+          // (
+            lib.optionals cfg.enableVimExt {
+              "vim.enableNeovim" = true;
+              "vim.neovimPath" = "${pkgs.neovim}/bin/nvim";
+              "vim.neovimUseConfigFile" = true;
+              "vim.neovimConfigPath" = "~/.config/nvim/init.lua";
+              "vim.highlightedyank.enable" = true;
+              "vim.hlsearch" = true;
+              "vim.useSystemClipboard" = true;
+            }
+            // vimModeKeyBindings
+          );
+        keybindings = lib.concatLists [
+          (lib.optionals cfg.enableVimExt vimModeExternalKeyBindings)
+        ];
         enableExtensionUpdateCheck = false;
         enableUpdateCheck = false;
         extensions = lib.concatLists [

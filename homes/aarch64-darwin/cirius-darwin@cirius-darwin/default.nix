@@ -181,9 +181,10 @@ in
         };
         vscode = {
           enable = true;
-          enableVimExt = false;
+          enableVimExt = true;
           enableDockerExts = true;
           enableExtendedExts = true;
+          enableFishIntegration = true;
           continue = {
             enable = true;
           };
