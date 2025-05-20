@@ -25,6 +25,16 @@ in
         };
         mistral = {
           enable = true;
+          continueIntegration = {
+            enable = true;
+            models.chat = [ "codestral-large-latest" ];
+          };
+          tabbyIntegration = {
+            enable = true;
+            model = {
+              completion = "codestral-latest";
+            };
+          };
         };
         groq = {
           enable = true;
@@ -37,22 +47,9 @@ in
         ollama = {
           enable = true;
           nixvimIntegration.enable = true;
-          continueIntegration = {
-            enable = true;
-            models = {
-              chat = [ "qwen3:4b" ];
-              completion = "qwen2.5-coder:3b-base";
-              embedding = "nomic-embed-text:latest";
-            };
-          };
           tabbyIntegration = {
             enable = true;
-            completionFIMTemplate = "<|fim_prefix|>{prefix}<|fim_suffix|>{suffix}<|fim_middle|>"; # common
-            model = {
-              chat = "llama3.1:8b";
-              completion = "qwen2.5-coder:3b-base";
-              embedding = "nomic-embed-text:latest";
-            };
+            model.chat = "qwen3:4b";
           };
         };
         gemini = {
@@ -160,7 +157,6 @@ in
             enable = true;
           };
           enableFishIntegration = true;
-
         };
       };
       api-client.enable = true;
@@ -198,6 +194,10 @@ in
 
       infra = {
         enable = true;
+        sonarqube = {
+          enable = true;
+          integrateVSCode = true;
+        };
         kafka = {
           enable = true;
         };

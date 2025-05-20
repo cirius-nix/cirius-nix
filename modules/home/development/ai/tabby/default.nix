@@ -135,7 +135,11 @@ in
     systemd.user.services.tabby = lib.mkIf isLinux {
       Unit = {
         Description = "User-level Tabby Service";
-        After = [ "ollama.service" ];
+        After = [
+          "network.target"
+          "ollama.service"
+          "sops-nix.service"
+        ];
       };
       Service = {
         Type = "simple";

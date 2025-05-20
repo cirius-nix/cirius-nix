@@ -50,6 +50,7 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
   outputs =
@@ -84,7 +85,9 @@
         allowUnfree = true;
       };
       # Add overlays for the `nixpkgs` channel.
-      overlays = [ ];
+      overlays = with inputs; [
+        nix-vscode-extensions.overlays.default
+      ];
       # system defined in systems/{arch}/{host}
       # systems/x86_84-linux/cirius
       # systems/aarch64-darwin/cirius

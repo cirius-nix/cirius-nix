@@ -75,9 +75,6 @@ in
     };
 
     desktop-environment = {
-      # systemctl --user unmask pipewire-pulse
-      # systemctl --user unmask pipewire-pulse.socket
-      # systemctl --user --now enable pipewire pipewire-pulse
       kind = "kde";
     };
     fonts.enable = true;

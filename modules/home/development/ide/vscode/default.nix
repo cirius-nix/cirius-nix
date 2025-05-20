@@ -7,7 +7,7 @@
 }:
 let
   inherit (lib) mkIf mkEnableOption;
-  inherit (lib.${namespace}) mergeL' mkStrOption;
+  inherit (lib.${namespace}) deepMergeL' mkStrOption;
 
   cfg = config.${namespace}.development.ide.vscode;
 
@@ -17,14 +17,18 @@ let
     })
     common
     searching
+    wincmd
     ;
 
-  vimModeKeyBindings = mergeL' { } [
+  vimModeKeyBindings = deepMergeL' { } [
     common.vscode
     searching.vscode
+    wincmd.vscode
   ];
   vimModeExternalKeyBindings = lib.concatLists [
+    common.vscodeExternal
     searching.vscodeExternal
+    wincmd.vscodeExternal
   ];
 in
 {
@@ -35,7 +39,7 @@ in
       extended = mkEnableOption "Enable extended extensions";
       vim = mkEnableOption "Enable Vim extensions";
     };
-    commit = {
+    gitcommit = {
       instructionPrompt = mkStrOption "Follow the Conventional Commits format strictly for commit messages. Use the structure below:\n\n```\n<type>[optional scope]: <gitmoji> <description>\n\n[optional body]\n```\n\nGuidelines:\n\n1. **Type and Scope**: Choose an appropriate type (e.g., `feat`, `fix`) and optional scope to describe the affected module or feature.\n\n2. **Gitmoji**: Include a relevant `gitmoji` that best represents the nature of the change.\n\n3. **Description**: Write a concise, informative description in the header; use backticks if referencing code or specific terms.\n\n4. **Body**: For additional details, use a well-structured body section:\n   - Use bullet points (`*`) for clarity.\n   - Clearly describe the motivation, context, or technical details behind the change, if applicable.\n\nCommit messages should be clear, informative, and professional, aiding readability and project tracking." "Instruction prompt to generate AI commit message. Thanks: https://gist.github.com/okineadev/8a3f392a93ae50e8d523e4ba7f9f9ac3";
     };
     enableFishIntegration = mkEnableOption "Enable fish shell integration";
@@ -55,10 +59,11 @@ in
             "files.autoSaveDelay" = 100;
             "editor.wordWrap" = "bounded";
             "editor.wordWrapColumn" = 100;
+            "editor.fontFamily" = "Cascadia Mono NF, 'Droid Sans Mono', 'monospace', monospace";
             "[markdown]" = {
               "editor.wordWrap" = "bounded";
             };
-            # TODO: move this to development AI.
+            "editor.formatOnSave" = true;
             "github.copilot.enable" = {
               "*" = false;
               "plaintext" = false;
@@ -67,9 +72,11 @@ in
             };
             "github.copilot.chat.commitMessageGeneration.instructions" = [
               {
-                "text" = cfg.commit.instructionPrompt;
+                "text" = cfg.gitcommit.instructionPrompt;
               }
             ];
+            "workbench.sideBar.location" = "left";
+            "workbench.secondarySideBar.showLabels" = true;
           }
           // (lib.optionals cfg.enableFishIntegration {
             "terminal.integrated.defaultProfile.osx" = "fish";
@@ -111,8 +118,6 @@ in
               editorconfig.editorconfig
               pkief.material-icon-theme
               gruntfuggly.todo-tree
-              catppuccin.catppuccin-vsc
-              catppuccin.catppuccin-vsc-icons
               shd101wyy.markdown-preview-enhanced
               yzhang.markdown-all-in-one
               alefragnani.project-manager

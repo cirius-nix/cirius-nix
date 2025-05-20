@@ -100,6 +100,21 @@ rec {
   nested-force-attrs = mapAttrs (_key: force-attrs);
   # example: mergeL' { a = 1; b = 2; } [{ a = 2; b = 3; c = 4; }] => { a = 2; b = 3; c = 4; }
   mergeL' = default: attrSets: lib.foldl' lib.recursiveUpdate default attrSets;
+  mergeLeft = mergeL';
+
+  deepMerge =
+    a: b:
+    if builtins.isAttrs a && builtins.isAttrs b then
+      lib.attrsets.mapAttrs (k: v: if b ? ${k} then deepMerge v b.${k} else v) a
+      // lib.attrsets.mapAttrs (k: v: if !(a ? ${k}) then v else deepMerge a.${k} v) b
+
+    else if builtins.isList a && builtins.isList b then
+      a ++ b
+
+    else
+      b;
+  deepMergeL' = default: attrSets: lib.foldl' deepMerge default attrSets;
+  deepMergeLeft = deepMergeL';
 
   optionalGet =
     set: path:

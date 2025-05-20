@@ -4,6 +4,13 @@ let
 in
 {
   common = {
+    vscodeExternal = [
+      {
+        "key" = "ctrl+c";
+        "command" = "-filesExplorer.copy";
+        "when" = "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !inputFocus";
+      }
+    ];
     vscode = {
       "vim.leader" = "<space>";
       "vim.normalModeKeyBindings" = [
@@ -112,7 +119,134 @@ in
     ];
   };
   wincmd = {
-    vscode = [ ];
+    vscode = {
+      "vim.normalModeKeyBindingsNonRecursive" = [
+        {
+          "before" = [
+            "<leader>"
+            "w"
+            "r"
+          ];
+          "commands" = [ "workbench.action.evenEditorWidths" ];
+        }
+        {
+          "before" = [
+            "<leader>"
+            "w"
+            "w"
+          ];
+          "commands" = [ "workbench.action.increaseViewWidth" ];
+        }
+        {
+          "before" = [
+            "<leader>"
+            "w"
+            "n"
+          ];
+          "commands" = [ "workbench.action.decreaseViewWidth" ];
+        }
+        {
+          "before" = [
+            "<leader>"
+            "w"
+            "t"
+          ];
+          "commands" = [ "workbench.action.increaseViewHeight" ];
+        }
+        {
+          "before" = [
+            "<leader>"
+            "w"
+            "s"
+          ];
+          "commands" = [ "workbench.action.decreaseViewHeight" ];
+        }
+        {
+          "before" = [
+            "<leader>"
+            "<tab>"
+          ];
+          "commands" = [ "workbench.action.nextEditorInGroup" ];
+        }
+        {
+          "before" = [
+            "<leader>"
+            "<S-tab>"
+          ];
+          "commands" = [ "workbench.action.previousEditorInGroup" ];
+        }
+        {
+          "before" = [
+            "<leader>"
+            "w"
+            "h"
+          ];
+          "commands" = [ "workbench.action.focusLeftGroupWithoutWrap" ];
+        }
+        {
+          "before" = [
+            "<leader>"
+            "w"
+            "l"
+          ];
+          "commands" = [ "workbench.action.focusRightGroupWithoutWrap" ];
+        }
+        {
+          "before" = [
+            "<leader>"
+            "w"
+            "k"
+          ];
+          "commands" = [ "workbench.action.focusAboveGroupWithoutWrap" ];
+        }
+        {
+          "before" = [
+            "<leader>"
+            "w"
+            "j"
+          ];
+          "commands" = [ "workbench.action.focusBelowGroupWithoutWrap" ];
+        }
+      ];
+    };
+    vscodeExternal = [
+      {
+        "key" = "ctrl+k ctrl+pagedown";
+        "command" = "-workbench.action.nextEditorInGroup";
+      }
+      {
+        "key" = "ctrl+k ctrl+pagedup";
+        "command" = "-workbench.action.previousEditorInGroup";
+      }
+      {
+        "key" = "ctrl+tab";
+        "command" = "-workbench.action.quickOpenNavigateNextInEditorPicker";
+        "when" = "inEditorsPicker && inQuickOpen";
+      }
+      {
+        "key" = "ctrl+shift+tab";
+        "command" = "-workbench.action.quickOpenNavigatePreviousInEditorPicker";
+        "when" = "inEditorsPicker && inQuickOpen";
+      }
+      {
+        "key" = "ctrl+tab";
+        "command" = "workbench.action.nextEditorInGroup";
+      }
+      {
+        "key" = "ctrl+shift+tab";
+        "command" = "workbench.action.previousEditorInGroup";
+      }
+      {
+        "key" = "ctrl+shift+tab";
+        "command" = "-workbench.action.quickOpenLeastRecentlyUsedEditorInGroup";
+        "when" = "!activeEditorGroupEmpty";
+      }
+      {
+        "key" = "ctrl+tab";
+        "command" = "-workbench.action.quickOpenPreviousRecentlyUsedEditorInGroup";
+        "when" = "!activeEditorGroupEmpty";
+      }
+    ];
     nixvim = [
       {
         action = "<cmd>wincmd h<cr>";
@@ -154,6 +288,7 @@ in
   };
   searching = {
     vscode = {
+      "vim.visualModeKeyBindingsNonRecursive" = [];
       "vim.normalModeKeyBindingsNonRecursive" = [
         {
           before = [
@@ -161,6 +296,14 @@ in
             "e"
           ];
           commands = [ "workbench.view.explorer" ];
+        }
+        {
+          before = [
+            "<leader>"
+            "s"
+          ];
+          commands = [ "workbench.view.search" ];
+          when = [ "workbench.view.search.active && neverMatch =~ /doesNotMatch/" ];
         }
       ];
       "vim.normalModeKeyBindings" = [
@@ -196,8 +339,23 @@ in
       }
       {
         key = "space e";
-        command = "workbench.view.explorer";
-        when = "!editorTextFocus && !inputFocus && viewContainer.workbench.view.explorer.enabled";
+        command = "runCommands";
+        when = "!editorFocus && !inputFocus && viewContainer.workbench.view.explorer.enabled && explorerViewletVisible";
+        args = {
+          commands = [
+            "workbench.files.action.focusFilesExplorer"
+          ];
+        };
+      }
+      {
+        key = "space e";
+        command = "runCommands";
+        when = "!editorFocus && !inputFocus && viewContainer.workbench.view.explorer.enabled && explorerViewletVisible && explorerViewletFocus";
+        args = {
+          commands = [
+            "workbench.action.closeSidebar"
+          ];
+        };
       }
       {
         key = "shift+cmd+e";
@@ -274,7 +432,6 @@ in
       (mkKeymap "<leader>fr" "<cmd>Telescope resume<cr>" " Resume")
       # help help
       (mkKeymap "<leader>fh" "<cmd>Telescope help_tags<cr>" "󰘥 Help")
-      # TodoTrouble ft
       (mkKeymap "<leader>ft" "<cmd>TodoTrouble<cr>" " TODO")
       (mkKeymap "<leader>fi" "<cmd>Telescope nerdy<cr>" "󰲍 Icon picker")
     ];

@@ -7,14 +7,15 @@ environment.
 
 Under the path: `.${namespace}.development.ide.vscode`
 
-| Option                  | Type            | Description                                                       |
-| ----------------------- | --------------- | ----------------------------------------------------------------- |
-| `enable`                | bool            | Enable the VSCode development environment.                        |
-| `exts.docker`           | bool            | Enable Docker-related extensions.                                 |
-| `exts.extended`         | bool            | Enable a curated list of popular and useful extensions.           |
-| `exts.vim`              | bool            | Enable Vim support and Neovim integration in VSCode.              |
-| `enableFishIntegration` | bool            | Set `fish` as the default terminal profile on macOS.              |
-| `projectRoots`          | list of strings | A list of project root folders for the Project Manager extension. |
+| Option                        | Type            | Description                                                       |
+| ----------------------------- | --------------- | ----------------------------------------------------------------- |
+| `enable`                      | bool            | Enable the VSCode development environment.                        |
+| `exts.docker`                 | bool            | Enable Docker-related extensions.                                 |
+| `exts.extended`               | bool            | Enable a curated list of popular and useful extensions.           |
+| `exts.vim`                    | bool            | Enable Vim support and Neovim integration in VSCode.              |
+| `enableFishIntegration`       | bool            | Set `fish` as the default terminal profile on macOS.              |
+| `projectRoots`                | list of strings | A list of project root folders for the Project Manager extension. |
+| `gitcommit.instructionPrompt` | string          | Instruction prompt for AI to generate commit message.             |
 
 📝 Sample Usage in Nix Flake
 
@@ -66,8 +67,6 @@ This module sets the following in `programs.vscode`:
 | `editorconfig.editorconfig`           | EditorConfig support for maintaining consistent coding styles. |
 | `pkief.material-icon-theme`           | Material design icons for VSCode.                              |
 | `gruntfuggly.todo-tree`               | Highlight and list all TODOs, FIXMEs, etc. in your project.    |
-| `catppuccin.catppuccin-vsc`           | Catppuccin theme for VSCode.                                   |
-| `catppuccin.catppuccin-vsc-icons`     | Icon pack matching Catppuccin theme.                           |
 | `shd101wyy.markdown-preview-enhanced` | Advanced Markdown preview capabilities.                        |
 | `yzhang.markdown-all-in-one`          | Markdown editing enhancements.                                 |
 | `alefragnani.project-manager`         | Project Manager for quickly switching projects.                |
