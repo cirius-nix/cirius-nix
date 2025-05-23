@@ -197,6 +197,9 @@ in
             docker = true;
             extended = true;
           };
+          commit = {
+            instructionPrompt = "Craft a concise commit message that encapsulates all changes made, with an emphasis on the primary updates. If the modifications share a common theme or scope, mention it succinctly; otherwise, leave the scope out to maintain focus. The goal is to provide a clear and unified overview of the changes in a one single message, without diverging into a list of commit per file change.";
+          };
           enableFishIntegration = true;
           continue = {
             enable = true;
@@ -218,7 +221,10 @@ in
             debugging = mkEnabled;
             testing = mkEnabled;
             formatter = mkEnabled;
-            term = mkEnabled;
+            term = {
+              enable = true;
+
+            };
             session = mkEnabled;
           };
         };
@@ -226,8 +232,11 @@ in
           enable = true;
         };
       };
-      term.enable = true;
-      term.warp.enable = true;
+      term = {
+        enable = true;
+        kitty.enable = true;
+        warp.enable = true;
+      };
     };
 
     packages = {
