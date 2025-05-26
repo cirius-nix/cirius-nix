@@ -50,9 +50,11 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      nix-your-shell
-    ];
+    # TODO: move this to nix configuration.
+    programs.nix-your-shell = {
+      enable = true;
+      enableFishIntegration = true;
+    };
 
     programs.fish = {
       enable = true;
@@ -64,26 +66,6 @@ in
       ];
       interactiveShellInit =
         let
-          # Use Case                                  | mkMerge    | Use foldl' lib.attrsets.recursiveUpdate
-          # ------------------------------------------|------------|--------------------------------------
-          # Inside `options` or `config`              | ✅ Yes     | ❌ No
-          # Dynamic merging in `let` bindings         | ❌ No      | ✅ Yes
-          # Works with multiple option sets           | ✅ Yes     | ❌ No
-          # Merging attribute sets dynamically        | ❌ No      | ✅ Yes
-          #  Understanding foldl' lib.attrsets.recursiveUpdate in Nix
-          # 1️⃣ What is foldl'?
-          #
-          # foldl' (left fold) reduces a list to a single value by applying a function repeatedly.
-          #
-          #     It takes an initial value and a list, then applies the function from left to right.
-          #
-          # 2️⃣ What is lib.attrsets.recursiveUpdate?
-          #
-          # lib.attrsets.recursiveUpdate merges two attribute sets.
-          #
-          #     If an attribute exists in both sets, the second one overrides the first.
-          #     If attributes are nested, it merges them recursively.
-
           mergedEnvs = lib.foldl' lib.attrsets.recursiveUpdate { } [ cfg.interactiveEnvs ];
           envsStr = lib.concatStringsSep "\n" (
             lib.mapAttrsToList (name: value: "set -gx ${name} ${value}") mergedEnvs
@@ -141,10 +123,6 @@ in
         {
           name = "autopair";
           inherit (pkgs.fishPlugins.autopair) src;
-        }
-        {
-          name = "forgit";
-          inherit (pkgs.fishPlugins.forgit) src;
         }
         {
           name = "fzf-fish";

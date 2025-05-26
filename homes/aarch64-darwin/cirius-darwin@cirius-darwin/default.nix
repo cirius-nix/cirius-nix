@@ -174,6 +174,17 @@ in
       };
       infra = {
         enable = true;
+        sonarqube = {
+          enable = true;
+          integrateVSCode = true;
+        };
+        docker.enable = true;
+        kafka = {
+          enable = true;
+        };
+        langchain = {
+          enable = true;
+        };
       };
       ide = {
         db = {

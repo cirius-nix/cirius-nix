@@ -18,6 +18,8 @@ in
     home.packages = with pkgs; [
       kdePackages.kdevelop
       kdePackages.qttools
+      kdePackages.kconfig
+      qtcreator
     ];
   };
 }

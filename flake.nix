@@ -27,9 +27,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixvim = {
-      # stable
-      # url = "github:nix-community/nixvim/nixos-24.11";
-      # unstable
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -39,10 +36,6 @@
     };
     anyrun-nixos-options = {
       url = "github:n3oney/anyrun-nixos-options";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nix-your-shell = {
-      url = "github:MercuryTechnologies/nix-your-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # secret manager.

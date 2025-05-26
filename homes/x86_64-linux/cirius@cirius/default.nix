@@ -79,6 +79,18 @@ in
       git = {
         enable = true;
         pager = true;
+        vscodeIntegration = {
+          enable = true;
+          extensions = lib.mkForce (
+            with pkgs.vscode-extensions;
+            [
+              waderyan.gitblame
+            ]
+          );
+        };
+        fishIntegration = {
+          enable = true;
+        };
         includeConfigs = [
           {
             condition = "gitdir:~/Workspace/github/personal/";
@@ -107,14 +119,6 @@ in
           enable = true;
           sqlFormatter = {
             settings = {
-              # https://github.com/sql-formatter-org/sql-formatter/blob/master/docs/language.md
-              # The default "sql" dialect is meant for cases where you don't
-              # know which dialect of SQL you're about to format. It's not an
-              # auto-detection, it just supports a subset of features common
-              # enough in many SQL implementations. This might or might not
-              # work for your specific dialect. Better to always pick something
-              # more specific if possible.
-              # https://en.wikipedia.org/wiki/SQL:2011
               language = "sql";
             };
           };
@@ -181,12 +185,6 @@ in
             "nixos-generations" = "nixos-rebuild list-generations";
             "clean-nixos" = "sudo nix-collect-garbage -d && sudo nix-store --gc && sudo nixos-rebuild boot";
             "tf" = "${pkgs.terraform}/bin/terraform";
-            "gco" = "${pkgs.git}/bin/git checkout";
-            "gpl" = "${pkgs.git}/bin/git pull origin";
-            "gps" = "${pkgs.git}/bin/git push origin";
-            "gm" = "${pkgs.git}/bin/git merge";
-            "gaa" = "${pkgs.git}/bin/git add .";
-            "g" = "${pkgs.git}/bin/git";
             "cat" = "${pkgs.bat}/bin/bat";
           };
         };
@@ -197,6 +195,10 @@ in
         sonarqube = {
           enable = true;
           integrateVSCode = true;
+        };
+        docker = {
+          enable = true;
+          enableFishIntegration = true;
         };
         kafka = {
           enable = true;
