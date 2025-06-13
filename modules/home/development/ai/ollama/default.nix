@@ -109,17 +109,21 @@ in
         );
         nixvim.plugins.ai.avante = mkIf (nixvimCfg.enable && cfg.nixvimIntegration.enable) {
           customConfig = {
-            ollama =
-              let
-                endpoint = "http://localhost:${builtins.toString port}";
-              in
-              {
-                endpoint = endpoint;
-                model = cfg.nixvimIntegration.model;
-                timeout = 30000;
-                temperature = 0;
-                max_tokens = 20480;
-              };
+            providers = {
+              ollama =
+                let
+                  endpoint = "http://localhost:${builtins.toString port}";
+                in
+                {
+                  endpoint = endpoint;
+                  model = cfg.nixvimIntegration.model;
+                  extra_request_body = {
+                    timeout = 30000;
+                    temperature = 0;
+                    max_tokens = 20480;
+                  };
+                };
+            };
           };
         };
       };

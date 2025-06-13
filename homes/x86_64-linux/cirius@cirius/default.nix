@@ -186,6 +186,7 @@ in
             "clean-nixos" = "sudo nix-collect-garbage -d && sudo nix-store --gc && sudo nixos-rebuild boot";
             "tf" = "${pkgs.terraform}/bin/terraform";
             "cat" = "${pkgs.bat}/bin/bat";
+            "ff" = "${pkgs.fastfetch}/bin/fastfetch";
           };
         };
       };

@@ -52,8 +52,5 @@ in
       };
     };
 
-    programs.vscode.profiles.default.extensions = with pkgs.vscode-extensions; [
-      github.copilot
-    ];
   };
 }

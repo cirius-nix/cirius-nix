@@ -169,6 +169,7 @@ in
             "gpl" = "${pkgs.git}/bin/git pull origin";
             "gps" = "${pkgs.git}/bin/git push origin";
             "gm" = "${pkgs.git}/bin/git merge";
+            "ff" = "${pkgs.fastfetch}/bin/fastfetch";
           };
         };
       };
@@ -185,6 +186,10 @@ in
         langchain = {
           enable = true;
         };
+        github = {
+          enable = true;
+          act.enable = true;
+        };
       };
       ide = {
         db = {
@@ -196,9 +201,6 @@ in
             vim = true;
             docker = true;
             extended = true;
-          };
-          commit = {
-            instructionPrompt = "Craft a concise commit message that encapsulates all changes made, with an emphasis on the primary updates. If the modifications share a common theme or scope, mention it succinctly; otherwise, leave the scope out to maintain focus. The goal is to provide a clear and unified overview of the changes in a one single message, without diverging into a list of commit per file change.";
           };
           enableFishIntegration = true;
           continue = {

@@ -50,13 +50,17 @@ in
 
       ide.nixvim.plugins.ai.avante = mkIf (nixvimCfg.enable && cfg.nixvimIntegration.enable) {
         customConfig = {
-          openai = {
-            endpoint = "https://api.openai.com/v1";
-            api_key_name = "OPENAI_API_KEY";
-            model = cfg.nixvimIntegration.model;
-            timeout = 30000;
-            temperature = 0;
-            max_tokens = 20480;
+          providers = {
+            openai = {
+              endpoint = "https://api.openai.com/v1";
+              api_key_name = "OPENAI_API_KEY";
+              model = cfg.nixvimIntegration.model;
+              extra_request_body = {
+                timeout = 30000;
+                temperature = 0;
+                max_tokens = 20480;
+              };
+            };
           };
         };
       };

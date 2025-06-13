@@ -55,10 +55,10 @@ in
       };
     };
     programs = {
-      thefuck = {
-        enable = true;
-        enableFishIntegration = true;
-      };
+      # thefuck = {
+      #   enable = true;
+      #   enableFishIntegration = true;
+      # };
       bat = {
         enable = true;
         config = {

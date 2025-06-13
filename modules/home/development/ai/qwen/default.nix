@@ -36,15 +36,17 @@ in
       mkIf (nixvimCfg.enable && cfg.nixvimIntegration.enable)
         {
           customConfig = {
-            vendors = {
+            providers = {
               qianwen = {
                 __inherited_from = "openai";
                 api_key_name = "DASHSCOPE_API_KEY";
                 endpoint = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1";
                 model = cfg.nixvimIntegration.model;
-                timeout = 30000;
-                temperature = 0;
-                max_tokens = 8192;
+                extra_request_body = {
+                  timeout = 30000;
+                  temperature = 0;
+                  max_tokens = 8192;
+                };
               };
             };
           };

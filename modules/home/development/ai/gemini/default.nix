@@ -50,12 +50,16 @@ in
       };
       ide.nixvim.plugins.ai.avante = mkIf (nixvimCfg.enable && cfg.nixvimIntegration.enable) {
         customConfig = {
-          gemini = {
-            endpoint = "https://generativelanguage.googleapis.com/v1beta/models";
-            model = cfg.nixvimIntegration.model;
-            timeout = 30000;
-            temperature = 0;
-            max_tokens = 20480;
+          providers = {
+            gemini = {
+              endpoint = "https://generativelanguage.googleapis.com/v1beta/models";
+              model = cfg.nixvimIntegration.model;
+              extra_request_body = {
+                timeout = 30000;
+                temperature = 0;
+                max_tokens = 20480;
+              };
+            };
           };
         };
       };

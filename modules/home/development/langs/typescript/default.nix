@@ -76,20 +76,31 @@ in
           prettier = {
             command = lib.getExe pkgs.nodePackages.prettier;
           };
+          prettierd = {
+            command = lib.getExe' pkgs.prettierd "prettier";
+          };
         };
 
         # INFO: use formatter(s).
         formatters_by_ft = {
           javascript = {
-            __unkeyed-2 = "prettier";
-            timeout_ms = 2000;
+            __unkeyed-2 = "prettierd";
+            timeout_ms = cfg.formatTimeout;
             stop_after_first = true;
           };
           typescript = {
-            __unkeyed-2 = "prettier";
+            __unkeyed-2 = "prettierd";
             stop_after_first = true;
             timeout_ms = cfg.formatTimeout;
           };
+          typescriptreact = [
+            "prettierd"
+            "prettier"
+          ];
+          javascriptreact = [
+            "prettierd"
+            "prettier"
+          ];
         };
       };
     };

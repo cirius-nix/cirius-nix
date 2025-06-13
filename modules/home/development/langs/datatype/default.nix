@@ -76,12 +76,6 @@ in
             yamlfmt = {
               command = lib.getExe pkgs.yamlfmt;
             };
-            prettier = {
-              command = lib.getExe pkgs.nodePackages.prettier;
-            };
-            prettierd = {
-              command = lib.getExe pkgs.prettierd;
-            };
             taplo = {
               command = lib.getExe pkgs.taplo;
             };
@@ -95,14 +89,6 @@ in
             xml = [ "xmlformat" ];
             yaml = [ "yamlfmt" ];
             toml = [ "taplo" ];
-            typescriptreact = [
-              "prettierd"
-              "prettier"
-            ];
-            javascriptreact = [
-              "prettierd"
-              "prettier"
-            ];
             json = [
               "jq"
               "prettierd"

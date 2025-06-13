@@ -36,10 +36,11 @@ in
             tab_bar_style = "slant";
             tab_bar_align = "center";
             enabled_layouts = "splits:split_axis=horizontal,stack";
-          }
-          // lib.optionalAttrs pkgs.stdenv.isDarwin {
             font_size = "13.0";
             shell = "${pkgs.fish}/bin/fish --login --interactive";
+            window_margin_width = 8;
+          }
+          // lib.optionalAttrs pkgs.stdenv.isDarwin {
             macos_option_as_alt = "both";
             macos_custom_beam_cursor = "yes";
             macos_thicken_font = 0;

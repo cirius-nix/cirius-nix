@@ -49,15 +49,17 @@ in
 
       ide.nixvim.plugins.ai.avante = mkIf (nixvimCfg.enable && cfg.nixvimIntegration.enable) {
         customConfig = {
-          vendors = {
+          providers = {
             groq = {
               __inherit_from = "openai";
               endpoint = "https://api.groq.com/openai/v1/";
               api_key_name = "GROQ_API_KEY";
               model = cfg.nixvimIntegration.model;
-              timeout = 30000;
-              temperature = 0;
-              max_tokens = 20480;
+              extra_request_body = {
+                timeout = 30000;
+                temperature = 0;
+                max_tokens = 20480;
+              };
             };
           };
         };
