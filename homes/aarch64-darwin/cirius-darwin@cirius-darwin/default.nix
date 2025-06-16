@@ -120,7 +120,9 @@ in
         lua.enable = true;
         go = {
           enable = true;
-          enableFishIntegration = true;
+          settings = {
+            enableFishIntegration = true;
+          };
         };
         nix.enable = true;
         datatype.enable = true;

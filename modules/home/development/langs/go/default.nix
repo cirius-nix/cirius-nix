@@ -8,7 +8,7 @@
 
 let
   inherit (lib) mkEnableOption mkIf;
-  cfg = config.${namespace}.development.langs.go;
+  inherit (config.${namespace}.development.langs) go;
 in
 {
   options.${namespace}.development.langs.go = {
@@ -22,7 +22,7 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = mkIf go.enable {
     programs.nixvim = {
       extraPlugins = [
         pkgs.vimPlugins.go-nvim
@@ -100,7 +100,7 @@ in
           formatters_by_ft = {
             go = [
               "goimports"
-            ] ++ (lib.optionals cfg.useReviserFmt [ "goimports-reviser" ]);
+            ] ++ (lib.optionals go.settings.useReviserFmt [ "goimports-reviser" ]);
           };
         };
       };
@@ -114,7 +114,7 @@ in
 
     ${namespace} = {
       development = {
-        cli-utils.fish = mkIf cfg.enableFishIntegration {
+        cli-utils.fish = mkIf go.settings.enableFishIntegration {
           interactiveEnvs = {
             GOBIN = "$HOME/go/bin";
           };
