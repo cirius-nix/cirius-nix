@@ -179,6 +179,7 @@ in
       cli-utils = {
         enable = true;
         btop.enable = true;
+        amz-q.enable = true;
         starship = {
           enable = true;
         };
