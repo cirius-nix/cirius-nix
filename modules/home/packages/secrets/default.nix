@@ -34,7 +34,8 @@ in
     home = {
       packages = with pkgs; [
         enpass
-        pkgs.${namespace}.enpass-cli
+        # TODO:
+        # pkgs.${namespace}.enpass-cli
       ];
     };
   };

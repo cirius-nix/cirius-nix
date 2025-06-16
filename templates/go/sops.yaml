@@ -1,0 +1,8 @@
+keys:
+creation_rules:
+  - path_regex: secrets/shells/dev/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+  - path_regex: secrets/shells/(uat|prod)/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:

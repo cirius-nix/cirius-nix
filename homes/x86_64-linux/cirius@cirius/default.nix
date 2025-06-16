@@ -106,7 +106,13 @@ in
         lua.enable = true;
         go = {
           enable = true;
-          enableFishIntegration = true;
+          settings = {
+            enableFishIntegration = true;
+            useReviserFmt = true;
+            nvim = {
+              go = { };
+            };
+          };
         };
         nix.enable = true;
         datatype.enable = true;

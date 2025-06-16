@@ -1,15 +1,14 @@
 { mkShell, pkgs, ... }:
 mkShell {
   packages = with pkgs; [
+    # Go tools
     go
-
-    # go tools
     gotools
     goimports-reviser
     gomodifytags
     impl
 
-    # devtools
+    # Dev tools
     air
 
     # Testing tools
@@ -18,7 +17,7 @@ mkShell {
 
     # OpenAPI tools
     go-swagger
-    go-swag # tools
+    go-swag
 
     # CI/CD tools
     pre-commit

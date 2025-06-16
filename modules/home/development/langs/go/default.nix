@@ -13,38 +13,20 @@ in
 {
   options.${namespace}.development.langs.go = {
     enable = mkEnableOption "Golang";
-    enableFishIntegration = mkEnableOption "enable fish integration";
+    settings = {
+      useReviserFmt = mkEnableOption "Use goimports-reviser to re-format document";
+      enableFishIntegration = mkEnableOption "enable fish integration";
+      nvim = {
+        go = { };
+      };
+    };
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      go
-
-      # tools
-      gotools
-      goimports-reviser
-      gomodifytags
-      impl
-
-      air
-      wails
-
-      # OpenAPI tools
-      go-swagger
-      go-swag
-    ];
-
     programs.nixvim = {
       extraPlugins = [
         pkgs.vimPlugins.go-nvim
       ];
-      lsp.servers = {
-        gopls = {
-          enable = true;
-          settings = {
-          };
-        };
-      };
       extraConfigLuaPost = ''
         vim.filetype.add({
           extension = {
@@ -115,12 +97,10 @@ in
               command = lib.getExe pkgs.goimports-reviser;
             };
           };
-
           formatters_by_ft = {
             go = [
               "goimports"
-              "goimports-reviser"
-            ];
+            ] ++ (lib.optionals cfg.useReviserFmt [ "goimports-reviser" ]);
           };
         };
       };
