@@ -25,7 +25,6 @@ in
     ];
     home.packages = with pkgs; [
       stylelint
-      deno
       prettierd
       nodePackages.prettier
     ];
@@ -48,10 +47,6 @@ in
           stylelint = {
             command = lib.getExe pkgs.stylelint;
           };
-          deno_fmt = {
-            # Fantatic tool supports: JavaScript, TypeScript, Markdown, JSON(C) and Jupyter Notebooks
-            command = lib.getExe pkgs.deno;
-          };
           css = [ "stylelint" ];
           html = {
             __unkeyed-2 = "prettier";
@@ -65,7 +60,6 @@ in
 
         # INFO: use formatter(s).
         formatters_by_ft = {
-          markdown = [ "deno_fmt" ];
         };
       };
     };

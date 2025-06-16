@@ -5,10 +5,11 @@
   ...
 }:
 let
-  cfg = config.${namespace}.development.ai.qwen;
-  nixvimCfg = config.${namespace}.development.ide.nixvim;
   inherit (lib) mkIf mkEnableOption;
   inherit (lib.${namespace}) mkStrOption;
+
+  inherit (config.${namespace}.development.ai) qwen;
+  inherit (config.${namespace}.development.ide) nixvim;
 in
 {
   options.${namespace}.development.ai.qwen = {
@@ -21,19 +22,19 @@ in
       model = mkStrOption "qwen2.5-72b-instruct" "Nixvim model name";
     };
   };
-  config = mkIf cfg.enable {
-    sops = mkIf (cfg.secretName != "") {
-      secrets.${cfg.secretName} = {
+  config = mkIf qwen.enable {
+    sops = mkIf (qwen.secretName != "") {
+      secrets.${qwen.secretName} = {
         mode = "0440";
       };
     };
-    programs.nixvim = mkIf (nixvimCfg.enable && cfg.nixvimIntegration.enable) {
+    programs.nixvim = mkIf (nixvim.enable && qwen.nixvimIntegration.enable) {
       extraConfigLua = ''
         _G.FUNCS.load_secret("DASHSCOPE_API_KEY", "${config.sops.secrets."qwen_auth_token".path}")
       '';
     };
     ${namespace}.development.ide.nixvim.plugins.ai.avante =
-      mkIf (nixvimCfg.enable && cfg.nixvimIntegration.enable)
+      mkIf (nixvim.enable && qwen.nixvimIntegration.enable)
         {
           customConfig = {
             providers = {
@@ -41,7 +42,7 @@ in
                 __inherited_from = "openai";
                 api_key_name = "DASHSCOPE_API_KEY";
                 endpoint = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1";
-                model = cfg.nixvimIntegration.model;
+                model = qwen.nixvimIntegration.model;
                 extra_request_body = {
                   timeout = 30000;
                   temperature = 0;

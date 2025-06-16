@@ -18,6 +18,11 @@ in
     development = {
       ai = {
         enable = true;
+        copilot = {
+          enable = true;
+          fishIntegration.enable = true;
+          vscodeIntegration.enable = true;
+        };
         tabby = {
           enable = true;
           port = 11001;

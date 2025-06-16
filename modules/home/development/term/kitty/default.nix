@@ -38,7 +38,8 @@ in
             enabled_layouts = "splits:split_axis=horizontal,stack";
             font_size = "13.0";
             shell = "${pkgs.fish}/bin/fish --login --interactive";
-            window_margin_width = 8;
+            window_margin_width = 2;
+            window_padding_width = 2;
           }
           // lib.optionalAttrs pkgs.stdenv.isDarwin {
             macos_option_as_alt = "both";
