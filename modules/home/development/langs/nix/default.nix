@@ -22,11 +22,27 @@ in
     services.lorri = mkIf pkgs.stdenv.isLinux {
       enable = true;
     };
-    programs.nixvim.plugins = {
-      direnv.enable = true;
-      nix.enable = true;
+    programs.nixvim = {
       lsp.servers = {
         nixd.enable = true;
+        nixd.settings =
+          let
+            flake = ''(builtins.getFlake (builtins.toString ./.))'';
+          in
+          {
+            nixpkgs = {
+              expr = "import ${flake}.inputs.nixpkgs { }";
+            };
+            formatting = {
+              command = [ "${lib.getExe pkgs.nixfmt-rfc-style}" ];
+            };
+            options = {
+              nix-darwin.expr = ''${flake}.darwinConfigurations.cirius-darwin.options'';
+              nixos.expr = ''${flake}.nixosConfigurations.cirius.options'';
+              nixvim.expr = ''${flake}.packages.${pkgs.system}.nvim.options'';
+              home-manager.expr = ''${flake}.homeConfigurations."cirius@cirius".options'';
+            };
+          };
         nil_ls = {
           enable = true;
           settings = {
@@ -35,17 +51,26 @@ in
           };
         };
       };
-      conform-nvim.settings = {
-        # INFO: custom formatter to be used.
-        formatters = {
-          nixfmt = {
-            command = lib.getExe pkgs.nixfmt-rfc-style;
-          };
+
+      plugins = {
+        direnv.enable = true;
+        nix.enable = true;
+        nix-develop = {
+          enable = true;
         };
 
-        # INFO: use formatter(s).
-        formatters_by_ft = {
-          nix = [ "nixfmt" ];
+        conform-nvim.settings = {
+          # INFO: custom formatter to be used.
+          formatters = {
+            nixfmt = {
+              command = lib.getExe pkgs.nixfmt-rfc-style;
+            };
+          };
+
+          # INFO: use formatter(s).
+          formatters_by_ft = {
+            nix = [ "nixfmt" ];
+          };
         };
       };
     };

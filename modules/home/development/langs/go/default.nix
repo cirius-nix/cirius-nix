@@ -38,6 +38,13 @@ in
       extraPlugins = [
         pkgs.vimPlugins.go-nvim
       ];
+      lsp.servers = {
+        gopls = {
+          enable = true;
+          settings = {
+          };
+        };
+      };
       extraConfigLuaPost = ''
         vim.filetype.add({
           extension = {

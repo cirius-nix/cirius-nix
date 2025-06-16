@@ -90,7 +90,7 @@ in
             "ctrl+shift+kp_subtract" = "change_font_size all -2.0";
             "ctrl+shift+backspace" = "change_font_size all 0";
             "ctrl+shift+f" =
-              "launch --allow-remote-control --location=hsplit kitty +kitten ${config.xdg.configHome}/kitty/kitty-kitten-search/search.py @active-kitty-window-id";
+              "launch --type=overlay --stdin-source=@screen_scrollback ${pkgs.fzf}/bin/fzf --no-sort --no-mouse --exact -i";
           }
           // lib.optionalAttrs pkgs.stdenv.isLinux {
             "alt+1" = "goto_tab 1";

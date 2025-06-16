@@ -248,6 +248,9 @@ in
       };
       chat.enable = true;
       fonts.enable = true;
+      utilities = {
+        raycast.enable = true;
+      };
     };
 
     system = {
