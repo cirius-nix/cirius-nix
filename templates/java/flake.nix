@@ -1,4 +1,5 @@
 {
+  description = "Golang monolith application";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     snowfall-lib = {

@@ -180,6 +180,7 @@ in
         enable = true;
         btop.enable = true;
         amz-q.enable = true;
+        amz-q.vscodeIntegration.enable = true;
         starship = {
           enable = true;
         };

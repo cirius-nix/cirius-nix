@@ -92,8 +92,10 @@ in
       Group = "root";
     };
   };
-
-  nix.settings.auto-optimise-store = true;
+  nix.settings = {
+    auto-optimise-store = true;
+    sandbox = true;
+  };
 
   boot.loader = {
     systemd-boot.enable = true;

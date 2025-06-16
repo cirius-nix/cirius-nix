@@ -9,7 +9,6 @@ let
   inherit (lib) mkIf mkEnableOption;
   sonarqube = config.${namespace}.development.infra.sonarqube;
   vscode = config.${namespace}.development.ide.vscode;
-
 in
 {
   options.${namespace}.development.infra.sonarqube = {
