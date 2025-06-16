@@ -7,26 +7,22 @@
 }:
 
 let
-  inherit (lib) mkEnableOption mkIf mkOption;
-
-  cfg = config.${namespace}.core.virtualisation;
+  inherit (lib) mkEnableOption mkIf;
+  inherit (config.${namespace}.core) virtualisation;
 in
 {
   options.${namespace}.core.virtualisation = {
     enable = mkEnableOption "Virtualisation";
-    waydroid = mkOption {
-      type = lib.types.submodule {
-        options = {
-          enable = mkEnableOption "Enable Waydroid";
-          autoStart = mkEnableOption "Auto start Waydroid";
-        };
-      };
-      default = { };
-      description = ''Waydroid is a container-based approach to running Android apps on Linux.'';
+    virtualbox = {
+      enable = mkEnableOption "Enable Virtualbox";
+    };
+    waydroid = {
+      enable = mkEnableOption "Enable Waydroid";
+      autoStart = mkEnableOption "Auto start Waydroid";
     };
   };
 
-  config = mkIf cfg.enable {
+  config = mkIf virtualisation.enable {
     virtualisation = {
       podman = {
         enable = true;
@@ -35,9 +31,9 @@ in
         defaultNetwork.settings.dns_enabled = true;
       };
       waydroid = {
-        inherit (cfg.waydroid) enable;
+        inherit (virtualisation.waydroid) enable;
       };
-      virtualbox.host = {
+      virtualbox.host = mkIf virtualisation.virtualbox.enable {
         enable = true;
         enableExtensionPack = true;
       };
@@ -52,9 +48,9 @@ in
       distrobox
     ];
 
-    systemd.user.services = mkIf cfg.waydroid.enable {
+    systemd.user.services = mkIf virtualisation.waydroid.enable {
       waydroid = {
-        enable = cfg.waydroid.autoStart;
+        enable = virtualisation.waydroid.autoStart;
         description = "Waydroid Session Services";
         wantedBy = [ "graphical-session.target" ];
         after = [

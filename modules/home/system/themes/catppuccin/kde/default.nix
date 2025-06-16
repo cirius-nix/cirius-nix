@@ -8,7 +8,6 @@
 let
   inherit (lib) mkIf;
   inherit (lib.${namespace}) mkEnumOption ifNotNull;
-  inherit (lib.${namespace}.strings) capitalize;
 
   inherit (import ../constants.nix)
     variants
@@ -20,11 +19,8 @@ let
   inherit (themes) catppuccin;
 
   dark = ifNotNull catppuccin.kde.dark.variant catppuccin.dark;
-  dAccent = ifNotNull catppuccin.kde.dark.accent "blue";
   light = ifNotNull catppuccin.kde.light.variant catppuccin.light;
-  lAccent = ifNotNull catppuccin.kde.light.accent "blue";
   selected = if themes.isDark then dark else light;
-  selectedAccent = if themes.isDark then dAccent else lAccent;
 
   mapVariants = {
     "mocha" = "Mocha";

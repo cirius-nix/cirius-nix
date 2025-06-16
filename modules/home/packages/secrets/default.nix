@@ -8,11 +8,15 @@
 
 let
   inherit (lib) mkEnableOption mkIf;
+  inherit (lib.${namespace}) mkEnumOption;
   cfg = config.${namespace}.packages.secrets;
 in
 {
   options.${namespace}.packages.secrets = {
     enable = mkEnableOption "secrets";
+    packages = mkEnumOption (with pkgs; [
+      enpass
+    ]) pkgs.enpass "Package to manage secrets";
   };
 
   config = mkIf cfg.enable {
@@ -30,6 +34,7 @@ in
     home = {
       packages = with pkgs; [
         enpass
+        pkgs.${namespace}.enpass-cli
       ];
     };
   };

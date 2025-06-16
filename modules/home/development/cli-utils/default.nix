@@ -55,6 +55,7 @@ in
       };
     };
     programs = {
+      # pay-respects instead
       # thefuck = {
       #   enable = true;
       #   enableFishIntegration = true;

@@ -288,7 +288,7 @@ in
   };
   searching = {
     vscode = {
-      "vim.visualModeKeyBindingsNonRecursive" = [];
+      "vim.visualModeKeyBindingsNonRecursive" = [ ];
       "vim.normalModeKeyBindingsNonRecursive" = [
         {
           before = [

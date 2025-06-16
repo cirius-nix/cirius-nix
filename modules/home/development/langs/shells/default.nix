@@ -24,13 +24,18 @@ in
       shellharden
       shfmt
     ];
-    programs.nixvim.plugins = {
-      lsp.servers = {
-        fish_lsp.enable = true;
-        bashls.enable = true;
+    programs.nixvim.lsp = {
+      servers = {
+        bashls = {
+          enable = true;
+        };
+        fish_lsp = {
+          enable = true;
+        };
       };
+    };
+    programs.nixvim.plugins = {
       conform-nvim.settings = {
-        # INFO: custom formatter to be used.
         formatters = {
           shellcheck = {
             command = lib.getExe pkgs.shellcheck;
@@ -43,7 +48,6 @@ in
           };
         };
 
-        # INFO: use formatter(s).
         formatters_by_ft = {
           bash = [
             "shellcheck"

@@ -42,7 +42,7 @@ in
       virtualisation = {
         enable = true;
         waydroid = {
-          enable = true;
+          enable = false;
           autoStart = false;
         };
       };

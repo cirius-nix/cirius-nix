@@ -84,10 +84,10 @@ in
             #   gt = "type_definition";
             # };
             extra = [
-              {
-                action = "<cmd>Lspsaga hover_doc<cr>";
-                key = "K";
-              }
+              # {
+              #   action = "<cmd>lua vim.lsp.buf.<cr>";
+              #   key = "K";
+              # }
               {
                 action = "<cmd>lua vim.lsp.buf.format({ async = true })<cr>";
                 key = "<leader>lF";
@@ -315,3 +315,4 @@ in
     };
   };
 }
+
