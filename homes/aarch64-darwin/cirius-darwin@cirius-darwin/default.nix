@@ -52,6 +52,12 @@ in
             };
           };
         };
+        tabby = {
+          enable = true;
+          port = 11001;
+          localRepos = [ ];
+          enableNixvimIntegration = true;
+        };
         ollama = {
           enable = true;
           continueIntegration = {
@@ -68,7 +74,7 @@ in
           };
           nixvimIntegration = {
             enable = true;
-            model = "smallthinker";
+            model = "qwen3:4b";
           };
           tabbyIntegration = {
             enable = true;
@@ -94,11 +100,6 @@ in
             enable = true;
             model = "qwen2.5-72b-instruct";
           };
-        };
-        tabby = {
-          enable = true;
-          port = 11001;
-          localRepos = [ ];
         };
       };
       git = {
@@ -135,14 +136,6 @@ in
           enable = true;
           sqlFormatter = {
             settings = {
-              # https://github.com/sql-formatter-org/sql-formatter/blob/master/docs/language.md
-              # The default "sql" dialect is meant for cases where you don't
-              # know which dialect of SQL you're about to format. It's not an
-              # auto-detection, it just supports a subset of features common
-              # enough in many SQL implementations. This might or might not
-              # work for your specific dialect. Better to always pick something
-              # more specific if possible.
-              # https://en.wikipedia.org/wiki/SQL:2011
               language = "sql";
             };
           };
@@ -151,15 +144,10 @@ in
       };
       cli-utils = {
         enable = true;
-        starship = {
-          enable = true;
-        };
-        fastfetch = {
-          enable = true;
-        };
-        atuin = {
-          enable = true;
-        };
+        pay-respects.enable = true;
+        starship.enable = true;
+        fastfetch.enable = true;
+        atuin.enable = true;
         fish = {
           enable = true;
           customPaths = [ "~/Applications" ];

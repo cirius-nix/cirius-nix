@@ -179,6 +179,7 @@ in
       kdev.enable = true;
       cli-utils = {
         enable = true;
+        pay-respects.enable = true;
         btop.enable = true;
         amz-q.enable = true;
         amz-q.vscodeIntegration.enable = true;

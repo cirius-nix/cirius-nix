@@ -45,6 +45,7 @@
     };
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     catppuccin.url = "github:catppuccin/nix";
+    sonarqube.url = "github:cirius-nix/sonarqube";
   };
 
   outputs =
@@ -81,6 +82,7 @@
       # Add overlays for the `nixpkgs` channel.
       overlays = with inputs; [
         nix-vscode-extensions.overlays.default
+        sonarqube.overlays.${"package/sonarqube"}
       ];
       # system defined in systems/{arch}/{host}
       # systems/x86_84-linux/cirius
@@ -104,8 +106,10 @@
           # secret management
           sops-nix.homeManagerModules.sops
           catppuccin.homeModules.catppuccin
+          sonarqube.homeModules.sonarqube
         ];
       };
+      packages = { };
       outputs-builder = channels: { formatter = channels.nixpkgs.nixfmt-rfc-style; };
     };
 }

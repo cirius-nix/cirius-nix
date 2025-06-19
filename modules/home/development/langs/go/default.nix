@@ -7,7 +7,7 @@
 }:
 
 let
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib) mkEnableOption mkIf optionals;
   inherit (config.${namespace}.development.langs) go;
 in
 {
@@ -23,9 +23,14 @@ in
   };
 
   config = mkIf go.enable {
+    home.packages = [
+      pkgs.go
+      pkgs.gotools
+
+    ] ++ (optionals go.settings.useReviserFmt [ pkgs.goimports-reviser ]);
     programs.nixvim = {
-      extraPlugins = [
-        pkgs.vimPlugins.go-nvim
+      extraPlugins = with pkgs; [
+        vimPlugins.go-nvim
       ];
       extraConfigLuaPost = ''
         vim.filetype.add({
@@ -100,7 +105,7 @@ in
           formatters_by_ft = {
             go = [
               "goimports"
-            ] ++ (lib.optionals go.settings.useReviserFmt [ "goimports-reviser" ]);
+            ] ++ (optionals go.settings.useReviserFmt [ "goimports-reviser" ]);
           };
         };
       };

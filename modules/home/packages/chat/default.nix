@@ -27,7 +27,8 @@ in
       };
     };
     home.packages = with pkgs; [
-      telegram-desktop
+      # FIXME: telegram desktop doesn't support aarch64-darwin on the latest build
+      # telegram-desktop
       caprine
       discord
       # broken

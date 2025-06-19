@@ -16,18 +16,9 @@ in
     fonts = mkListOption lib.types.package (with pkgs; [
       # Desktop Fonts
       corefonts # MS fonts
-      b612 # high legibility
-      material-icons
-      material-design-icons
       work-sans
-      comic-neue
       source-sans
       inter
-      lexend
-
-      # Emojis
-      noto-fonts-color-emoji
-      twemoji-color-font
       nerd-fonts.monaspace
       nerd-fonts.iosevka
       nerd-fonts.symbols-only

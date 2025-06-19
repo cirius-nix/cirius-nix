@@ -9,33 +9,32 @@ let
   inherit (lib)
     mkIf
     mkEnableOption
+    getExe
     ;
 
-  cfg = config.${namespace}.development.langs.lua;
+  inherit (config.${namespace}.development.langs) lua;
 in
 {
   options.${namespace}.development.langs.lua = {
     enable = mkEnableOption "Enable Lua Language Server";
   };
 
-  config = mkIf cfg.enable {
+  config = mkIf lua.enable {
     home.packages = with pkgs; [
-      lua
       stylua
     ];
-    programs.nixvim.plugins = {
+    programs.nixvim = {
       lsp.servers = {
         lua_ls.enable = true;
       };
+    };
+    programs.nixvim.plugins = {
       conform-nvim.settings = {
-        # INFO: custom formatter to be used.
         formatters = {
           stylua = {
-            command = lib.getExe pkgs.stylua;
+            command = getExe pkgs.stylua;
           };
         };
-
-        # INFO: use formatter(s).
         formatters_by_ft = {
           lua = [ "stylua" ];
         };

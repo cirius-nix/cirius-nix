@@ -13,7 +13,7 @@ in
   options.${namespace}.packages.utilities.scrcpy = {
     enable = mkEnableOption "Enable scrcpy";
   };
-  config = mkIf scrcpy.enable {
+  config = mkIf (scrcpy.enable && pkgs.stdenv.isLinux) {
     home.packages = [ pkgs.qtscrcpy ];
   };
 }

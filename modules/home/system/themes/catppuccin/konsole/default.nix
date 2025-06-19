@@ -31,7 +31,7 @@ in
     opacity = mkOpt types.int 0 "0..100";
     blur = mkEnableOption "Enable blur feature";
   };
-  config = mkIf (themes.preset == "catppuccin" && konsole.enable) {
+  config = mkIf (themes.preset == "catppuccin" && konsole.enable && pkgs.stdenv.isLinux) {
     home = {
       packages = with pkgs.${namespace}; [
         catppuccin-konsole
