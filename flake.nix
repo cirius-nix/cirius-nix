@@ -44,10 +44,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-    sonarqube = {
-      url = "github:cirius-nix/sonarqube";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    catppuccin.url = "github:catppuccin/nix";
   };
 
   outputs =
@@ -104,10 +101,9 @@
         modules = with inputs; [
           # nixvim editor
           nixvim.homeManagerModules.nixvim
-          # anyrun.homeManagerModules.default
           # secret management
           sops-nix.homeManagerModules.sops
-          sonarqube.homeModules.service.sonarqube
+          catppuccin.homeModules.catppuccin
         ];
       };
       outputs-builder = channels: { formatter = channels.nixpkgs.nixfmt-rfc-style; };

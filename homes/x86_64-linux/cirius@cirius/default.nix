@@ -27,6 +27,7 @@ in
           enable = true;
           port = 11001;
           localRepos = [ ];
+          enableNixvimIntegration = true;
         };
         mistral = {
           enable = true;
@@ -200,6 +201,7 @@ in
             "tf" = "${pkgs.terraform}/bin/terraform";
             "cat" = "${pkgs.bat}/bin/bat";
             "ff" = "${pkgs.fastfetch}/bin/fastfetch";
+            "q" = "amazon-q";
           };
         };
       };
@@ -281,6 +283,10 @@ in
         inherit (user) username;
         inherit (user) name;
         inherit (user) email;
+      };
+      utilities = {
+        scrcpy.enable = true;
+        android-tools.enable = true;
       };
       email.thunderbird.enable = true;
       office.enable = true;

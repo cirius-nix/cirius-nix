@@ -20,6 +20,7 @@ in
     home.packages = with pkgs; [
       postman
       bruno
+      bruno-cli
     ];
   };
 }

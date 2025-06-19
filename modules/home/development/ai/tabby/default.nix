@@ -11,6 +11,7 @@ let
   isDarwin = pkgs.stdenv.isDarwin;
 
   cfg = config.${namespace}.development.ai.tabby;
+  inherit (config.${namespace}.development.ide) nixvim;
   userCfg = config.${namespace}.user;
 
   inherit (lib) mkIf mkEnableOption;
@@ -58,6 +59,7 @@ in
     enable = mkEnableOption "Enable Tabby AI Agent";
     port = mkIntOption 11001 "Tabby Server Port";
     localRepos = mkListOption localRepoOptions [ ] "Local Git repositories for Tabby to index";
+    enableNixvimIntegration = mkEnableOption "Enable Neovim Integration";
     model = {
       chat = mkAttrsOption lib.types.str {
         kind = "openai/chat";
@@ -79,6 +81,30 @@ in
   };
 
   config = mkIf cfg.enable {
+    ${namespace}.development.ide.nixvim.plugins.completion.tabAutocompleteSources = mkIf (
+      cfg.enableNixvimIntegration && nixvim.enable
+    ) [ "cmp_tabby" ];
+
+    programs.nixvim.plugins = mkIf (cfg.enableNixvimIntegration && nixvim.enable) {
+      cmp-tabby = {
+        enable = true;
+        settings = {
+          host = "localhost:${builtins.toString cfg.port}";
+        };
+      };
+      blink-cmp = {
+        settings.completion.sources = {
+          providers = {
+            cmp_tabby = {
+              name = "cmp_tabby";
+              module = "blink.compat.source";
+              score_offset = -3;
+            };
+          };
+        };
+      };
+    };
+
     sops = {
       secrets."tabby_auth_token" = {
         mode = "0440";

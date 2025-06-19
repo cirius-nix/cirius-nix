@@ -25,6 +25,12 @@ in
       ]
     );
     programs.vscode = mkIf (vscode.enable && amz-q.vscodeIntegration.enable) {
+      profiles.default.userSettings = {
+        "amazonQ.telemetry" = false;
+        "amazonQ.suppressPrompts" = {
+          "amazonQChatDisclaimer" = true;
+        };
+      };
       profiles.default.extensions = with pkgs; [
         vscode-extensions.amazonwebservices.amazon-q-vscode
       ];

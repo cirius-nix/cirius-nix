@@ -7,6 +7,7 @@
 }:
 let
   inherit (lib) mkIf mkEnableOption;
+  inherit (config.${namespace}) user;
   sonarqube = config.${namespace}.development.infra.sonarqube;
   vscode = config.${namespace}.development.ide.vscode;
 in
@@ -20,6 +21,12 @@ in
       sonarlint-ls
       sonar-scanner-cli
     ];
+
+    # sonarqube.services.sonarqube = {
+    #   enable = true;
+    #   jdk = pkgs.jdk17_headless;
+    #   stateDir = "${user.homeDir}/.local/state/sonarqube";
+    # };
 
     programs.vscode.profiles.default = mkIf (vscode.enable && sonarqube.integrateVSCode) {
       extensions = with pkgs.nix-vscode-extensions.vscode-marketplace; [

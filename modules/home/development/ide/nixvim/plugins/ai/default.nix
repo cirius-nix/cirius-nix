@@ -44,20 +44,20 @@ in
     programs = {
       # Configure NixVim.
       nixvim = {
-        # Extra Lua configuration to be added before plugins are loaded.
-        extraConfigLuaPre = ''
-          vim.g.tabby_agent_start_command = {"${pkgs.tabby-agent}/bin/tabby-agent", "--stdio", "--lsp"}
-          vim.g.tabby_inline_completion_trigger = "auto"
-          vim.g.tabby_inline_completion_keybinding_accept = "<s-cr>"
-        '';
-        # Extra plugins to be added to NixVim.
-        extraPlugins = [
-          pkgs.vimPlugins.vim-tabby
-        ];
+        # # Extra Lua configuration to be added before plugins are loaded.
+        # extraConfigLuaPre = ''
+        #   vim.g.tabby_agent_start_command = {"${pkgs.tabby-agent}/bin/tabby-agent", "--stdio", "--lsp"}
+        #   vim.g.tabby_inline_completion_trigger = "auto"
+        #   vim.g.tabby_inline_completion_keybinding_accept = "<s-cr>"
+        # '';
+        # # Extra plugins to be added to NixVim.
+        # extraPlugins = [
+        #   pkgs.vimPlugins.vim-tabby
+        # ];
         keymaps = [ ];
+
         # Configure plugins.
         plugins = {
-          # Configure Avante AI plugin.
           avante = {
             enable = true;
             settings = lib.foldl' lib.recursiveUpdate { } [
