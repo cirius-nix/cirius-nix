@@ -12,7 +12,7 @@ in
   config = mkIf cfg.enable {
     programs.nixvim = {
       plugins = {
-        nui.enable = true;
+        nui.enable = false;
         # Editor
         sleuth = {
           enable = true;
@@ -62,109 +62,16 @@ in
             };
           };
         };
-        # https://gpanders.com/blog/whats-new-in-neovim-0-11/#more-default-mappings
-        # grn in Normal mode maps to vim.lsp.buf.rename()
-        # grr in Normal mode maps to vim.lsp.buf.references()
-        # gri in Normal mode maps to vim.lsp.buf.implementation()
-        # gO in Normal mode maps to vim.lsp.buf.document_symbol() (this is analogous to the gO mappings in help buffers and :Man page buffers to show a “table of contents”)
-        # gra in Normal and Visual mode maps to vim.lsp.buf.code_action()
-        # CTRL-S in Insert and Select mode maps to vim.lsp.buf.signature_help()
-        # [d and ]d move between diagnostics in the current buffer ([D jumps to the first diagnostic, ]D jumps to the last)
-        lsp = {
-          enable = true;
-          keymaps = {
-            diagnostic = {
-              "]e" = "goto_next";
-              "[e" = "goto_prev";
-            };
-            # lspBuf = {
-            #   gD = "references";
-            #   gd = "definition";
-            #   gi = "implementation";
-            #   gt = "type_definition";
-            # };
-            extra = [
-              # {
-              #   action = "<cmd>lua vim.lsp.buf.<cr>";
-              #   key = "K";
-              # }
-              {
-                action = "<cmd>lua vim.lsp.buf.format({ async = true })<cr>";
-                key = "<leader>lF";
-              }
-              {
-                action = "<cmd>Lspsaga goto_type_definition<cr>";
-                key = "<leader>lD";
-              }
-              # gra in Normal and Visual mode maps to vim.lsp.buf.code_action()
-              {
-                action = "<cmd>Lspsaga code_action<cr>";
-                key = "<leader>la";
-              }
-              {
-                action = "<cmd>Lspsaga goto_definition<cr>";
-                key = "<leader>ld";
-              }
-              # grr in Normal mode maps to vim.lsp.buf.references()
-              {
-                action = "<cmd>Lspsaga finder<cr>";
-                key = "<leader>lf";
-              }
-              {
-                action = "<cmd>Lspsaga finder<cr>";
-                key = "grr";
-              }
-              # gO in Normal mode maps to vim.lsp.buf.document_symbol() (this is analogous to the gO mappings in help buffers and :Man page buffers to show a “table of contents”)
-              {
-                action = "<cmd>Telescope lsp_document_symbols<cr>";
-                key = "<leader>lo";
-              }
-              # grn in Normal mode maps to vim.lsp.buf.rename()
-              {
-                action = "<cmd>Lspsaga rename mode=n<cr>";
-                key = "<leader>lr";
-              }
-              {
-                action = "<cmd>Lspsaga rename mode=n<cr>";
-                key = "grn";
-              }
-            ];
-          };
-          servers = {
-            terraformls.enable = true;
-          };
-        };
-        lspsaga = {
-          enable = true;
-          beacon = {
-            enable = true;
-            frequency = 7;
-          };
-          finder = {
-            keys = {
-              toggleOrOpen = "<CR>";
-              vsplit = "<C-v>";
-              split = "<C-x>";
-              quit = "q";
-            };
-          };
-        };
-        schemastore = {
-          enable = true;
-          json = {
-            enable = true;
-          };
-          yaml = {
-            enable = true;
-          };
-        };
-        luasnip.enable = true;
         snacks = {
           enable = false;
           settings = { };
         };
         fidget = {
           enable = true;
+          settings = {
+            notification.filter = "info";
+            poll_rate = 300;
+          };
         };
         colorizer.enable = true;
         web-devicons.enable = true;
@@ -178,14 +85,7 @@ in
         wilder = {
           enable = true;
         };
-        trouble = {
-          enable = true;
-          settings = {
-            auto_close = true;
-          };
-        };
         lualine.enable = true;
-        bufferline.enable = true;
         which-key = {
           enable = true;
           settings = {
@@ -295,24 +195,7 @@ in
             ];
           };
         };
-        lspkind = {
-          enable = true;
-          mode = "symbol";
-          extraOptions = {
-            fields = [
-              "abbr"
-              "kind"
-              "menu"
-            ];
-          };
-          cmp = {
-            enable = true;
-            ellipsisChar = "..";
-            maxWidth = 50;
-          };
-        };
       };
     };
   };
 }
-

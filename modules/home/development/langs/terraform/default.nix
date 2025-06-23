@@ -7,27 +7,23 @@
 }:
 let
   inherit (lib) mkIf mkEnableOption;
-  inherit (lib.${namespace}.nixvim) mkEnabled;
-  cfg = config.${namespace}.development.langs.terraform;
+  inherit (config.${namespace}.development.langs) terraform;
 in
 {
   options.${namespace}.development.langs.terraform = {
     enable = mkEnableOption "Terraform Language Server";
   };
-  config = mkIf cfg.enable {
+  config = mkIf terraform.enable {
+    programs.nixvim.lsp.servers = {
+      terraformls.enable = true;
+    };
     programs.nixvim.plugins = {
-      lsp.servers = {
-        terraformls = mkEnabled;
-      };
       conform-nvim.settings = {
-        # INFO: custom formatter to be used.
         formatters = {
           terraform_fmt = {
             command = lib.getExe pkgs.terraform;
           };
         };
-
-        # INFO: use formatter(s).
         formatters_by_ft = {
           terraform = [ "terraform_fmt" ];
         };

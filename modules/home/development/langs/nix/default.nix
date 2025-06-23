@@ -58,7 +58,11 @@ in
         nix-develop = {
           enable = true;
         };
-
+        none-ls = {
+          sources.code_actions = {
+            statix.enable = true;
+          };
+        };
         conform-nvim.settings = {
           # INFO: custom formatter to be used.
           formatters = {

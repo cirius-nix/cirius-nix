@@ -18,9 +18,8 @@ in
     development = {
       ai = {
         enable = true;
-        mistral = {
-          enable = true;
-        };
+        aider.enable = true;
+        mistral.enable = true;
         groq = {
           enable = true;
           nixvimIntegration.enable = true;
@@ -167,7 +166,8 @@ in
         enable = true;
         sonarqube = {
           enable = true;
-          integrateVSCode = true;
+          enableVSCodeIntegration = true;
+          enableNixvimIntegration = true;
         };
         docker.enable = true;
         kafka = {
