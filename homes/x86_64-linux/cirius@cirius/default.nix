@@ -211,7 +211,8 @@ in
         enable = true;
         sonarqube = {
           enable = true;
-          integrateVSCode = true;
+          enableVSCodeIntegration = true;
+          enableNixvimIntegration = true;
         };
         docker = {
           enable = true;

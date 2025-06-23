@@ -1,6 +1,5 @@
 {
   config,
-  pkgs,
   lib,
   namespace,
   ...
@@ -9,7 +8,6 @@
 let
   inherit (lib) mkEnableOption mkIf;
   inherit (lib.${namespace}) mkStrOption;
-  inherit (pkgs.stdenv) isDarwin;
 
   cfg = config.${namespace}.packages.home-manager;
 in
@@ -25,20 +23,6 @@ in
   config = mkIf cfg.enable {
     programs.home-manager = {
       inherit (cfg) enable;
-    };
-
-    home = {
-      inherit (cfg) username;
-
-      stateVersion = "24.05";
-
-      homeDirectory =
-        if cfg.homeDirectory != null then
-          cfg.homeDirectory
-        else if isDarwin then
-          "/Users/${cfg.username}"
-        else
-          "/home/${cfg.username}";
     };
   };
 }

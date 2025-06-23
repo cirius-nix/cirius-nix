@@ -23,6 +23,9 @@ in
   };
 
   config = mkIf cfg.enable {
+    programs.nh = {
+      enable = true;
+    };
     programs.nix-ld = {
       enable = true;
       libraries =

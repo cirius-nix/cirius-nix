@@ -7,18 +7,34 @@
 }:
 let
   inherit (lib) mkEnableOption mkIf;
-  inherit (lib.${namespace}.nixvim) mkEnabled;
+  inherit (lib.${namespace}.nixvim) mkKeymap;
 
-  cfg = config.${namespace}.development.ide.nixvim.plugins.searching;
+  inherit (config.${namespace}.development.ide.nixvim.plugins) searching;
 in
 {
   options.${namespace}.development.ide.nixvim.plugins.searching = {
     enable = mkEnableOption "Enable Searching Plugins";
   };
-  config = mkIf cfg.enable {
+  config = mkIf searching.enable {
     programs.nixvim = {
-      extraPlugins = with pkgs; [ vimPlugins.nvim-window-picker ];
-      plugins = mkIf cfg.enable {
+      plugins = {
+        grug-far = {
+          enable = true;
+          settings = {
+            debounceMs = 1000;
+            engine = "ripgrep";
+            engines = {
+              ripgrep = {
+                path = "${pkgs.ripgrep}/bin/rg";
+                showReplaceDiff = true;
+              };
+            };
+            maxSearchMatches = 2000;
+            maxWorkers = 8;
+            minSearchChars = 1;
+            normalModeSearch = false;
+          };
+        };
         nerdy = {
           enable = true;
           enableTelescope = true;
@@ -46,17 +62,6 @@ in
             };
           };
         };
-        # nvim-tree = {
-        #   enable = true;
-        #   syncRootWithCwd = true;
-        #   respectBufCwd = true;
-        #   updateFocusedFile = {
-        #     enable = true;
-        #     updateRoot = false;
-        #   };
-        #   renderer.icons.gitPlacement = "after";
-        #   diagnostics.enable = true;
-        # };
         telescope = {
           enable = true;
           settings = {
@@ -65,34 +70,14 @@ in
             };
           };
           extensions = {
-            fzf-native = mkEnabled;
-            ui-select = mkEnabled;
-            file-browser = mkEnabled;
-            frecency = mkEnabled;
-            manix = mkEnabled;
-          };
-        };
-        spectre = {
-          enable = true;
-          settings = {
-            find = {
-              # Nixvim will automatically enable `dependencies.sed.enable` (or
-              # `sd` respectively).
-              cmd = "sed";
-            };
-            is_block_ui_break = true;
+            fzf-native.enable = true;
+            ui-select.enable = true;
+            frecency.enable = true;
+            manix.enable = true;
           };
         };
       };
-      extraConfigLuaPre = ''
-        require 'window-picker'.setup {
-          filter_rules = {
-            bo = {
-              filetype = { 'NvimTree', 'neo-tree', 'notify', 'snacks_notif', 'dapui_scopes', 'dapui_breakpoints', 'dapui_stacks', 'dapui_watches', 'dap-repl', 'dapui_console' },
-            },
-          },
-        }
-      '';
+
       extraConfigLuaPost = ''
         _G.FUNCS.neotree_focus_or_close = function()
           local win = vim.api.nvim_get_current_win()
@@ -120,16 +105,32 @@ in
             return ""
           end
         end
-
-        _G.FUNCS.search_selected_text_in_visual_mode = function()
-          local text = _G.FUNCS.get_selected_text_in_visual_mode()
-          require("telescope.builtin").live_grep({ default_text = text })
-        end
       '';
-      keymaps =
-        (import ../../../keybindings.nix {
-          inherit lib namespace;
-        }).searching.nixvim;
+      keymaps = [
+        (mkKeymap "<leader>e" "<cmd>lua _G.FUNCS.neotree_focus_or_close()<cr>" "󰙅 Toggle Explorer")
+        # Telescope
+        (mkKeymap "<leader>ff" "<cmd>Telescope find_files<cr>" " Find File")
+        # live grep fs
+        (mkKeymap "<leader>fs" "<cmd>GrugFar<cr>" "󱄽 Search String")
+        # live grep fs in visual mode
+        (mkKeymap "<leader>fs" "<cmd>GrugFar<cr>" {
+          mode = [ "v" ];
+          options = {
+            silent = true;
+            noremap = true;
+            nowait = true;
+            desc = "󱄽 Search String";
+          };
+        })
+        # buffers fb
+        (mkKeymap "<leader>fb" "<cmd>Telescope buffers<cr>" " Buffers")
+        # resume fr
+        (mkKeymap "<leader>fr" "<cmd>Telescope resume<cr>" " Resume")
+        # help help
+        (mkKeymap "<leader>fh" "<cmd>Telescope help_tags<cr>" "󰘥 Help")
+        (mkKeymap "<leader>ft" "<cmd>TodoTrouble<cr>" " TODO")
+        (mkKeymap "<leader>fi" "<cmd>Telescope nerdy<cr>" "󰲍 Icon picker")
+      ];
     };
   };
 }

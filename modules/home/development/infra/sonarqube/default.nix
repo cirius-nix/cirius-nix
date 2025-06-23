@@ -19,9 +19,7 @@ in
     enableNixvimIntegration = mkEnableOption "Enable Nixvim Integration";
   };
   config = mkIf sonarqube.enable {
-    home.packages = with pkgs; [
-      sonarlint-ls
-      sonar-scanner-cli
+    home.packages = [
       pkgs.${namespace}.sonarlint-vscode
     ];
 

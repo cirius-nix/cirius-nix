@@ -2,6 +2,7 @@
   config,
   namespace,
   lib,
+  pkgs,
   ...
 }:
 let
@@ -29,4 +30,12 @@ in
     };
   };
 
+  config = {
+    programs.home-manager.enable = true;
+    home = {
+      stateVersion = "24.05";
+      inherit (config.${namespace}.user) username;
+      packages = [ pkgs.home-manager ];
+    };
+  };
 }

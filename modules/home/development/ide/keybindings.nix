@@ -1,7 +1,4 @@
-{ lib, namespace, ... }:
-let
-  inherit (lib.${namespace}.nixvim) mkKeymap;
-in
+{ ... }:
 {
   common = {
     vscodeExternal = [
@@ -397,43 +394,6 @@ in
         command = "-explorer.openToSide";
         when = "explorerViewletFocus && foldersViewVisible && !inputFocus";
       }
-    ];
-    nixvim = [
-      # NvimTree
-      (mkKeymap "<leader>e" "<cmd>lua _G.FUNCS.neotree_focus_or_close()<cr>" "󰙅 Toggle Explorer")
-      # Spectre
-      (mkKeymap "<leader>s" "<cmd>lua require('spectre').toggle()<cr>" " Search & Replace")
-      (mkKeymap "<leader>s" "<cmd>lua require('spectre').open_visual()<cr>" {
-        mode = [ "v" ];
-        options = {
-          silent = true;
-          noremap = true;
-          nowait = true;
-          desc = " Search & Replace";
-        };
-      })
-      # Telescope
-      (mkKeymap "<leader>ff" "<cmd>Telescope find_files<cr>" " Find File")
-      # live grep fs
-      (mkKeymap "<leader>fs" "<cmd>Telescope live_grep<cr>" "󱄽 Search String")
-      # live grep fs in visual mode
-      (mkKeymap "<leader>fs" "<cmd>lua _G.FUNCS.search_selected_text_in_visual_mode()<cr>" {
-        mode = [ "v" ];
-        options = {
-          silent = true;
-          noremap = true;
-          nowait = true;
-          desc = "󱄽 Search String";
-        };
-      })
-      # buffers fb
-      (mkKeymap "<leader>fb" "<cmd>Telescope buffers<cr>" " Buffers")
-      # resume fr
-      (mkKeymap "<leader>fr" "<cmd>Telescope resume<cr>" " Resume")
-      # help help
-      (mkKeymap "<leader>fh" "<cmd>Telescope help_tags<cr>" "󰘥 Help")
-      (mkKeymap "<leader>ft" "<cmd>TodoTrouble<cr>" " TODO")
-      (mkKeymap "<leader>fi" "<cmd>Telescope nerdy<cr>" "󰲍 Icon picker")
     ];
   };
 }
