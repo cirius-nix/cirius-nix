@@ -29,12 +29,9 @@ in
         with pkgs;
         lib.flatten [
           [
-            tabby
-            tabby-agent
             katana
           ]
           (lib.optional isLinux [
-            lmstudio
             python313
             python313Packages.peft
             # broken build
@@ -51,6 +48,5 @@ in
         acceleration = null;
       };
     };
-
   };
 }

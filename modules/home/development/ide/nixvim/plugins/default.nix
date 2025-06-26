@@ -67,7 +67,7 @@ in
           settings = { };
         };
         fidget = {
-          enable = true;
+          enable = false;
           settings = {
             notification.filter = "info";
             poll_rate = 300;

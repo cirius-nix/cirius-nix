@@ -17,7 +17,13 @@ in
     programs.nixvim.plugins = {
       blink-compat = {
         enable = true;
+        settings = {
+          debug = true;
+          impersonate_nvim_cmp = true;
+        };
       };
+      blink-cmp-spell.enable = true;
+      blink-cmp-dictionary.enable = true;
       blink-cmp = {
         enable = true;
         settings = {
@@ -38,6 +44,26 @@ in
               "fallback"
             ];
           };
+          sources = {
+            default = lib.concatLists [
+              cfg.tabAutocompleteSources
+              [
+                "lsp"
+                "path"
+                "snippets"
+                "buffer"
+              ]
+            ];
+          };
+          cmdline = {
+            enabled = true;
+            keymap = {
+              preset = "cmdline";
+            };
+            sources = [
+              "cmdline"
+            ];
+          };
           completion = {
             trigger = { };
             list = {
@@ -50,17 +76,6 @@ in
               range = "full";
             };
             ghost_text.enabled = true;
-            sources = {
-              default = lib.concatLists [
-                cfg.tabAutocompleteSources
-                [
-                  "lsp"
-                  "path"
-                  "snippets"
-                  "buffer"
-                ]
-              ];
-            };
           };
           snippets = { };
           signature = {

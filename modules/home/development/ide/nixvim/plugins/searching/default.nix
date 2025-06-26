@@ -88,21 +88,7 @@ in
               vim.cmd("Neotree focus position=float")
               return
             end
-          --   vim.cmd("NvimTreeRefresh")
             vim.cmd("Neotree focus position=left")
-          end
-        end
-
-        _G.FUNCS.get_selected_text_in_visual_mode = function()
-          vim.cmd('noau normal! "vy"')
-          local text = vim.fn.getreg("v")
-          vim.fn.setreg("v", {})
-
-          text = string.gsub(text, "\n", "")
-          if #text > 0 then
-            return text
-          else
-            return ""
           end
         end
       '';
@@ -113,7 +99,7 @@ in
         # live grep fs
         (mkKeymap "<leader>fs" "<cmd>GrugFar<cr>" "󱄽 Search String")
         # live grep fs in visual mode
-        (mkKeymap "<leader>fs" "<cmd>GrugFar<cr>" {
+        (mkKeymap "<leader>fs" ":GrugFar<cr>" {
           mode = [ "v" ];
           options = {
             silent = true;

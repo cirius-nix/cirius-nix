@@ -1,12 +1,11 @@
 {
   lib,
-  config,
   pkgs,
+  config,
   ...
 }:
 let
   namespace = "cirius";
-  user = config.${namespace}.user;
   inherit (lib.cirius) mkEnabled;
 in
 {
@@ -18,16 +17,31 @@ in
     development = {
       ai = {
         enable = true;
+        lmstudio.enable = true;
         copilot = {
           enable = true;
           fishIntegration.enable = true;
           vscodeIntegration.enable = true;
+          nixvimIntegration.enable = true;
         };
         tabby = {
           enable = true;
           port = 11001;
-          localRepos = [ ];
-          enableNixvimIntegration = true;
+          localRepos = [
+            {
+              name = "Cirius Nix";
+              repo = "${config.${namespace}.user.homeDir}/Workspace/github/personal/cirius-nix/cirius-nix";
+            }
+            {
+              name = "Coding Flow";
+              repo = "${config.${namespace}.user.homeDir}/Workspace/github/personal/codingflow";
+            }
+            {
+              name = "Cirius Nix SonarQube";
+              repo = "${config.${namespace}.user.homeDir}/Workspace/github/personal/sonarqube";
+            }
+          ];
+          enableNixvimIntegration = false;
         };
         mistral = {
           enable = true;
@@ -37,35 +51,50 @@ in
           };
           tabbyIntegration = {
             enable = true;
-            model = {
-              completion = "codestral-latest";
-            };
           };
         };
         groq = {
           enable = true;
-          nixvimIntegration.enable = true;
+          nixvimIntegration = {
+            enable = true;
+            model = "qwen-qwq-32b";
+          };
         };
         openai = {
           enable = true;
-          nixvimIntegration.enable = true;
+          nixvimIntegration = {
+            enable = true;
+            model = "gpt-4o-mini";
+          };
         };
         ollama = {
           enable = true;
-          nixvimIntegration.enable = true;
+          nixvimIntegration = {
+            enable = true;
+            model = "qwen3:4b";
+          };
           tabbyIntegration = {
             enable = true;
-            model.chat = "qwen3:4b";
+            completionFIMTemplate = "<|fim_prefix|>{prefix}<|fim_suffix|>{suffix}<|fim_middle|>";
+            model = {
+              chat = "qwen3:4b";
+              completion = "qwen2.5-coder:3b-base";
+              embedding = "nomic-embed-text:latest";
+            };
           };
         };
         gemini = {
           enable = true;
-          nixvimIntegration.enable = true;
+          nixvimIntegration = {
+            enable = true;
+            model = "gemini-2.5-pro";
+          };
           opencommitIntegration.enable = true;
         };
         deepseek = {
           enable = true;
           nixvimIntegration.enable = true;
+          nixvimIntegration.model = "deepseek-chat";
           tabbyIntegration = {
             model = {
               chat = "deepseek-chat";
@@ -80,7 +109,6 @@ in
             model = "qwen2.5-72b-instruct";
           };
         };
-
       };
       git = {
         enable = true;
@@ -93,6 +121,9 @@ in
               waderyan.gitblame
             ]
           );
+        };
+        nixvimIntegration = {
+          enable = true;
         };
         fishIntegration = {
           enable = true;
@@ -153,7 +184,6 @@ in
             debugging = mkEnabled;
             testing = mkEnabled;
             formatter = mkEnabled;
-            git = mkEnabled;
             term = {
               enable = true;
 
@@ -181,8 +211,10 @@ in
         enable = true;
         pay-respects.enable = true;
         btop.enable = true;
-        amz-q.enable = true;
-        amz-q.vscodeIntegration.enable = true;
+        amz-q = {
+          enable = true;
+          vscodeIntegration.enable = true;
+        };
         starship = {
           enable = true;
         };
@@ -280,12 +312,6 @@ in
 
     packages = {
       media.enable = true;
-      home-manager = {
-        enable = true;
-        inherit (user) username;
-        inherit (user) name;
-        inherit (user) email;
-      };
       utilities = {
         scrcpy.enable = true;
         android-tools.enable = true;
@@ -296,7 +322,6 @@ in
       secrets.enable = true;
       fonts.enable = true;
       chat.enable = true;
-      stacer.enable = true;
       explorer = {
         enable = true;
         termbased = false;

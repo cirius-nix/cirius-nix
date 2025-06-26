@@ -18,7 +18,7 @@ in
     development = {
       ai = {
         enable = true;
-        aider.enable = true;
+        lmstudio.enable = true;
         mistral.enable = true;
         groq = {
           enable = true;
@@ -104,6 +104,16 @@ in
       git = {
         enable = true;
         pager = true;
+        nixvimIntegration.enable = true;
+        vscodeIntegration = {
+          enable = true;
+          extensions = lib.mkForce (
+            with pkgs.vscode-extensions;
+            [
+              waderyan.gitblame
+            ]
+          );
+        };
         includeConfigs = [
           {
             condition = "gitdir:~/Workspace/github/personal/";
@@ -208,7 +218,6 @@ in
               enable = true;
               avante.provider = "gemini";
             };
-            git = mkEnabled;
             searching = mkEnabled;
             debugging = mkEnabled;
             testing = mkEnabled;
@@ -232,10 +241,6 @@ in
     };
 
     packages = {
-      home-manager = {
-        enable = true;
-        inherit (user) username name email;
-      };
       chat.enable = true;
       fonts.enable = true;
       utilities = {

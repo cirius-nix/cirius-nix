@@ -51,7 +51,7 @@ in
         customConfig = {
           providers = {
             groq = {
-              __inherit_from = "openai";
+              __inherited_from = "openai";
               endpoint = "https://api.groq.com/openai/v1/";
               api_key_name = "GROQ_API_KEY";
               model = cfg.nixvimIntegration.model;

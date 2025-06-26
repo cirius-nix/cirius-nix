@@ -2,22 +2,15 @@
   namespace,
   lib,
   config,
-  pkgs,
   ...
 }:
-# This is a NixOS module for configuring AI plugins for NixVim.
 let
-  # Access the configuration for this module using the namespace.
   cfg = config.${namespace}.development.ide.nixvim.plugins.ai;
-  # Import necessary functions from the Nix libraries.
   inherit (lib) mkEnableOption mkIf;
-  # Import necessary functions from the module libraries.
   inherit (lib.${namespace}) mkEnumOption mkAttrsOption;
 
-  # Check if AI is enabled at the OS level.
   osEnabledAI = config.${namespace}.development.ai.enable;
 
-  # Define presets for Avante AI plugin.
   avanteProviders = {
     "gemini" = "gemini";
     "groq" = "groq";
@@ -27,36 +20,36 @@ let
   };
 in
 {
-  # Define the options for this module.
   options.${namespace}.development.ide.nixvim.plugins.ai = {
-    # Enable AI plugins for NixVim.
     enable = mkEnableOption "Enable AI plugins for NixVim";
-    # Configuration options for the Avante AI plugin.
     avante = {
-      # Select a provider for Avante.
       provider = mkEnumOption [ "gemini" "groq" "deepseek" "ollama" "qwen" ] "gemini" "provider";
       customConfig = mkAttrsOption lib.types.anything { } "Custom vendors";
     };
   };
-  # Configuration for this module.
   config = mkIf (cfg.enable && osEnabledAI) {
-    # Configure programs.
+    # ${namespace}.developpment.ide.nixvim.plugins.completion.tabAutocompleteSources = [
+    #   "avante"
+    # ];
     programs = {
-      # Configure NixVim.
       nixvim = {
-        # # Extra Lua configuration to be added before plugins are loaded.
-        # extraConfigLuaPre = ''
-        #   vim.g.tabby_agent_start_command = {"${pkgs.tabby-agent}/bin/tabby-agent", "--stdio", "--lsp"}
-        #   vim.g.tabby_inline_completion_trigger = "auto"
-        #   vim.g.tabby_inline_completion_keybinding_accept = "<s-cr>"
-        # '';
-        # # Extra plugins to be added to NixVim.
-        # extraPlugins = [
-        #   pkgs.vimPlugins.vim-tabby
-        # ];
         keymaps = [ ];
-
-        # Configure plugins.
+        # blink-cmp-avante = {
+        #   settings = [ ];
+        # };
+        # blink-cmp = {
+        #   settings = {
+        #     sources = {
+        #       providers = {
+        #         avante = {
+        #           module = "blink-cmp-avante";
+        #           name = "Avante";
+        #           opts = { };
+        #         };
+        #       };
+        #     };
+        #   };
+        # };
         plugins = {
           avante = {
             enable = true;

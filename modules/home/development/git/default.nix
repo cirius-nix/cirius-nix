@@ -13,7 +13,8 @@ let
   inherit (config.${namespace}) user;
   inherit (config.${namespace}.development) git;
   inherit (config.${namespace}.development.cli-utils) fish;
-  inherit (config.${namespace}.development.ide) vscode;
+  inherit (config.${namespace}.development.ide) vscode nixvim;
+  inherit (lib.${namespace}.nixvim) mkKeymap;
 
   opencommitSharedConfig = ''
     OCO_PROMPT_MODULE=conventional-commit
@@ -33,6 +34,9 @@ in
     includeConfigs = mkListOption lib.types.attrs [ ] "Extra configuration of git";
     fishIntegration = {
       enable = mkEnableOption "Enable fish shell integration";
+    };
+    nixvimIntegration = {
+      enable = mkEnableOption "Enable nixvim Integration";
     };
     vscodeIntegration = {
       enable = mkEnableOption "Enable vscode integration";
@@ -79,6 +83,7 @@ in
         '';
       };
     };
+
     programs = {
       lazygit = {
         inherit (git) enable;
@@ -136,9 +141,61 @@ in
           url."ssh://git@github.com/".insteadOf = "https://github.com/";
         };
       };
+
       vscode.profiles.default.extensions = mkIf (
         vscode.enable && git.vscodeIntegration.enable
       ) git.vscodeIntegration.extensions;
+      nixvim = mkIf (nixvim.enable && git.nixvimIntegration.enable) {
+        keymaps = [
+          (mkKeymap "<leader>gd" "<cmd>Gitsigns diffthis<cr>" "  Git Diff")
+          (mkKeymap "[g" "<cmd>Gitsigns prev_hunk<cr>" " Prev Hunk")
+          (mkKeymap "]g" "<cmd>Gitsigns next_hunk<cr>" "  Next Hunk")
+          (mkKeymap "<leader>ga" "<cmd>Gitsigns stage_hunk<cr>" " Stage Hunk")
+          (mkKeymap "<leader>gA" "<cmd>Gitsigns undo_stage_hunk<cr>" " Undo Stage Hunk")
+          (mkKeymap "<leader>gg" "<cmd>LazyGit<cr>" " LazyGit")
+        ];
+        plugins = {
+          blink-cmp-git = {
+            enable = true;
+          };
+          lazygit = {
+            enable = true;
+          };
+          gitsigns = {
+            enable = true;
+            settings = {
+              current_line_blame = true;
+              current_line_blame_opts = {
+                virt_text = true;
+                virt_text_pos = "eol"; # eol | overlay | right_align
+                delay = 200;
+              };
+              current_line_blame_formatter = "   <author>, <committer_time:%R> • <summary>";
+              trouble = true;
+            };
+          };
+          git-conflict = {
+            enable = true;
+            settings = {
+              default_commands = true;
+              default_mappings = {
+                both = "b";
+                next = "n";
+                none = "0";
+                ours = "o";
+                prev = "p";
+                theirs = "t";
+              };
+              disable_diagnostics = false;
+              highlights = {
+                current = "DiffText";
+                incoming = "DiffAdd";
+              };
+              list_opener = "copen";
+            };
+          };
+        };
+      };
     };
   };
 }

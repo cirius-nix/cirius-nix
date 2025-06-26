@@ -36,40 +36,58 @@ in
       withNodeJs = true;
       withPerl = true;
       withRuby = true;
-      extraConfigLuaPre = ''
-        vim.api.nvim_create_autocmd("FileType", {
-          pattern = {"neotest-output-panel"},
-          callback = function()
-            vim.schedule(function()
-              vim.api.nvim_buf_set_keymap(0, "n", "q", "<cmd>close<cr>", {noremap = true, silent = true})
-            end)
-          end
-        })
-
-        _G.FUNCS = {
-          load_secret = function(name, path)
-            local f = io.open(path, "r")
-            if not f then
-              return nil
+      extraConfigLuaPre =
+        let
+          inherit (config.${namespace}.development.ai)
+            gemini
+            copilot
+            openai
+            groq
+            deepseek
+            qwen
+            ;
+          inherit (config.sops) secrets;
+        in
+        ''
+          vim.api.nvim_create_autocmd("FileType", {
+            pattern = {"neotest-output-panel"},
+            callback = function()
+              vim.schedule(function()
+                vim.api.nvim_buf_set_keymap(0, "n", "q", "<cmd>close<cr>", {noremap = true, silent = true})
+              end)
             end
+          })
 
-            local data = f:read("*a")
-            f:close()
+          _G.FUNCS = {
+            load_secret = function(name, path)
+              local f = io.open(path, "r")
+              if not f then
+                return nil
+              end
 
-            local token = data:gsub("%s+$", "")
-            vim.g[name] = token
-            vim.fn.setenv(name, token)
+              local data = f:read("*a")
+              f:close()
 
-            return token
-          end
-        };
-        _M.slow_format_filetypes = {};
-        _G.FUNCS.load_secret("GEMINI_API_KEY", "${config.sops.secrets."gemini_auth_token".path}")
-        _G.FUNCS.load_secret("OPENAI_API_KEY", "${config.sops.secrets."openai_auth_token".path}")
-        _G.FUNCS.load_secret("GROQ_API_KEY", "${config.sops.secrets."groq_auth_token".path}")
-        _G.FUNCS.load_secret("DEEPSEEK_API_KEY", "${config.sops.secrets."deepseek_auth_token".path}")
-        _G.FUNCS.load_secret("DASHSCOPE_API_KEY", "${config.sops.secrets."qwen_auth_token".path}")
-      '';
+              local token = data:gsub("%s+$", "")
+
+              if token == "" then
+                return nil
+              end
+
+              vim.g[name] = token
+              vim.fn.setenv(name, token)
+
+              return token
+            end
+          };
+          _M.slow_format_filetypes = {};
+          _G.FUNCS.load_secret("GEMINI_API_KEY", "${secrets.${gemini.secretName}.path}")
+          _G.FUNCS.load_secret("OPENAI_API_KEY", "${secrets.${openai.secretName}.path}")
+          _G.FUNCS.load_secret("GROQ_API_KEY", "${secrets.${groq.secretName}.path}")
+          _G.FUNCS.load_secret("DEEPSEEK_API_KEY", "${secrets.${deepseek.secretName}.path}")
+          _G.FUNCS.load_secret("DASHSCOPE_API_KEY", "${secrets.${qwen.secretName}.path}")
+          _G.FUNCS.load_secret("GITHUB_COPILOT_TOKEN", "${secrets.${copilot.secretName}.path}")
+        '';
       diagnostic.settings = {
         float = {
           border = "rounded";

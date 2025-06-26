@@ -63,13 +63,13 @@ in
     model = {
       chat = mkAttrsOption lib.types.str {
         kind = "openai/chat";
-        model_name = "qwen2.5-coder:7b-instruct";
+        model_name = "qwen3:4b";
         api_endpoint = "http://localhost:${builtins.toString defaultOllamaPort}/v1";
       } "Tabby Chat Model Configuration";
       completion = mkAttrsOption lib.types.str {
         kind = "ollama/completion";
         api_endpoint = "http://localhost:${builtins.toString defaultOllamaPort}";
-        model_name = "qwen2.5-coder:7b-base";
+        model_name = "qwen2.5-coder:3b-base";
         prompt_template = "<|fim_prefix|> {prefix} <|fim_suffix|>{suffix} <|fim_middle|>";
       } "Tabby Completion Model Configuration";
       embedding = mkAttrsOption lib.types.str {
@@ -85,15 +85,20 @@ in
       cfg.enableNixvimIntegration && nixvim.enable
     ) [ "cmp_tabby" ];
 
+    home.packages = [
+      pkgs.tabby
+      pkgs.tabby-agent
+    ];
+
     programs.nixvim.plugins = mkIf (cfg.enableNixvimIntegration && nixvim.enable) {
       cmp-tabby = {
         enable = true;
         settings = {
-          host = "localhost:${builtins.toString cfg.port}";
+          host = "http://localhost:${builtins.toString cfg.port}";
         };
       };
       blink-cmp = {
-        settings.completion.sources = {
+        settings.sources = {
           providers = {
             cmp_tabby = {
               name = "cmp_tabby";
@@ -104,7 +109,6 @@ in
         };
       };
     };
-
     sops = {
       secrets."tabby_auth_token" = {
         mode = "0440";
@@ -184,7 +188,6 @@ in
       };
       Install.WantedBy = [ "default.target" ];
     };
-
     launchd.agents.tabby = lib.mkIf isDarwin {
       enable = true;
       config = {
